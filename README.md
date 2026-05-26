@@ -1,4 +1,4 @@
-# Starehe-Apply-System 🇰🇪
+# Starehe Admissions Portal 🇰🇪
 
 A modern, React-based enrollment portal designed to digitize the application process for **Starehe Boys' Centre (Yellow Form)** and **Starehe Girls' Centre (Blue Form)**. This system streamlines student data collection, pathway ranking, and school selection for Grade 10 transitions and transfers.
 
