@@ -1,10 +1,21 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
+// === IMPORT PATHS FIXED & VERIFIED ===
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Personal from './components/Personal';
+import Academics from './components/Academics';
+import Pathway from './components/Pathway';
+import Family from './components/Family';
+import Review from './components/Review';
 
 function App() {
-  const [view, setView] = useState('landing');
+  // ===  THE STATE ENGINE MANAGEMENT ===
+  const [view, setView] = useState('landing'); // Modes: 'landing', 'sbc', 'sgc'
+  const [currentStep, setCurrentStep] = useState(0);        // Controls multi-step workflow pagination (1-5)
   const [serverStatus, setServerStatus] = useState("Connecting to Brain...");
 
+  // Form identity state initialization
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
@@ -24,12 +35,14 @@ function App() {
     currentGrade: 'Grade 9'
   });
 
+  // Multi-choice priority selection map
   const [selections, setSelections] = useState([
     { choice: 1, pathway: '', track: '' },
     { choice: 2, pathway: '', track: '' },
     { choice: 3, pathway: '', track: '' }
   ]);
 
+  // Pathway Track Lookups
   const tracks = {
     'STEM': [
       { id: 'pure', name: 'Pure Sciences (Mathematics, Physics, Chemistry, Biology)' },
@@ -44,254 +57,104 @@ function App() {
       { id: 'sports', name: 'Sports Science (Physical Education, Sports & Recreation)' }
     ]
   };
+  // Master definitions array - Add or reorder here anytime!
+  const FORM_STEPS = [
+    { id: 'personal', title: 'Personal Identity', component: Personal },
+    { id: 'academics', title: 'Academic Background', component: Academics },
+    { id: 'pathway', title: 'Pathway Priorities', component: Pathway },
+    { id: 'family', title: 'Family Information', component: Family },
+    // Future additions seamlessly slot in right here:
+    // { id: 'activities',title: 'Co-Curricular Talents',   component: Activities },
+    // { id: 'checklist', title: 'Document Verification',   component: Checklist },
+    { id: 'review', title: 'Final Declaration', component: Review }
+  ];
 
-  const handleSelectChange = (index, field, value) => {
-    const newSelections = [...selections];
-    newSelections[index][field] = value;
-    if (field === 'pathway') newSelections[index].track = '';
-    setSelections(newSelections);
-    setFormData(prev => ({ ...prev, finalChoices: newSelections }));
-  };
-
+  // Run health-check ping to local Express backend on component mount
   useEffect(() => {
     fetch('http://localhost:5000/api/status')
       .then(res => res.json())
       .then(data => setServerStatus(data.message))
       .catch(() => setServerStatus("Backend Offline ❌"));
   }, []);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  if (view === 'landing') {
-    return (
-      <section id="center">
+  const handleSelectChange = (index, field, value) => {
+    setSelections(prev => {
+      const updated = [...prev];
+      updated[index][field] = value;
+      if (field === 'pathway') updated[index].track = ''; // Reset child choice
+      return updated;
+    });
+  };
 
-        {/* Starehe Apply Logo*/}
-        <div className="logo-fan-container">
-          <img src="/images_starehe/sgc_logo.png" alt="SGC Logo" className="logo-card sgc-card" />
-          <img src="/images_starehe/sbc_logo.jfif" alt="SBC Logo" className="logo-card sbc-card" />
-        </div>
-        <header className="portal-header">
-  <h1 className="portal-title">Starehe Admissions Portal</h1>
-  
-  {serverStatus && <p className="status-text">{serverStatus}</p>}
-  <p className="portal-subtitle">Welcome to the Starehe Admissions Portal</p>
-  <hr className="header-divider" />
-</header>
-        <div className="card">
-          <p>Select an institution to begin:</p>
-          <button className="btn-sbc" onClick={() => setView('sbc')}>Starehe Boys' Centre</button>
-          <button className="btn-sgc" onClick={() => setView('sgc')}>Starehe Girls' Centre</button>
-        </div>
+  const handleNext = () => {
+    if (currentStep < FORM_STEPS.length - 1) {
+      setCurrentStep(prev => prev + 1);
+    }
+  };
 
-      </section>
-    );
-  }
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    } else {
+      setView('landing'); // Dropping back to selection if retreating past Step 1
+    }
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    alert(`Application submitted successfully to ${view === 'sbc' ? "Starehe Boys' Centre" : "Starehe Girls' Centre"}!`);
+    // Final routing processing logic goes here
+  };
+
+  // Active step processing switch helper
+  const ActiveStepComponent = FORM_STEPS[currentStep].component;
 
   return (
-    <section id="center">
-      <button className="back-btn" onClick={() => setView('landing')}>← Back to Selection</button>
+    <div className="app-layout">
+      <Header view={view} serverStatus={serverStatus} />
 
-      <div className={`portal-container ${view}`}>
-  <div className="portal-branding">
-    <img 
-      src={view === 'sbc' ? "/images_starehe/sbc_logo.jfif" : "/images_starehe/sgc_logo.png"} 
-      alt="Institutional Logo" 
-      className="portal-logo" 
-    />
-    <div className="portal-header-text">
-      <h2>{view === 'sbc' ? "SBC Application Portal" : "SGC Application Portal"}</h2>
-      <span className="motto-tag">
-        {view === 'sbc' ? "Natulenge Juu" : "Elimu Yetu, Nguvu Yetu"}
-      </span>
-    </div>
-  </div>
+      {view !== 'landing' && (
+        <main id="center">
 
-  <div className="mission-box">
-    <p className="mission-text">
-      <strong>Our Mission:</strong> {view === 'sbc' 
-        ? "To provide care and education for boys in need and inspire them to transform into productive and exemplary members of society." 
-        : "To provide care and education for girls in need and inspire them to transform into productive and exemplary members of society."}
-    </p>
-  </div>
-</div>
+          {/* CONTROL LABELS ONLY HANDLED HERE — NO REPETITIONS! */}
+          <div className="progress-metadata-bar">
+            <span className="step-badge">Step {currentStep + 1} of {FORM_STEPS.length}</span>
+            <h2 className="step-main-title">{FORM_STEPS[currentStep].title}</h2>
+          </div>
 
-      <div className="form-content">
-        <h3>Part I: Details of the {view === 'sbc' ? 'Boy' : 'Girl'}</h3>
-
-        <form className="form-grid" onSubmit={(e) => {
-  e.preventDefault();
-  // Include the pathway selections in the final submission
-  const finalSubmission = { ...formData, pathwayChoices: selections };
-  console.log("Final Data:", finalSubmission);
-  alert("Application Submitted Successfully!");
-}}>
-
-  {/* SECTION 1: PERSONAL IDENTITY */}
-  <fieldset className="form-section">
-    <legend>I. Student Identity</legend>
-    <div className="input-row">
-      <div className="input-group">
-        <label>First Name*</label>
-        <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} placeholder="e.g., Alex" required />
-      </div>
-      <div className="input-group">
-        <label>Middle Name(s)</label>
-        <input type="text" name="middleName" value={formData.middleName} onChange={handleInputChange} placeholder="e.g., Morgan" />
-      </div>
-      <div className="input-group">
-        <label>Last Name (Surname)*</label>
-        <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} placeholder="e.g., Jordan" required />
-      </div>
-    </div>
-    
-    <div className="input-row">
-      <div className="input-group">
-        <label>Date of Birth*</label>
-        <input type="date" name="dob" value={formData.dob} onChange={handleInputChange} required />
-      </div>
-      <div className="input-group">
-        <label>Religion*</label>
-        <select name="religion" value={formData.religion} onChange={handleInputChange} required>
-          <option value="">Select Religion</option>
-          <option value="Christian">Christian</option>
-          <option value="Muslim">Muslim</option>
-          <option value="Hindu">Hindu</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div className="input-group">
-        <label>Nationality*</label>
-        <input type="text" name="nationality" value={formData.nationality} onChange={handleInputChange} placeholder="e.g., Kenyan" required />
-      </div>
-    </div>
-  </fieldset>
-
-  {/* SECTION 2: OFFICIAL IDENTIFICATION */}
-  <fieldset className="form-section">
-    <legend>II. Government & Exam Identification</legend>
-    <div className="input-row">
-      <div className="input-group">
-        <label>Birth Certificate No*</label>
-        <input type="text" name="birthCertNo" value={formData.birthCertNo} onChange={handleInputChange} placeholder="e.g., 12345678" required />
-      </div>
-      <div className="input-group">
-        <label>NEMIS UPI Number*</label>
-        <input type="text" name="nemisUpiNo" value={formData.nemisUpiNo} onChange={handleInputChange} placeholder="e.g., ABC123D" required />
-      </div>
-    </div>
-    <div className="input-row">
-      <div className="input-group">
-        <label>Assessment Number*</label>
-        <input type="text" name="assessmentNo" value={formData.assessmentNo} onChange={handleInputChange} placeholder="e.g., 600001001" required />
-      </div>
-      <div className="input-group">
-        <label>School KNEC Code*</label>
-        <input type="text" name="schoolKnecCode" value={formData.schoolKnecCode} onChange={handleInputChange} placeholder="e.g., 20401001001" required />
-      </div>
-    </div>
-  </fieldset>
-
-  {/* SECTION 3: ACADEMIC BACKGROUND */}
-  <fieldset className="form-section">
-    <legend>III. Academic Background & Location</legend>
-    <div className="input-group full-width">
-      <label>Junior School*</label>
-      <input type="text" name="juniorSchool" value={formData.juniorSchool} onChange={handleInputChange} placeholder="Current School Name" required />
-    </div>
-    <div className="input-row">
-      <div className="input-group">
-        <label>Sub-county*</label>
-        <input type="text" name="subCounty" value={formData.subCounty} onChange={handleInputChange} placeholder="e.g., Westlands" required />
-      </div>
-      <div className="input-group">
-        <label>County*</label>
-        <input type="text" name="county" value={formData.county} onChange={handleInputChange} placeholder="e.g., Nairobi" required />
-      </div>
-    </div>
-  </fieldset>
-
-  {/* SECTION 4: PATHWAY SELECTION */}
-  <fieldset className="form-section pathway-selection">
-    <legend>IV. Pathway & Track Priorities</legend>
-    <div className="info-box">
-      <strong>Core Subjects:</strong> English, Kiswahili, Physical Education, and Community Service Learning
-    </div>
-
-    {selections.map((item, index) => (
-      <div key={index} className="choice-box">
-        <h4 className="choice-title">Choice #{item.choice}</h4>
-        <div className="selection-row">
-          <select
-            value={item.pathway}
-            onChange={(e) => handleSelectChange(index, 'pathway', e.target.value)}
-            className="form-input" required
-          >
-            <option value="">-- Select Pathway --</option>
-            <option value="STEM">STEM</option>
-            <option value="Social Sciences">Social Sciences</option>
-            <option value="Arts & Sports Science">Arts & Sports Science</option>
-          </select>
-
-          {item.pathway && (
-            <select
-              value={item.track}
-              onChange={(e) => handleSelectChange(index, 'track', e.target.value)}
-              className="form-input" required
-            >
-              <option value="">-- Select Track --</option>
-              {tracks[item.pathway].map(t => (
-                <option key={t.id} value={t.name}>{t.name}</option>
-              ))}
-            </select>
-          )}
-        </div>
-      </div>
-    ))}
-  </fieldset>
-
-  {/* SECTION 5: APPLICATION LOGIC */}
-  <fieldset className="form-section">
-    <legend>V. Application Type</legend>
-    <div className="input-group">
-      <label>Admission Category*</label>
-      <select name="applicationType" value={formData.applicationType} onChange={handleInputChange} required>
-        <option value="Standard">Grade 10 Entry</option>
-        <option value="Transfer">Transfer Student</option>
-      </select>
-    </div>
-
-    {formData.applicationType === 'Transfer' && (
-      <div className="transfer-logic animate-in">
-        <div className="input-group">
-          <label>Current Grade*</label>
-          <select name="currentGrade" value={formData.currentGrade} onChange={handleInputChange} required>
-            <option value="">-- Select Grade --</option>
-            <option value="Grade 10">Grade 10</option>
-            <option value="Grade 11">Grade 11</option>
-          </select>
-        </div>
-        <div className="input-group">
-          <label>Reason for Transfer*</label>
-          <textarea
-            name="transferReason"
-            value={formData.transferReason}
-            onChange={handleInputChange}
-            placeholder="Explain briefly..."
-            required
+          {/* Active Wizard Step Panel */}
+          <ActiveStepComponent
+            formData={formData}
+            handleInputChange={handleInputChange}
+            selections={selections}
+            tracks={tracks}
+            handleSelectChange={handleSelectChange}
+            view={view}
+            onNext={handleNext}
+            onBack={handleBack}
+            onSubmit={handleFormSubmit}
           />
-        </div>
-      </div>
-    )}
-  </fieldset>
 
-  <button type="submit" className="submit-btn">Submit Application</button>
-</form>
-      </div>
-    </section>
+        </main>
+      )}
+
+      {/* Landing page choice container if no portal context is selected */}
+      {view === 'landing' && (
+        <section id="center" className="landing-selection-card">
+          <p>Select an institution to begin your application:</p>
+          <div className="button-group">
+            <button className="btn-sbc" onClick={() => { setView('sbc'); setStep(1); }}>Starehe Boys' Centre</button>
+<button className="btn-sgc" onClick={() => { setView('sgc'); setStep(1); }}>Starehe Girls' Centre</button>
+          </div>
+        </section>
+      )}
+
+      <Footer />
+    </div>
   );
 }
 
