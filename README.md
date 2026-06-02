@@ -1,55 +1,81 @@
 # Starehe Admissions Portal 🇰🇪
 
-A modern, React-based multi-step enrollment wizard designed to digitize and streamline the application process for **Starehe Boys' Centre (Yellow Form)** and **Starehe Girls' Centre (Blue Form)**. This system enforces strict validation for Grade 10 transitions, institutional transfers, government identification, and dynamic pathway tracking.
+A modern, production-grade full-stack enrollment wizard designed to digitize and streamline the application process for **Starehe Boys' Centre (Yellow Form)** and **Starehe Girls' Centre (Blue Form)**. This application features a dual-service monorepo architecture, pairing a responsive React frontend client with a secure Node.js/Express REST API backed by a cloud MongoDB Atlas database.
 
-## 🚀 Features
+## 🚀 Live Deployments
+* **Frontend Portal (Vercel):** [https://starehe-admissions-portal.vercel.app](https://starehe-admissions-portal.vercel.app) *(Update with your actual Vercel link!)*
+* **Backend API Engine (Render):** [https://starehe-admissions-portal.onrender.com](https://starehe-admissions-portal.onrender.com)
 
-* **Dynamic Portal Selection**: Tailored UI and institutional theme engine for both SBC (Yellow) and SGC (Blue) entry pipelines.
-* **Modular Multi-Step Wizard Layout**: Form steps cleanly isolated across component boundaries to optimize render performance and maintain code clarity.
-* **3-Choice Priority Pathway System**: Interactive ranking module allowing applicants to select and order their technical/academic pathways (STEM, Social Sciences, Arts) and specific sub-tracks.
-* **Government & Exam Validation**: Integrated checks for required academic identifiers, including Birth Certificate Number, NEMIS UPI, Assessment Number, and School KNEC Codes.
-* **Conditional Transfer Logic**: Smart conditional fields that activate strictly for transfer students to capture current grade and verified reasons for transfer.
-* **Legal Integrity Ticker & Anti-Fraud Sign-off**: High-stakes validation barrier requiring final legal certification, making explicit that data mismatches result in immediate application rejection and slot forfeiture.
-* **Choreographed Pure CSS3 Layout**: Flexbox grid engine featuring a centralized layout constraint maxed at `1100px` to prevent widescreen stretching, paired with interactive animated CSS hover fan effects on the landing view.
+## 🛠️ Full-Stack Tech Stack
 
-## 🛠️ Tech Stack
+* **Frontend Client**: React.js (Vite, SPA Architecture)
+* **Backend API Engine**: Node.js, Express.js RESTful API
+* **Database Layer**: MongoDB Atlas (Cloud NoSQL Data Store managed via Mongoose Object Modeling)
+* **Security & Environment**: Cross-Origin Resource Sharing (CORS) security headers and secure `dotenv` variable insulation
 
-* **Frontend**: React.js (Vite)
-* **State Management**: React Hooks (`useState`, `useEffect`) managed through an optimized top-down wizard architecture
-* **Styling**: Pure CSS3 (Choreographed layout, media queries, CSS Keyframes)
-* **Quality & Duplication Control**: Architecture ready for Stylelint and PurgeCSS validation
-* **Backend**: Node.js (Planned integration for secure data persistence)
+## ✨ Core Features Implemented
 
-## 📁 Project Structure
+* **Dynamic Portal Selection**: Tailored UI and institutional theme engine supporting both SBC (Yellow) and SGC (Blue) entry pipelines.
+* **Streamlined Multi-Step Wizard**: Client-side forms cleanly isolated across components to optimize state propagation, transitioning directly from Pathway Priority into a final structural application preview.
+* **3-Choice Priority Pathway System**: Interactive ranking module allowing applicants to choose and order their technical or academic tracks (STEM, Social Sciences, Arts) and sub-tracks.
+* **Government & Exam Validation**: Strict validation schemas matching institutional data rules for Birth Certificate Numbers, NEMIS UPI, Assessment Numbers, and School KNEC Codes.
+* **Conditional Transfer Logic**: Interactive conditional workflows that toggle active states strictly for incoming transfer students.
+* **Legal Integrity Ticker & Anti-Fraud Sign-off**: High-stakes database submission barrier requiring final legal certification, making explicit that data mismatches result in immediate application rejection.
+* **Asynchronous Cloud Persistence**: Fully wired up to pass multi-step payloads seamlessly into a live cloud cluster database with strict structural schemas.
+
+## 📁 Optimized Monorepo Architecture
 
 ```text
-├── src/
-│   ├── components/
-│   │   ├── Personal.jsx       # Identity & Government Identification (Step 1)
-│   │   ├── Academics.jsx      # Historical academic background (Step 2)
-│   │   ├── Pathway.jsx        # Priority track ranking engine (Step 3)
-│   │   ├── Family.jsx         # Guardian & household context (Step 4)
-│   │   └── Review.jsx         # Legal declaration & high-stakes sign-off (Step 5)
-│   ├── App.jsx                # Core wizard engine, centralized state, & step switcher
-│   └── App.css                # Choreographed global theme layout & media queries
-└── public/images_starehe/     # Institutional branding assets and design graphics
+Starehe-Admissions-Portal/           <-- Main Repository Root
+├── .gitignore                       <-- Central Guard (Insulates Backend/.env)
+├── README.md                        <-- Project Documentation
+│
+├── Frontend/                        <-- React Client Code (Vercel)
+│   ├── public/                      <-- Static Assets & Favicon
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Personal.jsx         # Identity & Government IDs (Step 1)
+│   │   │   ├── Academics.jsx        # Historical Academic Background (Step 2)
+│   │   │   ├── Pathway.jsx          # Priority Track Ranking Engine (Step 3)
+│   │   │   └── Review.jsx           # Data Verification & Legal Sign-off (Step 4)
+│   │   ├── App.jsx                  # State Orchestration & Step Routing Switcher
+│   │   └── App.css                  # Custom Structural Pure CSS3 Layout Engine
+│   └── package.json
+│
+└── Backend/                         <-- Express API Server Code (Render)
+    ├── models/
+    │   └── Applications.js          # Mongoose NoSQL Strict Data Schema
+    ├── index.js                     # Unified Server Entry Point, Middleware, & Routes
+    ├── .env                         # Hidden Cloud Database Password String
+    └── package.json
 ```
 
 ## 🏁 Getting Started
 
 1.  **Clone the repository**:
     ```bash
-    git clone [https://github.com/upsilonvibes/Starehe-Admissions-Portal.git](https://github.com/upsilonvibes/Starehe-Admissions-Portal.git)
+    git clone [Starehe-Admissions-Portal](https://github.com/upsilonvibes/Starehe-Admissions-Portal.git)
+    cd Starehe-Admissions-Portal
     ```
 
-2.  **Install dependencies:**
+2.  **Configure the Environment:**
+    ```Plaintext
+    PORT=5000
+    MONGODB_URI=your_mongodb_atlas_connection_string
+    ```
+
+3.  **Spin up the Backend Server:**
     ```bash
+    cd Backend
     npm install
-    ```
-
-3.  **Run the development server:**
-    ```bash
     npm run dev
     ```
+4. **Spin up the Frontend Client:**
+Open a separate terminal window:
+   ```bash
+   cd Frontend
+   npm install
+   npm run dev
+   ```
     
-Developed by **Percy Njuguna** ([@upsilonvibes][https://github.com/upsilonvibes])- Self-taught Web Developer & University Applicant.    
+Developed by **Percy Njuguna** [@upsilonvibes](https://github.com/upsilonvibes)- Self-taught Web Developer & University Applicant.    
