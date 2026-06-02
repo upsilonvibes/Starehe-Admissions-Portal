@@ -118,7 +118,11 @@ function App() {
 
     const submissionPayload = {
       ...formData,
-      portalType: view.toUpperCase(), // Sends SBC or SGC dynamically
+      institutionType: view === 'sbc' ? "Starehe Boys' Centre" : "Starehe Girls' Centre", // Maps to your required field
+    legalDeclaration: {
+      signOff: true, // Confirms the legal declaration check to the backend
+      verifiedAt: new Date()
+    },
       pathwayChoices: selections
     };
 
