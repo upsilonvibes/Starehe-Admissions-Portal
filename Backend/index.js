@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 app.get('/api/status', (req, res) => {
     res.status(200).json({ 
         status: 'online',
-        message: 'Starehe Admissions Portal Backend Engine is active. Connection Successful! Hola, React. Me llamo Backend',
+        message: 'Starehe Admissions Portal Backend Engine is active. Connection Successful! Hola React, me llamo Backend',
         timestamp: new Date()
     });
 });

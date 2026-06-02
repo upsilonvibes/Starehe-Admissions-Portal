@@ -68,10 +68,17 @@ function App() {
     // { id: 'checklist', title: 'Document Verification',   component: Checklist },
     { id: 'review', title: 'Final Declaration', component: Review }
   ];
-
+  // Automatically snaps viewports safely to the top header on layout view state step switches
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, [currentStep, view]);
   // Run health-check ping to local Express backend on component mount
   useEffect(() => {
-    fetch('http://localhost:5000/api/status')
+    fetch('https://starehe-admissions-portal.onrender.com/api/status')
       .then(res => res.json())
       .then(data => setServerStatus(data.message))
       .catch(() => setServerStatus("Backend Offline ❌"));
@@ -104,10 +111,41 @@ function App() {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  // Compiles partial datasets and executes a POST request into MongoDB Atlas via Render
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    alert(`Application submitted successfully to ${view === 'sbc' ? "Starehe Boys' Centre" : "Starehe Girls' Centre"}!`);
-    // Final routing processing logic goes here
+    console.log("🚀 Initializing live document payload submission sequence...");
+
+    const submissionPayload = {
+      ...formData,
+      portalType: view.toUpperCase(), // Sends SBC or SGC dynamically
+      pathwayChoices: selections
+    };
+
+    try {
+      const response = await fetch('https://starehe-admissions-portal.onrender.com/api/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submissionPayload)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("🎯 Cloud Synced Successfully! Entry reference saved to database:", result);
+        alert(`Application successfully secured in the MongoDB Atlas Cloud! Portal Frame Context: ${view.toUpperCase()}`);
+        setView('landing');
+        setCurrentStep(0);
+      } else {
+        console.error("❌ Database validation engine bounced the record:", result);
+        alert(`Backend Refusal: ${result.message || "Check your console logs for structure errors."}`);
+      }
+    } catch (error) {
+      console.error("💥 Network interface failure contacting Render engine:", error);
+      alert("Pipeline Error: Failed to broadcast data packet over the network to Render.");
+    }
   };
 
   // Active step processing switch helper
@@ -147,8 +185,12 @@ function App() {
         <section id="center" className="landing-selection-card">
           <p>Select an institution to begin your application:</p>
           <div className="button-group">
-            <button className="btn-sbc" onClick={() => { setView('sbc'); setStep(1); }}>Starehe Boys' Centre</button>
-<button className="btn-sgc" onClick={() => { setView('sgc'); setStep(1); }}>Starehe Girls' Centre</button>
+            <button className="btn-sbc" onClick={() => { setView('sbc'); setCurrentStep(0); }}>
+              Starehe Boys' Centre
+            </button>
+            <button className="btn-sgc" onClick={() => { setView('sgc'); setCurrentStep(0); }}>
+              Starehe Girls' Centre
+            </button>
           </div>
         </section>
       )}

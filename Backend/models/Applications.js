@@ -46,14 +46,14 @@ const ApplicationSchema = new mongoose.Schema({
         }
     },
 
-    // 5. Step 4: Family Context
+    /*//5. Step 4: Family Context
     familyContext: {
         guardianName: { type: String, required: true, trim: true },
         guardianContact: { type: String, required: true, trim: true },
         householdIncomeBracket: { type: String, required: true },
         justificationForBursary: { type: String, trim: true, default: '' }
-    },
-
+    },*/
+    
     // 6. Step 5: Legal Declarations & Sign-off
     legalDeclaration: {
         hasCertifiedTrueData: { type: Boolean, required: true, enum: [true] }, // Must be true to pass validation
