@@ -1,4 +1,4 @@
-# Logs
+# === Standard Logs ===
 logs
 *.log
 npm-debug.log*
@@ -7,12 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# === System & Editor Overrides ===
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +17,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+Thumbs.db
+
+# === Frontend Directory Trimming ===
+Frontend/node_modules/
+Frontend/dist/
+Frontend/dist-ssr/
+Frontend/*.local
+
+# === Backend Directory Trimming & Security ===
+Backend/node_modules/
+Backend/.env
