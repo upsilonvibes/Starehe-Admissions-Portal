@@ -115,25 +115,35 @@ function App() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     console.log("🚀 Initializing structurally aligned payload submission sequence...");
-
+// ✅ Declared immediately at the top so it is globally available in this block scope!
+    const checkIsTransfer = formData.applicationType === 'Transfer';
     // === DATA ARCHITECTURE DESIGNED TO MATCH MONGOOSE SUB-DOCUMENTS ===
     const submissionPayload = {
       institutionType: view === 'sbc' ? "SBC" : "SGC", 
 
       // Maps flat state to personalInfo object
-      personalInfo: {
+     personalInfo: {
         fullName: `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim(),
         dateOfBirth: formData.dob, 
         birthCertificateNumber: formData.birthCertNo,
-        nemisUpiNo: formData.nemisUpiNo
+        nemisUPI: formData.nemisUpiNo,         
+        assessmentNumber: formData.assessmentNo, 
+        religion: formData.religion,             
+        nationality: formData.nationality,       
+        subCounty: formData.subCounty,           
+        county: formData.county,                 
+        isTransferStudent: checkIsTransfer,
+        transferDetails: {
+          currentGrade: checkIsTransfer ? formData.currentGrade : "",
+          reasonForTransfer: checkIsTransfer ? formData.transferReason : ""
+        }
       },
 
       // Maps flat state to academicBackground object
       academicBackground: {
         primarySchoolName: formData.juniorSchool,
         schoolKnecCode: formData.schoolKnecCode,
-        kcpeOrAssessmentMarks: parseInt(formData.assessmentNo) || 0, 
-        yearCompleted: 2025 
+        yearCompleted: new Date().getFullYear() // ✅ Automatically calculates the current year (e.g., 2026)
       },
 
       // Maps selections array to nested choices objects
@@ -158,10 +168,6 @@ function App() {
         signatureName: `${formData.firstName} ${formData.lastName}`.trim(),
         verifiedAt: new Date()
       },
-
-      applicationType: formData.applicationType,
-      transferReason: formData.transferReason,
-      currentGrade: formData.currentGrade
     };
 
     try {
@@ -177,14 +183,15 @@ function App() {
 
       if (response.ok) {
         console.log("🎯 Cloud Synced Successfully! Record saved:", result);
-        alert(`Database Test Successful! Data safely stored in MongoDB Atlas.`);
+        // ✅ CRITICAL USER NOTIFICATION
+        alert(`🎉 ¡Éxito! Application Submitted Successfully! Your tracking reference ID is: ${result.applicationId || 'SUCCESS-NET'}\n\nThank you for applying to Starehe Admissions Portal.`);
+        
+        // Reset form sequence back to start gracefully
         setView('landing');
         setCurrentStep(0);
       } else {
-        console.log("🕵️‍♂️ RAW BACKEND REJECTION STRING:");
-        console.log(JSON.stringify(result, null, 2)); 
-        console.error("❌ Database validation engine bounced the record:", result);
-        alert(`Backend Refusal: Check console logs for remaining validation parameters.`);
+        console.log("🕵️‍♂️ RAW BACKEND REJECTION STRING:", JSON.stringify(result, null, 2)); 
+        alert(`❌ Submission Rejected by Cloud: ${result.message || 'Validation Failure'}`);
       }
     } catch (error) {
       console.error("💥 Network interface failure contacting Render engine:", error);

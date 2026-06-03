@@ -26,7 +26,7 @@ const ApplicationSchema = new mongoose.Schema({
     academicBackground: {
         primarySchoolName: { type: String, required: true, trim: true },
         schoolKnecCode: { type: String, required: true, trim: true },
-        kcpeOrAssessmentMarks: { type: Number, required: true },
+        kcpeOrAssessmentMarks: { type: Number, required: false },
         yearCompleted: { type: Number, required: true }
     },
 
@@ -53,7 +53,7 @@ const ApplicationSchema = new mongoose.Schema({
         householdIncomeBracket: { type: String, required: true },
         justificationForBursary: { type: String, trim: true, default: '' }
     },*/
-    
+
     // 6. Step 5: Legal Declarations & Sign-off
     legalDeclaration: {
         hasCertifiedTrueData: { type: Boolean, required: true, enum: [true] }, // Must be true to pass validation
