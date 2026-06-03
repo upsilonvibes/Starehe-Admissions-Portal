@@ -118,63 +118,61 @@ function App() {
 
     // === DATA ARCHITECTURE DESIGNED TO MATCH MONGOOSE SUB-DOCUMENTS ===
     const submissionPayload = {
-      // Try uppercase shortcode first. If it throws an enum error, we change it to spelled-out names!
       institutionType: view === 'sbc' ? "SBC" : "SGC", 
 
       // Maps flat state to personalInfo object
       personalInfo: {
-        fullName: `${formData.firstName || 'Percy'} ${formData.middleName || ''} ${formData.lastName || 'Njuguna'}`.trim(),
-        dateOfBirth: formData.dob || "2008-08-05", 
-        birthCertificateNumber: formData.birthCertNo || "BC-TEST-2026",
-        nemisUpiNo: formData.nemisUpiNo || "UPI-TEST-999"
+        fullName: `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim(),
+        dateOfBirth: formData.dob, 
+        birthCertificateNumber: formData.birthCertNo,
+        nemisUpiNo: formData.nemisUpiNo
       },
 
       // Maps flat state to academicBackground object
       academicBackground: {
-        primarySchoolName: formData.juniorSchool || "Starehe Junior Test School",
-        schoolKnecCode: formData.schoolKnecCode || "12345678",
-        kcpeOrAssessmentMarks: parseInt(formData.assessmentNo) || 400, // Safe numerical cast
-        yearCompleted: 2025 // Backend expects an integer year
+        primarySchoolName: formData.juniorSchool,
+        schoolKnecCode: formData.schoolKnecCode,
+        kcpeOrAssessmentMarks: parseInt(formData.assessmentNo) || 0, 
+        yearCompleted: 2025 
       },
 
       // Maps selections array to nested choices objects
-      pathwayChoices: {
+     pathwayChoices: {
         choice1: {
-          pathwayName: selections[0]?.pathway || "STEM",
-          trackName: selections[0]?.track || "Pure Sciences (Mathematics, Physics, Chemistry, Biology)"
+          pathwayName: selections[0]?.pathway || "",
+          trackName: selections[0]?.track || ""
         },
         choice2: {
-          pathwayName: selections[1]?.pathway || "Social Sciences",
-          trackName: selections[1]?.track || "Humanities & Business Studies (History, Geography, CRE/IRE, Business)"
+          pathwayName: selections[1]?.pathway || "",
+          trackName: selections[1]?.track || ""
         },
         choice3: {
-          pathwayName: selections[2]?.pathway || "Arts & Sports Science",
-          trackName: selections[2]?.track || "Arts (Music & Dance, Fine Art, Theatre & Film)"
+          pathwayName: selections[2]?.pathway || "",
+          trackName: selections[2]?.track || ""
         }
       },
 
       // Maps declaration sign-off to legal object
-      legalDeclaration: {
+     legalDeclaration: {
         hasCertifiedTrueData: true, 
-        signatureName: `${formData.firstName || 'Percy'} ${formData.lastName || 'Njuguna'}`.trim(),
+        signatureName: `${formData.firstName} ${formData.lastName}`.trim(),
         verifiedAt: new Date()
       },
 
-      // Loose auxiliary fields
-      applicationType: formData.applicationType || 'Standard',
-      transferReason: formData.transferReason || '',
-      currentGrade: formData.currentGrade || 'Grade 9'
+      applicationType: formData.applicationType,
+      transferReason: formData.transferReason,
+      currentGrade: formData.currentGrade
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/applications', {
+      // Talking directly to your cloud Render server!
+      const response = await fetch('https://starehe-admissions-portal.onrender.com/api/applications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(submissionPayload)
       });
-
       const result = await response.json();
 
       if (response.ok) {
