@@ -58,7 +58,7 @@ function Academics({ formData, handleInputChange, onNext, onBack }) {
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back
         </button>
-        <button type="submit" className="submit-btn next-btn">
+        <button type="submit" className=" next-btn">
           Next: Pathway Priorities →
         </button>
       </div>

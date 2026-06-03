@@ -197,7 +197,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back to Selection
         </button>
-        <button type="submit" className="submit-btn next-btn">
+        <button type="submit" className=" next-btn">
           Next: Academic Background →
         </button>
       </div>

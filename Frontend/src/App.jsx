@@ -111,23 +111,63 @@ function App() {
     }
   };
 
-  // Compiles partial datasets and executes a POST request into MongoDB Atlas via Render
+  // === LIVE DATABASE TEST ENGINE SUBMITTER ===
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("🚀 Initializing live document payload submission sequence...");
+    console.log("🚀 Initializing structurally aligned payload submission sequence...");
 
+    // === DATA ARCHITECTURE DESIGNED TO MATCH MONGOOSE SUB-DOCUMENTS ===
     const submissionPayload = {
-      ...formData,
-      institutionType: view === 'sbc' ? "Starehe Boys' Centre" : "Starehe Girls' Centre", // Maps to your required field
-    legalDeclaration: {
-      signOff: true, // Confirms the legal declaration check to the backend
-      verifiedAt: new Date()
-    },
-      pathwayChoices: selections
+      // Try uppercase shortcode first. If it throws an enum error, we change it to spelled-out names!
+      institutionType: view === 'sbc' ? "SBC" : "SGC", 
+
+      // Maps flat state to personalInfo object
+      personalInfo: {
+        fullName: `${formData.firstName || 'Percy'} ${formData.middleName || ''} ${formData.lastName || 'Njuguna'}`.trim(),
+        dateOfBirth: formData.dob || "2008-08-05", 
+        birthCertificateNumber: formData.birthCertNo || "BC-TEST-2026",
+        nemisUpiNo: formData.nemisUpiNo || "UPI-TEST-999"
+      },
+
+      // Maps flat state to academicBackground object
+      academicBackground: {
+        primarySchoolName: formData.juniorSchool || "Starehe Junior Test School",
+        schoolKnecCode: formData.schoolKnecCode || "12345678",
+        kcpeOrAssessmentMarks: parseInt(formData.assessmentNo) || 400, // Safe numerical cast
+        yearCompleted: 2025 // Backend expects an integer year
+      },
+
+      // Maps selections array to nested choices objects
+      pathwayChoices: {
+        choice1: {
+          pathwayName: selections[0]?.pathway || "STEM",
+          trackName: selections[0]?.track || "Pure Sciences (Mathematics, Physics, Chemistry, Biology)"
+        },
+        choice2: {
+          pathwayName: selections[1]?.pathway || "Social Sciences",
+          trackName: selections[1]?.track || "Humanities & Business Studies (History, Geography, CRE/IRE, Business)"
+        },
+        choice3: {
+          pathwayName: selections[2]?.pathway || "Arts & Sports Science",
+          trackName: selections[2]?.track || "Arts (Music & Dance, Fine Art, Theatre & Film)"
+        }
+      },
+
+      // Maps declaration sign-off to legal object
+      legalDeclaration: {
+        hasCertifiedTrueData: true, 
+        signatureName: `${formData.firstName || 'Percy'} ${formData.lastName || 'Njuguna'}`.trim(),
+        verifiedAt: new Date()
+      },
+
+      // Loose auxiliary fields
+      applicationType: formData.applicationType || 'Standard',
+      transferReason: formData.transferReason || '',
+      currentGrade: formData.currentGrade || 'Grade 9'
     };
 
     try {
-      const response = await fetch('https://starehe-admissions-portal.onrender.com/api/applications', {
+      const response = await fetch('http://localhost:5000/api/applications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -138,13 +178,15 @@ function App() {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("🎯 Cloud Synced Successfully! Entry reference saved to database:", result);
-        alert(`Application successfully secured in the MongoDB Atlas Cloud! Portal Frame Context: ${view.toUpperCase()}`);
+        console.log("🎯 Cloud Synced Successfully! Record saved:", result);
+        alert(`Database Test Successful! Data safely stored in MongoDB Atlas.`);
         setView('landing');
         setCurrentStep(0);
       } else {
+        console.log("🕵️‍♂️ RAW BACKEND REJECTION STRING:");
+        console.log(JSON.stringify(result, null, 2)); 
         console.error("❌ Database validation engine bounced the record:", result);
-        alert(`Backend Refusal: ${result.message || "Check your console logs for structure errors."}`);
+        alert(`Backend Refusal: Check console logs for remaining validation parameters.`);
       }
     } catch (error) {
       console.error("💥 Network interface failure contacting Render engine:", error);

@@ -16,9 +16,6 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Centers all children horizontally */
-
-  /* Soft Starehe theme light grey surface */
   width: 100%;
 }
 
@@ -27,10 +24,8 @@ img {
 .portal-header,
 .portal-global-footer {
   width: 100%;
-  max-width: 1100px;
-  /* Prevents them from filling wide screens completely */
-  margin: 0 auto;
-  /* Keeps everything perfectly centered */
+  max-width: 1100px;/* Prevents them from filling wide screens completely */
+  margin: 0 auto;/* Keeps everything perfectly centered */
   box-sizing: border-box;
 }
 
@@ -358,7 +353,6 @@ img {
   padding: 12px;
   background-color: #333;
   border: 1px dashed #555;
-  /* Makes it look "draggable" */
   border-radius: 6px;
   transition: all 0.3s ease;
 }
@@ -398,18 +392,41 @@ img {
    7. NAVIGATION UTILITIES (Action Buttons & Bars)
    ========================================================================== */
 .back-btn {
-  background: none;
+  background: transparent;
   border: 1px solid #646cff;
   color: #646cff;
+  font-size: 0.9rem;
+  padding: 10px 20px; /* Added spacing for a better click target */
+  font-weight: 500;
   margin-bottom: 20px;
   cursor: pointer;
   border-radius: 7px;
+  transition: all 0.2s ease; /* Smooth hover effect */
 }
 
+.back-btn:hover {
+  background: rgba(100, 108, 255, 0.1); /* Subtle tint on hover */
+}
+
+.next-btn {
+ background: rgb(142, 199, 191); 
+  border: 1px solid rgb(112, 169, 161); /* A deeper shade of the teal for a clean edge */
+  color: #1e293b; /* A clean, dark slate/charcoal for excellent readability */
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600; /* Makes the primary action stand out */
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all 0.2s ease;
+}
+
+.next-btn:hover {
+  background: rgb(122, 179, 171); /* Darkens slightly on hover for visual feedback */
+}
 .split-buttons {
   display: flex;
-  justify-content: space-between;
-  /* Pushes Back button left, Next button right */
+  justify-content: space-between;/* Pushes Back button left, Next button right */
   align-items: center;
   width: 100%;
   margin-top: 25px;
@@ -417,38 +434,33 @@ img {
 
 /* --- Submit & Master Action Controls --- */
 .submit-btn {
-  padding: 16px 40px;
-  margin: 30px 10px;
-  border: none;
-  border-radius: 8px;
+  padding: 12px 30px; 
+  margin-bottom: 20px; 
+  border: 1px solid transparent; 
+  border-radius: 7px; 
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   background-color: rgb(151, 2, 2);
-  color: #fff9f9;
-  width: fit-content;
-  align-self: center;
-  transition: all 0.3s ease;
-  /* Smooth transition for hover effects */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  width: auto; 
+  display: inline-block;
+  transition: all 0.2s ease; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 .submit-btn:hover {
-  background-color: rgb(180, 2, 2);
-  /* -- Slightly brighter red -- */
-  transform: translateY(-2px);
-  /*-- Lifts the button slightly -- */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background-color: rgb(180, 2, 2); 
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
 .submit-btn:active {
-  transform: translateY(0);
-  /* -- Returns to normal position on click -- */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  filter: brightness(0.9);
+  transform: translateY(0); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  filter: brightness(0.85); /* Slightly cleaner press state dimming */
 }
-
 
 /* ==========================================================================
    8. SHARED LAYOUT: GLOBAL FOOTER COMPONENT
@@ -554,9 +566,9 @@ img {
   }
 
   .portal-title {
-    font-size: 2rem;
-    /* Slightly smaller title */
+    font-size: 2rem;/* Slightly smaller title */
   }
+    
 }
 
 /* === MOBILE DEVICES (under 768px) === */
@@ -593,20 +605,27 @@ img {
 
   /* 4. Make buttons easier to tap with thumbs */
   .btn-sbc,
-  .btn-sgc,
-  .submit-btn {
+  .btn-sgc {
     width: 100%;
     padding: 15px;
     font-size: 1.1rem;
   }
-
+.split-buttons {
+  flex-direction: row;
+  gap: 15px;
+}
+.submit-btn{
+  width: 100%;
+  padding: 10px;
+  margin-bottom:20px;
+  margin-left:20px;
+}
   /* 5. Pathway selection cleanup */
   .selection-row {
     flex-direction: column;
     gap: 10px;
   }
 }
-
 /* Footer Tablet Reset Configurations */
 .footer-brand-left {
   text-align: left;
