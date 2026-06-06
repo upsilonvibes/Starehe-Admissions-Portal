@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-// === IMPORT PATHS FIXED & VERIFIED ===
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Personal from './components/Personal';
@@ -32,7 +31,11 @@ function App() {
     nationality: '',
     applicationType: 'Standard',
     transferReason: '',
-    currentGrade: 'Grade 9'
+    currentGrade: 'Grade 9',
+    isFirstTimeApplication: 'Yes', 
+    reapplicationReason: '',       
+    passportPhotoFile: null,       
+    birthCertFile: null
   });
 
   // Multi-choice priority selection map
@@ -114,83 +117,75 @@ function App() {
   // === LIVE DATABASE TEST ENGINE SUBMITTER ===
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("🚀 Initializing structurally aligned payload submission sequence...");
-// ✅ Declared immediately at the top so it is globally available in this block scope!
-    const checkIsTransfer = formData.applicationType === 'Transfer';
+    console.log("🚀 Initializing structurally aligned multipart-payload submission sequence...");
+
+    // ✅ Declared immediately at the top so it is globally available in this block scope!
+    //const checkIsTransfer = formData.applicationType === 'Transfer';
+
     // === DATA ARCHITECTURE DESIGNED TO MATCH MONGOOSE SUB-DOCUMENTS ===
-    const submissionPayload = {
-      institutionType: view === 'sbc' ? "SBC" : "SGC", 
+    const payload = new FormData();
 
-      // Maps flat state to personalInfo object
-     personalInfo: {
-        fullName: `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim(),
-        dateOfBirth: formData.dob, 
-        birthCertificateNumber: formData.birthCertNo,
-        nemisUPI: formData.nemisUpiNo,         
-        assessmentNumber: formData.assessmentNo, 
-        religion: formData.religion,             
-        nationality: formData.nationality,       
-        subCounty: formData.subCounty,           
-        county: formData.county,                 
-        isTransferStudent: checkIsTransfer,
-        transferDetails: {
-          currentGrade: checkIsTransfer ? formData.currentGrade : "",
-          reasonForTransfer: checkIsTransfer ? formData.transferReason : ""
-        }
-      },
+    // 1. Append the top-level institutional flag
+    payload.append('institutionType', view === 'sbc' ? "SBC" : "SGC");
 
-      // Maps flat state to academicBackground object
-      academicBackground: {
-        primarySchoolName: formData.juniorSchool,
-        schoolKnecCode: formData.schoolKnecCode,
-        yearCompleted: new Date().getFullYear() // ✅ Automatically calculates the current year (e.g., 2026)
-      },
+      // 2. Map personalInfo details directly into the stream 
+    payload.append('personalInfo[fullName]', `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim());
+    payload.append('personalInfo[dateOfBirth]', formData.dob);
+    payload.append('personalInfo[birthCertificateNumber]', formData.birthCertNo);
+    payload.append('personalInfo[nemisUPI]', formData.nemisUpiNo);
+    payload.append('personalInfo[assessmentNumber]', formData.assessmentNo);
+    payload.append('personalInfo[religion]', formData.religion);
+    payload.append('personalInfo[nationality]', formData.nationality);
+    payload.append('personalInfo[subCounty]', formData.subCounty);
+    payload.append('personalInfo[county]', formData.county);
+    payload.append('personalInfo[isFirstTimeApplication]', formData.isFirstTimeApplication);
+    payload.append('personalInfo[reapplicationReason]', formData.isFirstTimeApplication === 'No' ? formData.reapplicationReason : "");
 
-      // Maps selections array to nested choices objects
-     pathwayChoices: {
-        choice1: {
-          pathwayName: selections[0]?.pathway || "",
-          trackName: selections[0]?.track || ""
-        },
-        choice2: {
-          pathwayName: selections[1]?.pathway || "",
-          trackName: selections[1]?.track || ""
-        },
-        choice3: {
-          pathwayName: selections[2]?.pathway || "",
-          trackName: selections[2]?.track || ""
-        }
-      },
+    const checkIsTransfer = formData.applicationType === 'Transfer';
+    payload.append('personalInfo[isTransferStudent]', checkIsTransfer);
+    payload.append('personalInfo[transferDetails][currentGrade]', checkIsTransfer ? formData.currentGrade : "");
+    payload.append('personalInfo[transferDetails][reasonForTransfer]', checkIsTransfer ? formData.transferReason : "");
 
-      // Maps declaration sign-off to legal object
-     legalDeclaration: {
-        hasCertifiedTrueData: true, 
-        signatureName: `${formData.firstName} ${formData.lastName}`.trim(),
-        verifiedAt: new Date()
-      },
-    };
+    // 3. Map academic background data
+    payload.append('academicBackground[primarySchoolName]', formData.juniorSchool);
+    payload.append('academicBackground[schoolKnecCode]', formData.schoolKnecCode);
+    payload.append('academicBackground[yearCompleted]', new Date().getFullYear());
+
+    // 4. Map pathway priority choices array 
+    payload.append('pathwayChoices[choice1][pathwayName]', selections[0]?.pathway || "");
+    payload.append('pathwayChoices[choice1][trackName]', selections[0]?.track || "");
+    payload.append('pathwayChoices[choice2][pathwayName]', selections[1]?.pathway || "");
+    payload.append('pathwayChoices[choice2][trackName]', selections[1]?.track || "");
+    payload.append('pathwayChoices[choice3][pathwayName]', selections[2]?.pathway || "");
+    payload.append('pathwayChoices[choice3][trackName]', selections[2]?.track || "");
+
+    // 5. Map legal tracking configurations
+    payload.append('legalDeclaration[hasCertifiedTrueData]', true);
+    payload.append('legalDeclaration[signatureName]', `${formData.firstName} ${formData.lastName}`.trim());
+    payload.append('legalDeclaration[verifiedAt]', new Date().toISOString());
+
+    // 6. STREAM THE PHYSICAL RAW BINARY FILES OVER THE NETWORK WIRE
+    if (formData.passportPhotoFile) payload.append('passportPhotoFile', formData.passportPhotoFile);
+    if (formData.birthCertFile) payload.append('birthCertFile', formData.birthCertFile);
 
     try {
       // Talking directly to your cloud Render server!
-      const response = await fetch('https://starehe-admissions-portal.onrender.com/api/applications', {
+      const response = await fetch('http://localhost:5000/api/applications', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(submissionPayload)
+        body: payload
       });
       const result = await response.json();
 
       if (response.ok) {
         console.log("🎯 Cloud Synced Successfully! Record saved:", result);
         // ✅ CRITICAL USER NOTIFICATION
-        alert(`🎉 ¡Éxito! Application Submitted Successfully! Your tracking reference ID is: ${result.applicationId || 'SUCCESS-NET'}\n\nThank you for applying to Starehe Admissions Portal.`);
-        
+        alert(`🎉 ¡Éxito! Application Submitted Successfully!Your application has been received by ${schoolName}.Your tracking reference ID is: ${result.applicationId || 'SUCCESS-NET'}Thank you for applying through the Starehe Admissions Portal.`);
+
         // Reset form sequence back to start gracefully
         setView('landing');
         setCurrentStep(0);
       } else {
-        console.log("🕵️‍♂️ RAW BACKEND REJECTION STRING:", JSON.stringify(result, null, 2)); 
+        console.log("🕵️‍♂️ RAW BACKEND REJECTION STRING:", JSON.stringify(result, null, 2));
         alert(`❌ Submission Rejected by Cloud: ${result.message || 'Validation Failure'}`);
       }
     } catch (error) {

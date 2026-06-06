@@ -15,6 +15,12 @@ const ApplicationSchema = new mongoose.Schema({
         birthCertificateNumber: { type: String, required: true, trim: true },
         nemisUPI: { type: String, trim: true, default: '' },
         assessmentNumber: { type: String, trim: true, default: '' },
+        religion: { type: String, required: true, trim: true },
+        nationality: { type: String, default: 'Kenyan', trim: true },
+        county: { type: String, required: true, trim: true },
+        subCounty: { type: String, required: true, trim: true },
+        isFirstTimeApplication: { type: String, default: 'Yes', enum: ['Yes', 'No'] },
+        reapplicationReason: { type: String, trim: true, default: '' },
         isTransferStudent: { type: Boolean, default: false },
         transferDetails: {
             currentGrade: { type: String, default: '' },
@@ -26,7 +32,6 @@ const ApplicationSchema = new mongoose.Schema({
     academicBackground: {
         primarySchoolName: { type: String, required: true, trim: true },
         schoolKnecCode: { type: String, required: true, trim: true },
-        kcpeOrAssessmentMarks: { type: Number, required: false },
         yearCompleted: { type: Number, required: true }
     },
 
@@ -59,7 +64,21 @@ const ApplicationSchema = new mongoose.Schema({
         hasCertifiedTrueData: { type: Boolean, required: true, enum: [true] }, // Must be true to pass validation
         signatureName: { type: String, required: true, trim: true },
         signedAt: { type: Date, default: Date.now }
+    },
+    // 6. Step 6: Document Upload Tracking Paths
+    documentAttachments: {
+        passportPhotoPath: { type: String, required: true }, // Stores path to passport photo
+        birthCertPath: { type: String, required: true },     // Stores path to scanned birth cert
+
+        academicTranscriptPath: { type: String, default: '' },
+        parentNationalIdPath: { type: String, default: '' },
+        payslipPath: { type: String, default: '' },
+        businessStatementPath: { type: String, default: '' },
+        titleDeedPath: { type: String, default: '' },
+        deathCertPath: { type: String, default: '' },
+        recommendationPacketPath: { type: String, default: '' }
     }
+
 }, {
     timestamps: true // Automatically injects createdAt and updatedAt date tags for tracking
 });

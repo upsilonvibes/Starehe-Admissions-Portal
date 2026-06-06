@@ -24,8 +24,10 @@ img {
 .portal-header,
 .portal-global-footer {
   width: 100%;
-  max-width: 1100px;/* Prevents them from filling wide screens completely */
-  margin: 0 auto;/* Keeps everything perfectly centered */
+  max-width: 1100px;
+  /* Prevents them from filling wide screens completely */
+  margin: 0 auto;
+  /* Keeps everything perfectly centered */
   box-sizing: border-box;
 }
 
@@ -185,7 +187,7 @@ img {
   background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
- justify-content: center;
+  justify-content: center;
 }
 
 .portal-branding {
@@ -204,7 +206,8 @@ img {
 
 .mission-box {
   background-color: rgba(255, 255, 255, 0.05);
-  border-left: 4px solid rgb(151, 2, 2);/* Starehe Red */
+  border-left: 4px solid rgb(151, 2, 2);
+  /* Starehe Red */
   padding: 15px 20px;
   border-radius: 4px;
   margin-bottom: 30px;
@@ -307,7 +310,7 @@ img {
 /* ==========================================================================
    6. STEP-SPECIFIC FIELDS (Personal Category / Transfer / Pathway)
    ========================================================================== */
-/* --- Step 1: Transfer Field Logic --- */
+/* ---  Transfer Field Logic --- */
 .transfer-field {
   grid-column: span 2;
   display: flex;
@@ -324,7 +327,12 @@ img {
   border-radius: 5px;
 }
 
-/* --- Step 3: Pathway Selection Sub-System --- */
+.reapplication-logic,
+.transfer-logic {
+  margin-top: 1rem;
+}
+
+/* --- Pathway Selection Sub-System --- */
 .pathway-section {
   background-color: #2a2a2a;
   padding: 20px;
@@ -387,6 +395,97 @@ img {
   background-color: #646cff;
 }
 
+/* --- Passport & Birth Cert Upload Cards ---  */
+.upload-card-wrapper {
+  background-color: #f0f7ff;
+  border: 2px dashed #417cb8;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.upload-card-wrapper label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.upload-card-wrapper:hover {
+  background-color: #e0efff;
+}
+
+/* --- Complete File Input Custom Styling --- */
+.upload-card-wrapper input[type="file"] {
+  width: 100%;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+  color: #334155;
+  /* Color for the "No file chosen" / chosen filename text */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  /* Gives clean spacing between button and text */
+  white-space: nowrap;
+  /* Prevents any file names or system text from breaking into lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Clean fading dots if a file name is extremely long */
+}
+
+/* ---  Transform the native choose/change target into an institutional button style --- */
+.upload-card-wrapper input[type="file"]::file-selector-button {
+  background-color: #417cb8;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Interactive hover state to show execution availability --- */
+.upload-card-wrapper input[type="file"]::file-selector-button:hover {
+  background-color: #1e40af;
+}
+
+/* --- Snappy feedback feel on click --- */
+.upload-card-wrapper input[type="file"]::file-selector-button:active {
+  transform: scale(0.97);
+}
+
+.sub-helper-label {
+  display: block;
+  font-size: 0.77rem;
+  font-weight: 500;
+  color: #1e40af;
+  margin-top: 0.3rem;
+  line-height: 1.4;
+}
+
+.file-indicator-success {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #15803d;
+  background-color: #dcfce7;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #bbf7d0;
+}
+
+.required-star {
+  color: #ff0101;
+  font-weight: 900;
+  margin-left: 0.15rem;
+}
 
 /* ==========================================================================
    7. NAVIGATION UTILITIES (Action Buttons & Bars)
@@ -396,25 +495,31 @@ img {
   border: 1px solid #646cff;
   color: #646cff;
   font-size: 0.9rem;
-  padding: 10px 20px; /* Added spacing for a better click target */
+  padding: 10px 20px;
+  /* Added spacing for a better click target */
   font-weight: 500;
   margin-bottom: 20px;
   cursor: pointer;
   border-radius: 7px;
-  transition: all 0.2s ease; /* Smooth hover effect */
+  transition: all 0.2s ease;
+  /* Smooth hover effect */
 }
 
 .back-btn:hover {
-  background: rgba(100, 108, 255, 0.1); /* Subtle tint on hover */
+  background: rgba(100, 108, 255, 0.1);
+  /* Subtle tint on hover */
 }
 
 .next-btn {
- background: rgb(142, 199, 191); 
-  border: 1px solid rgb(112, 169, 161); /* A deeper shade of the teal for a clean edge */
-  color: #1e293b; /* A clean, dark slate/charcoal for excellent readability */
+  background: rgb(142, 199, 191);
+  border: 1px solid rgb(112, 169, 161);
+  /* A deeper shade of the teal for a clean edge */
+  color: #1e293b;
+  /* A clean, dark slate/charcoal for excellent readability */
   padding: 10px 20px;
   font-size: 0.9rem;
-  font-weight: 600; /* Makes the primary action stand out */
+  font-weight: 600;
+  /* Makes the primary action stand out */
   margin-bottom: 20px;
   cursor: pointer;
   border-radius: 7px;
@@ -422,11 +527,14 @@ img {
 }
 
 .next-btn:hover {
-  background: rgb(122, 179, 171); /* Darkens slightly on hover for visual feedback */
+  background: rgb(122, 179, 171);
+  /* Darkens slightly on hover for visual feedback */
 }
+
 .split-buttons {
   display: flex;
-  justify-content: space-between;/* Pushes Back button left, Next button right */
+  justify-content: space-between;
+  /* Pushes Back button left, Next button right */
   align-items: center;
   width: 100%;
   margin-top: 25px;
@@ -434,32 +542,33 @@ img {
 
 /* --- Submit & Master Action Controls --- */
 .submit-btn {
-  padding: 12px 30px; 
-  margin-bottom: 20px; 
-  border: 1px solid transparent; 
-  border-radius: 7px; 
+  padding: 12px 30px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 7px;
   cursor: pointer;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   background-color: rgb(151, 2, 2);
   color: #ffffff;
-  width: auto; 
+  width: auto;
   display: inline-block;
-  transition: all 0.2s ease; 
+  transition: all 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 .submit-btn:hover {
-  background-color: rgb(180, 2, 2); 
-  transform: translateY(-2px); 
+  background-color: rgb(180, 2, 2);
+  transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
 .submit-btn:active {
-  transform: translateY(0); 
+  transform: translateY(0);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  filter: brightness(0.85); /* Slightly cleaner press state dimming */
+  filter: brightness(0.85);
+  /* Slightly cleaner press state dimming */
 }
 
 /* ==========================================================================
@@ -469,9 +578,10 @@ img {
   background-color: #2e2828;
   color: #d1d5db;
   margin-top: 4.5rem;
-  border-top: 4px solid rgb(151, 2, 2);/* Crimson Top Border */
+  border-top: 4px solid rgb(151, 2, 2);
+  /* Crimson Top Border */
   padding: 20px 40px;
-  border-radius:30px;
+  border-radius: 30px;
 }
 
 .footer-content-wrapper {
@@ -482,7 +592,8 @@ img {
 
 /* Legal Sponsorship Warning Banner */
 .legal-notice-card {
-  background-color: rgba(151, 2, 2, 0.15);/* Muted Dark Red Glow */
+  background-color: rgba(151, 2, 2, 0.15);
+  /* Muted Dark Red Glow */
   border: 1px solid rgb(151, 2, 2);
   border-radius: 6px;
   padding: 16px;
@@ -566,9 +677,10 @@ img {
   }
 
   .portal-title {
-    font-size: 2rem;/* Slightly smaller title */
+    font-size: 2rem;
+    /* Slightly smaller title */
   }
-    
+
 }
 
 /* === MOBILE DEVICES (under 768px) === */
@@ -610,22 +722,26 @@ img {
     padding: 15px;
     font-size: 1.1rem;
   }
-.split-buttons {
-  flex-direction: row;
-  gap: 15px;
-}
-.submit-btn{
-  width: 100%;
-  padding: 10px;
-  margin-bottom:20px;
-  margin-left:20px;
-}
+
+  .split-buttons {
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+
   /* 5. Pathway selection cleanup */
   .selection-row {
     flex-direction: column;
     gap: 10px;
   }
 }
+
 /* Footer Tablet Reset Configurations */
 .footer-brand-left {
   text-align: left;

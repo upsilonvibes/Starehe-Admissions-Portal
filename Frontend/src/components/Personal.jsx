@@ -1,40 +1,83 @@
 import React from 'react';
 
-// We accept states and handlers passed down as props from App.jsx
 function Personal({ formData, handleInputChange, onNext, onBack }) {
   
-  // Triggers when the user clicks the "Next" button
+  // Intercept standard form submission to pass handle upwards
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents the browser from reloading the page
-    onNext();          // Advances the wizard to Step 2
+    e.preventDefault(); 
+    onNext();          
+  };
+
+  // Internal helper to handle binary file input changes safely
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    // Proxies the file handle up to your parent state engine via a synthetic change structure
+    if (handleInputChange) {
+      handleInputChange({
+        target: {
+          name,
+          value: files[0] || null
+        }
+      });
+    }
   };
 
   return (
     <form className="form-grid" onSubmit={handleSubmit}>
-      
-      {/* SECTION A: ADMISSION TRACK (MOVED FROM REVIEW) */}
+     {/* SECTION A: ADMISSION TRACK */}
       <fieldset className="form-section">
         <legend>Section A: Admission Category & Type</legend>
         
-        <div className="input-group">
-          <label>Admission Category*</label>
-          <select 
-            name="applicationType" 
-            value={formData.applicationType || 'Standard'} 
-            onChange={handleInputChange} 
-            required
-          >
-            <option value="Standard">Grade 10 Entry (Standard)</option>
-            <option value="Transfer">Transfer Student</option>
-          </select>
+        <div className="input-row">
+          <div className="input-group">
+            <label>Admission Category <span className="required-star">* </span></label>
+            <select 
+              name="applicationType" 
+              value={formData.applicationType || 'Standard'} 
+              onChange={handleInputChange} 
+              required
+            >
+              <option value="Standard">Grade 10 Entry (Standard)</option>
+              <option value="Transfer">Transfer Student</option>
+            </select>
+          </div>
+
+          <div className="input-group">
+            <label>Is this your first time applying to Starehe? <span className="required-star">*</span></label>
+            <select 
+              name="isFirstTimeApplication" 
+              value={formData.isFirstTimeApplication || 'Yes'} 
+              onChange={handleInputChange}
+              required
+            >
+              <option value="Yes">Yes, this is my first attempt</option>
+              <option value="No">No, I have submitted a record previously</option>
+            </select>
+          </div>
         </div>
+
+        {/* Dynamic Context-Aware Re-application Logic */}
+        {formData.isFirstTimeApplication === 'No' && (
+          <div className="reapplication-logic animate-in" >
+            <div className="input-group full-width">
+              <label>Reason for Re-application / Previous Status <span className="required-star">*</span></label>
+              <textarea
+                name="reapplicationReason"
+                value={formData.reapplicationReason || ''}
+                onChange={handleInputChange}
+                placeholder="Please state the year of your previous attempt and explain briefly why you are reapplying (e.g., missing documents last time, academic update, deferral, etc.)..."
+                required
+              />
+            </div>
+          </div>
+        )}
 
         {/* Dynamic Context-Aware Transfer Sub-Form Logic */}
         {formData.applicationType === 'Transfer' && (
-          <div className="transfer-logic animate-in">
+          <div className="transfer-logic animate-in" >
             <div className="input-row">
               <div className="input-group">
-                <label>Current Grade Status*</label>
+                <label>Current Grade Status <span className="required-star">* </span></label>
                 <select 
                   name="currentGrade" 
                   value={formData.currentGrade || 'Grade 9'} 
@@ -48,7 +91,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               </div>
             </div>
             <div className="input-group full-width">
-              <label>Reason for Transfer Request*</label>
+              <label>Reason for Transfer Request <span className="required-star">* </span></label>
               <textarea
                 name="transferReason"
                 value={formData.transferReason || ''}
@@ -66,7 +109,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
         <legend>Section B: Student Identity</legend>
         <div className="input-row">
           <div className="input-group">
-            <label>First Name*</label>
+            <label>First Name <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="firstName" 
@@ -87,7 +130,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
             />
           </div>
           <div className="input-group">
-            <label>Last Name (Surname)*</label>
+            <label>Last Name (Surname) <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="lastName" 
@@ -101,7 +144,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
         
         <div className="input-row">
           <div className="input-group">
-            <label>Date of Birth*</label>
+            <label>Date of Birth <span className="required-star">* </span></label>
             <input 
               type="date" 
               name="dob" 
@@ -111,7 +154,20 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
             />
           </div>
           <div className="input-group">
-            <label>Religion*</label>
+            <label>Gender <span className="required-star">* </span></label>
+            <select 
+              name="gender" 
+              value={formData.gender || ''} 
+              onChange={handleInputChange} 
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div className="input-group">
+            <label>Religion <span className="required-star">* </span></label>
             <select 
               name="religion" 
               value={formData.religion || ''} 
@@ -126,11 +182,11 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
             </select>
           </div>
           <div className="input-group">
-            <label>Nationality*</label>
+            <label>Nationality <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="nationality" 
-              value={formData.nationality || ''} 
+              value={formData.nationality || 'Kenyan'} 
               onChange={handleInputChange} 
               placeholder="e.g., Kenyan" 
               required 
@@ -144,7 +200,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
         <legend>Section C: Government & Exam Identification</legend>
         <div className="input-row">
           <div className="input-group">
-            <label>Birth Certificate No*</label>
+            <label>Birth Certificate No <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="birthCertNo" 
@@ -155,7 +211,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
             />
           </div>
           <div className="input-group">
-            <label>NEMIS UPI Number*</label>
+            <label>NEMIS UPI Number <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="nemisUpiNo" 
@@ -165,11 +221,10 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required 
             />
           </div>
-        </div>
-        <div className="input-row">
+          </div>
           <div className="input-row">
           <div className="input-group">
-            <label>Assessment Number*</label>
+            <label>Assessment Number <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="assessmentNo" 
@@ -179,8 +234,8 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required 
             />
           </div>
-          <div className="input-group">
-            <label>School KNEC Code*</label>
+            <div className="input-group">
+            <label>School KNEC Code <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="schoolKnecCode" 
@@ -190,14 +245,89 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required 
             />
           </div>
-        </div>
+          
         </div>
       </fieldset>
-<div className="form-actions-container split-buttons">
+
+      {/* SECTION D: GEOGRAPHIC AREA OF RESIDENCE */}
+      <fieldset className="form-section">
+        <legend>Section D: Geographic Residence</legend>
+        <div className="input-row">
+          <div className="input-group">
+            <label>Home County <span className="required-star">* </span></label>
+            <input 
+              type="text" 
+              name="county" 
+              value={formData.county || ''} 
+              onChange={handleInputChange} 
+              placeholder="e.g., Nairobi" 
+              required 
+            />
+          </div>
+          <div className="input-group">
+            <label>Sub-County  <span className="required-star">* </span></label>
+            <input 
+              type="text" 
+              name="subCounty" 
+              value={formData.subCounty || ''} 
+              onChange={handleInputChange} 
+              placeholder="e.g., Starehe" 
+              required 
+            />
+          </div>
+        </div>
+      </fieldset>
+
+      {/* SECTION E: MANDATORY INITIAL ATTACHMENTS */}
+      <fieldset className="form-section">
+        <legend>Section E: Primary Document Uploads</legend>
+        <div className="input-row">
+          
+          <div className="input-group upload-card-wrapper">
+            <label htmlFor="passportPhotoFile">
+              1. Passport Size Photograph <span className="required-star">* </span>
+              <span className="sub-helper-label">Taken within the last 2 mon ths against a plain background.</span>
+            </label>
+            <input 
+              type="file" 
+              id="passportPhotoFile" 
+              name="passportPhotoFile" 
+              accept=".jpg,.jpeg,.png"
+              onChange={handleFileChange} 
+              required={!formData.passportPhotoFile}
+            />
+            {formData.passportPhotoFile && (
+              <span className="file-indicator-success">✔ Photo Staged ({formData.passportPhotoFile.name})</span>
+            )}
+          </div>
+
+          <div className="input-group upload-card-wrapper">
+            <label htmlFor="birthCertFile">
+              2. Birth Certificate Copy <span className="required-star">* </span>
+              <span className="sub-helper-label">Clear scanned image or PDF copy of the full document.</span>
+            </label>
+            <input 
+              type="file" 
+              id="birthCertFile" 
+              name="birthCertFile" 
+              accept=".pdf,.jpg,.jpeg,.png"
+              onChange={handleFileChange} 
+              required={!formData.birthCertFile}
+            />
+            {formData.birthCertFile && (
+              <span className="file-indicator-success">✔ Document Staged ({formData.birthCertFile.name})</span>
+            )}
+          </div>
+
+        </div>
+      </fieldset>
+
+      {/* FORM NAVIGATION CONTROLLERS */}
+      <div className="form-actions-container split-buttons">
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back to Selection
         </button>
-        <button type="submit" className=" next-btn">
+        <button type="submit" className="next-btn">
           Next: Academic Background →
         </button>
       </div>

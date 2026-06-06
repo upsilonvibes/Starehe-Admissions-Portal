@@ -16,31 +16,31 @@ function Academics({ formData, handleInputChange, onNext, onBack }) {
         <legend>Section A: Institutional Background & Location</legend>
         
         <div className="input-group full-width">
-          <label>Junior School*</label>
+          <label>Junior School <span className="required-star">* </span></label>
           <input 
             type="text" 
             name="juniorSchool" 
             value={formData.juniorSchool || ''} 
             onChange={handleInputChange} 
-            placeholder="Current School Name" 
+            placeholder="e.g., Nairobi Junior School" 
             required 
           />
         </div>
         
         <div className="input-row">
           <div className="input-group">
-            <label>Sub-county*</label>
+            <label>Sub-county <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="subCounty" 
               value={formData.subCounty || ''} 
               onChange={handleInputChange} 
-              placeholder="e.g., Westlands" 
+              placeholder="e.g., Kasarani" 
               required 
             />
           </div>
           <div className="input-group">
-            <label>County*</label>
+            <label>County <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="county" 
