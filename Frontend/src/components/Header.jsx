@@ -18,7 +18,7 @@ function Header({ view, serverStatus }) {
         <header className="portal-header">
           <h1 className="portal-title">Starehe Admissions Portal</h1>
           {serverStatus && <p className="status-text">{serverStatus}</p>}
-          <p className="portal-subtitle">Welcome to the Starehe Admissions Portal</p>
+          <p className="portal-subtitle">Welcome to the Starehe Community</p>
           <hr className="header-divider" />
         </header>
       </>

@@ -39,23 +39,21 @@ function App() {
     passportPhotoFile: null,       
     birthCertFile: null
   });
-  // Gender Choice
-const handleSchoolTrackChange = (e) => {
-  const selectedTrack = e.target.value; // 'SBC' or 'SGC'
+ // Triggered instantly when a user clicks an institutional track button on the landing view
+  const handleSelectSchoolTrack = (trackCode) => {
+    // trackCode arrives as lowercase 'sbc' or 'sgc'
+    const systemCode = trackCode.toUpperCase(); // Converts cleanly to 'SBC' or 'SGC'
+    const autoGender = systemCode === 'SGC' ? 'Female' : 'Male';
 
-  setFormData((prev) => {
-    // Determine what the auto-selected gender value must be
-    let forcedGender = prev.gender;
-    if (selectedTrack === 'SGC') forcedGender = 'Female';
-    if (selectedTrack === 'SBC') forcedGender = 'Male';
+    setView(trackCode);     // Sets view to 'sbc' or 'sgc' to handle your CSS/rendering routes
+    setCurrentStep(0);      // Points wizard to Step 1
 
-    return {
+    setFormData((prev) => ({
       ...prev,
-      institutionType: selectedTrack,
-      gender: forcedGender // 📍 Syncs the actual state memory instantly!
-    };
-  });
-};
+      institutionType: systemCode, // Saves 'SBC' or 'SGC'
+      gender: autoGender           // Pre-loads 'Male' or 'Female' directly into state!
+    }));
+  };
   // Multi-choice priority selection map
   const [selections, setSelections] = useState([
     { choice: 1, pathway: '', track: '' },
@@ -150,6 +148,7 @@ const handleSchoolTrackChange = (e) => {
     payload.append('personalInfo[fullName]', `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim());
     payload.append('personalInfo[dateOfBirth]', formData.dob);
     payload.append('personalInfo[birthCertificateNumber]', formData.birthCertNo);
+    payload.append('personalInfo[gender]', formData.gender);
     payload.append('personalInfo[nemisUPI]', formData.nemisUpiNo);
     payload.append('personalInfo[assessmentNumber]', formData.assessmentNo);
     payload.append('personalInfo[religion]', formData.religion);
@@ -249,10 +248,10 @@ const handleSchoolTrackChange = (e) => {
         <section id="center" className="landing-selection-card">
           <p>Select an institution to begin your application:</p>
           <div className="button-group">
-            <button className="btn-sbc" onClick={() => { setView('sbc'); setCurrentStep(0); }}>
+           <button className="btn-sbc" onClick={() => handleSelectSchoolTrack('sbc')}>
               Starehe Boys' Centre
             </button>
-            <button className="btn-sgc" onClick={() => { setView('sgc'); setCurrentStep(0); }}>
+            <button className="btn-sgc" onClick={() => handleSelectSchoolTrack('sgc')}>
               Starehe Girls' Centre
             </button>
           </div>
