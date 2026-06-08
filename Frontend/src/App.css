@@ -394,7 +394,15 @@ img {
 .priority-btn:hover {
   background-color: #646cff;
 }
-
+/* Custom error alert state for invalid gender variations */
+.gender-mismatch-alert {
+    color: #ef4444;
+    font-weight: 700;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: left;
+}
 /* --- Passport & Birth Cert Upload Cards ---  */
 .upload-card-wrapper {
   background-color: #f0f7ff;
@@ -422,19 +430,18 @@ img {
   width: 100%;
   padding: 0.5rem 0;
   font-size: 0.85rem;
-  color: #334155;
-  /* Color for the "No file chosen" / chosen filename text */
+  color: #334155; /* Color for the "No file chosen" / chosen filename text */
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  /* Gives clean spacing between button and text */
-  white-space: nowrap;
-  /* Prevents any file names or system text from breaking into lines */
+  
+  white-space: nowrap; /* Prevents any file names or system text from breaking into lines */
+  
   overflow: hidden;
-  text-overflow: ellipsis;
-  /* Clean fading dots if a file name is extremely long */
+  
+  display: block; /* Modern standard property to handle overflowing long filenames cleanly */
+  
 }
+
+
 
 /* ---  Transform the native choose/change target into an institutional button style --- */
 .upload-card-wrapper input[type="file"]::file-selector-button {
@@ -487,6 +494,32 @@ img {
   margin-left: 0.15rem;
 }
 
+/* --- Academic Completion & Timeline Fix --- */
+
+
+.completion-help-text {
+  width: 100%;
+  /* Runs across the full width available */
+  flex-basis: 100%;
+  /* Forces browser to break onto an absolute new row line */
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+  text-align: left;
+}
+/* Removes the up/down arrows for Chrome, Safari, Edge, and Opera */
+.input-row .input-group input[name="yearCompleted"]::-webkit-outer-spin-button,
+.input-row .input-group input[name="yearCompleted"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Removes the up/down arrows for Firefox */
+.input-row .input-group input[name="yearCompleted"] {
+  -moz-appearance: textfield;
+}
+
 /* ==========================================================================
    7. NAVIGATION UTILITIES (Action Buttons & Bars)
    ========================================================================== */
@@ -505,10 +538,13 @@ img {
   /* Smooth hover effect */
 }
 
+
+
 .back-btn:hover {
   background: rgba(100, 108, 255, 0.1);
   /* Subtle tint on hover */
 }
+
 
 .next-btn {
   background: rgb(142, 199, 191);
@@ -686,13 +722,13 @@ img {
 /* === MOBILE DEVICES (under 768px) === */
 @media (max-width: 768px) {
 
-  /* 1. Stack the logo cards vertically or shrink them */
+  /*  Stack the logo cards vertically or shrink them */
   .logo-fan-container {
     transform: scale(0.8);
     height: 150px;
   }
 
-  /* 2. Force input rowsto stack instead of being side-by-side */
+  /* Force input rowsto stack instead of being side-by-side */
   .input-row {
     flex-direction: column;
     gap: 10px;
@@ -704,7 +740,7 @@ img {
     min-width: 100%;
   }
 
-  /* 3. Adjust the Portal Branding (Logo + Title) */
+  /* Adjust the Portal Branding (Logo + Title) */
   .portal-branding {
     flex-direction: column;
     text-align: center;
@@ -715,7 +751,7 @@ img {
     height: 120px;
   }
 
-  /* 4. Make buttons easier to tap with thumbs */
+  /* Make buttons easier to tap with thumbs */
   .btn-sbc,
   .btn-sgc {
     width: 100%;
@@ -735,7 +771,7 @@ img {
     margin-left: 20px;
   }
 
-  /* 5. Pathway selection cleanup */
+  /* Pathway selection cleanup */
   .selection-row {
     flex-direction: column;
     gap: 10px;
@@ -751,19 +787,14 @@ img {
   flex-direction: row;
 }
 
-@media (min-width: 769px) {
-  .footer-meta-container {
-    flex-direction: row;
-  }
 
-  .footer-brand-left {
-    text-align: left;
-  }
 
-  .footer-copyright-right {
-    text-align: right;
-  }
+.footer-copyright-right {
+  text-align: right;
 }
+
+
+
 
 /* === VERY SMALL PHONES (under 480px) === */
 @media (max-width: 480px) {

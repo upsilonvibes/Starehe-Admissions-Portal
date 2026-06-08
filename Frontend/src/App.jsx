@@ -26,6 +26,8 @@ function App() {
     schoolKnecCode: '',
     juniorSchool: '',
     subCounty: '',
+    schoolCounty:'',
+    schoolSubCounty:'',
     county: '',
     religion: '',
     nationality: '',
@@ -37,7 +39,23 @@ function App() {
     passportPhotoFile: null,       
     birthCertFile: null
   });
+  // Gender Choice
+const handleSchoolTrackChange = (e) => {
+  const selectedTrack = e.target.value; // 'SBC' or 'SGC'
 
+  setFormData((prev) => {
+    // Determine what the auto-selected gender value must be
+    let forcedGender = prev.gender;
+    if (selectedTrack === 'SGC') forcedGender = 'Female';
+    if (selectedTrack === 'SBC') forcedGender = 'Male';
+
+    return {
+      ...prev,
+      institutionType: selectedTrack,
+      gender: forcedGender // 📍 Syncs the actual state memory instantly!
+    };
+  });
+};
   // Multi-choice priority selection map
   const [selections, setSelections] = useState([
     { choice: 1, pathway: '', track: '' },

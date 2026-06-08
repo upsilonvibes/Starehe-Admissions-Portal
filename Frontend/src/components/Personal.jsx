@@ -162,8 +162,20 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required
             >
               <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              
+              <option 
+                value="Male" 
+                disabled={formData.institutionType === 'SGC'}
+              >
+                Male {formData.institutionType === 'SGC' ? '(Restricted to SBC)' : ''}
+              </option>
+              
+              <option 
+                value="Female" 
+                disabled={formData.institutionType === 'SBC'}
+              >
+                Female {formData.institutionType === 'SBC' ? '(Restricted to SGC)' : ''}
+              </option>
             </select>
           </div>
           <div className="input-group">
@@ -286,7 +298,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
           <div className="input-group upload-card-wrapper">
             <label htmlFor="passportPhotoFile">
               1. Passport Size Photograph <span className="required-star">* </span>
-              <span className="sub-helper-label">Taken within the last 2 mon ths against a plain background.</span>
+              <span className="sub-helper-label">Taken within the last 2 months against a plain background.</span>
             </label>
             <input 
               type="file" 

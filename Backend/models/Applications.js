@@ -15,6 +15,20 @@ const ApplicationSchema = new mongoose.Schema({
         birthCertificateNumber: { type: String, required: true, trim: true },
         nemisUPI: { type: String, trim: true, default: '' },
         assessmentNumber: { type: String, trim: true, default: '' },
+        gender: { 
+            type: String, 
+            required: true, 
+            enum: ['Male', 'Female'],
+            validate: {
+                validator: function(value) {
+                    // 'this' refers to the top-level document
+                    if (this.institutionType === 'SGC' && value !== 'Female') return false;
+                    if (this.institutionType === 'SBC' && value !== 'Male') return false;
+                    return true;
+                },
+                message: 'Gender mismatch! Starehe Girls applications must be Female, and Starehe Boys must be Male.'
+            }
+        },
         religion: { type: String, required: true, trim: true },
         nationality: { type: String, default: 'Kenyan', trim: true },
         county: { type: String, required: true, trim: true },
@@ -30,8 +44,9 @@ const ApplicationSchema = new mongoose.Schema({
 
     // 3. Step 2: Academic Background
     academicBackground: {
-        primarySchoolName: { type: String, required: true, trim: true },
-        schoolKnecCode: { type: String, required: true, trim: true },
+      juniorSchool: { type: String, required: true, trim: true },
+        schoolCounty: { type: String, required: true, trim: true },
+        schoolSubCounty: { type: String, required: true, trim: true },
         yearCompleted: { type: Number, required: true }
     },
 

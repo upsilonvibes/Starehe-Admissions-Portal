@@ -15,18 +15,40 @@ function Academics({ formData, handleInputChange, onNext, onBack }) {
       <fieldset className="form-section">
         <legend>Section A: Institutional Background & Location</legend>
         
-        <div className="input-group full-width">
-          <label>Junior School <span className="required-star">* </span></label>
-          <input 
-            type="text" 
-            name="juniorSchool" 
-            value={formData.juniorSchool || ''} 
-            onChange={handleInputChange} 
-            placeholder="e.g., Nairobi Junior School" 
-            required 
-          />
+        {/* ROW 1: Main Institution Details */}
+        <div className="input-row">
+          <div className="input-group full-width">
+            <label>Junior School <span className="required-star">* </span></label>
+            <input 
+              type="text" 
+              name="juniorSchool" 
+              value={formData.juniorSchool || ''} 
+              onChange={handleInputChange} 
+              placeholder="e.g., Nairobi Junior School" 
+              required 
+            />
+          </div>
+
+         <div className="input-group">
+            <label>
+              Exit Year <span className="required-star">* </span>
+            </label>
+            <input
+              type="number"
+              name="yearCompleted"
+              required
+              value={formData.yearCompleted || ''}
+              onChange={handleInputChange} 
+              placeholder="e.g., 2026"
+            />
+            <p className="completion-help-text">
+              Enter the year the applicant completed or is expected to leave this institution.
+            </p>
+          </div>
+          
         </div>
-        
+
+        {/* ROW 2: Balanced Layout - Locations Grid */}
         <div className="input-row">
           <div className="input-group">
             <label>Sub-county <span className="required-star">* </span></label>
@@ -51,14 +73,17 @@ function Academics({ formData, handleInputChange, onNext, onBack }) {
             />
           </div>
         </div>
+
+        
+        
       </fieldset>
 
-      {/* Button container with dual controls - zero inline styles! */}
+      {/* Button container with dual controls */}
       <div className="form-actions-container split-buttons">
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back
         </button>
-        <button type="submit" className=" next-btn">
+        <button type="submit" className="next-btn">
           Next: Pathway Priorities →
         </button>
       </div>
