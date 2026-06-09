@@ -27,6 +27,9 @@ function Academics({ formData, handleInputChange, onNext, onBack }) {
               placeholder="e.g., Nairobi Junior School" 
               required 
             />
+            <p className="completion-help-text">
+              Enter the official name of the junior secondary institution attended.
+            </p>
           </div>
 
          <div className="input-group">
@@ -54,23 +57,30 @@ function Academics({ formData, handleInputChange, onNext, onBack }) {
             <label>Sub-county <span className="required-star">* </span></label>
             <input 
               type="text" 
-              name="subCounty" 
-              value={formData.subCounty || ''} 
+              name="schoolSubCounty" 
+              value={formData.schoolSubCounty || ''} 
               onChange={handleInputChange} 
               placeholder="e.g., Kasarani" 
               required 
             />
+<p className="completion-help-text">
+  Enter the administrative sub-county where the school is physically located.
+             </p>
           </div>
+          
           <div className="input-group">
             <label>County <span className="required-star">* </span></label>
             <input 
               type="text" 
-              name="county" 
-              value={formData.county || ''} 
+              name="schoolCounty" 
+              value={formData.schoolCounty || ''} 
               onChange={handleInputChange} 
               placeholder="e.g., Nairobi" 
               required 
             />
+            <p className="completion-help-text">
+              Enter the official designated county where the school is physically located.
+            </p>
           </div>
         </div>
 

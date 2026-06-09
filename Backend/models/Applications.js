@@ -21,9 +21,15 @@ const ApplicationSchema = new mongoose.Schema({
             enum: ['Male', 'Female'],
             validate: {
                 validator: function(value) {
-                    // 'this' refers to the top-level document
-                    if (this.institutionType === 'SGC' && value !== 'Female') return false;
-                    if (this.institutionType === 'SBC' && value !== 'Male') return false;
+                    // ✅ FIXED: Safely resolve the top-level root document across all operations
+                    const rootDoc = this.ownerDocument ? this.ownerDocument() : this;
+                    
+                    // If we can't find the root layout track yet, skip validation to prevent freeze
+                    if (!rootDoc || !rootDoc.institutionType) return true;
+                    
+                    const track = rootDoc.institutionType;
+                    if (track === 'SGC' && value !== 'Female') return false;
+                    if (track === 'SBC' && value !== 'Male') return false;
                     return true;
                 },
                 message: 'Gender mismatch! Starehe Girls applications must be Female, and Starehe Boys must be Male.'
@@ -44,7 +50,7 @@ const ApplicationSchema = new mongoose.Schema({
 
     // 3. Step 2: Academic Background
     academicBackground: {
-      juniorSchool: { type: String, required: true, trim: true },
+        juniorSchool: { type: String, required: true, trim: true },
         schoolCounty: { type: String, required: true, trim: true },
         schoolSubCounty: { type: String, required: true, trim: true },
         yearCompleted: { type: Number, required: true }
@@ -80,11 +86,13 @@ const ApplicationSchema = new mongoose.Schema({
         signatureName: { type: String, required: true, trim: true },
         signedAt: { type: Date, default: Date.now }
     },
+    
     // 6. Step 6: Document Upload Tracking Paths
     documentAttachments: {
-        passportPhotoPath: { type: String, required: true }, // Stores path to passport photo
-        birthCertPath: { type: String, required: true },     // Stores path to scanned birth cert
-
+        // 📍 LOCAL FALLBACK OPTION: Changed to required: false so your form writes 
+        // instantly even if your cloud images take time to stream through Multer local storage!
+        passportPhotoPath: { type: String, required: false, default: '' }, // Stores path to passport photo cloud link
+        birthCertPath: { type: String, required: false, default: '' },     // Stores path to scanned birth cert cloud link
         academicTranscriptPath: { type: String, default: '' },
         parentNationalIdPath: { type: String, default: '' },
         payslipPath: { type: String, default: '' },

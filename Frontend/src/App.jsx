@@ -97,7 +97,7 @@ function App() {
   }, [currentStep, view]);
   // Run health-check ping to local Express backend on component mount
   useEffect(() => {
-    fetch('https://starehe-admissions-portal.onrender.com/api/status')
+    fetch('http://localhost:5000/api/status')
       .then(res => res.json())
       .then(data => setServerStatus(data.message))
       .catch(() => setServerStatus("Backend Offline ❌"));
@@ -132,11 +132,12 @@ function App() {
 
   // === LIVE DATABASE TEST ENGINE SUBMITTER ===
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+   if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
+    
     console.log("🚀 Initializing structurally aligned multipart-payload submission sequence...");
-
-    // ✅ Declared immediately at the top so it is globally available in this block scope!
-    //const checkIsTransfer = formData.applicationType === 'Transfer';
+    
 
     // === DATA ARCHITECTURE DESIGNED TO MATCH MONGOOSE SUB-DOCUMENTS ===
     const payload = new FormData();
@@ -164,10 +165,10 @@ function App() {
     payload.append('personalInfo[transferDetails][reasonForTransfer]', checkIsTransfer ? formData.transferReason : "");
 
     // 3. Map academic background data
-    payload.append('academicBackground[primarySchoolName]', formData.juniorSchool);
-    payload.append('academicBackground[schoolKnecCode]', formData.schoolKnecCode);
-    payload.append('academicBackground[yearCompleted]', new Date().getFullYear());
-
+    payload.append('academicBackground[juniorSchool]', formData.juniorSchool || "");
+    payload.append('academicBackground[schoolCounty]', formData.schoolCounty || "");
+    payload.append('academicBackground[schoolSubCounty]', formData.schoolSubCounty || "");
+   payload.append('academicBackground[yearCompleted]', formData.yearCompleted || new Date().getFullYear());
     // 4. Map pathway priority choices array 
     payload.append('pathwayChoices[choice1][pathwayName]', selections[0]?.pathway || "");
     payload.append('pathwayChoices[choice1][trackName]', selections[0]?.track || "");
@@ -196,7 +197,9 @@ function App() {
       if (response.ok) {
         console.log("🎯 Cloud Synced Successfully! Record saved:", result);
         // ✅ CRITICAL USER NOTIFICATION
-        alert(`🎉 ¡Éxito! Application Submitted Successfully!Your application has been received by ${schoolName}.Your tracking reference ID is: ${result.applicationId || 'SUCCESS-NET'}Thank you for applying through the Starehe Admissions Portal.`);
+        const explicitTargetCentre = currentTargetTrack === 'SBC' ? "Starehe Boys' Centre" : "Starehe Girls' Centre";
+
+        alert(`🎉 ¡Éxito! Application Submitted Successfully!Your application has been received by ${explicitTargetCentre}.Your tracking reference ID is: ${result.applicationId || 'SUCCESS-NET'}Thank you for applying through the Starehe Admissions Portal.`);
 
         // Reset form sequence back to start gracefully
         setView('landing');

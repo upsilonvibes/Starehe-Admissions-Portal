@@ -24,7 +24,7 @@ function Footer() {
         <div className="footer-meta-container">
           <div className="footer-brand-left">
             <h3 className="footer-institution-title">
-              STAREHE ADMISSIONS PORTAL (SAP)
+              STAREHE ADMISSIONS PORTAL 
             </h3>
             <p className="footer-institution-subtitle">
               Official Unified Portal for Starehe Boys' Centre & Starehe Girls' Centre
