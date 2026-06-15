@@ -11,7 +11,6 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
   // Internal helper to handle binary file input changes safely
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    // Proxies the file handle up to your parent state engine via a synthetic change structure
     if (handleInputChange) {
       handleInputChange({
         target: {
@@ -22,12 +21,32 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
     }
   };
 
+  // --- Dynamic Headline Generation Logic ---
+  const currentYear = new Date().getFullYear();
+  const isTransfer = formData.applicationType === 'Transfer';
+
+  // Fallback cleanly to Grade 10 if standard, or current target grade if transfer
+  const targetGrade = isTransfer 
+    ? (formData.currentGrade || 'Grade 10/11 Target') 
+    : 'Grade 10';
+
+  // Standard entry is for next calendar year; transfers are typically for the current academic stream
+  const targetYear = isTransfer ? currentYear : currentYear + 1;
+
   return (
     <form className="form-grid" onSubmit={handleSubmit}>
-     {/* SECTION A: ADMISSION TRACK */}
+      
+      {/* SECTION A: ADMISSION TRACK */}
       <fieldset className="form-section">
         <legend>Section A: Admission Category & Type</legend>
         
+        {/* Dynamic Context Headline */}
+        <div className="admission-context-banner">
+          <p className="admission-context-text">
+            Application for Admission into <span className="highlight-text">{targetGrade}</span> in the Year <span className="highlight-text">{targetYear}</span>
+          </p>
+        </div>
+
         <div className="input-row">
           <div className="input-group">
             <label>Admission Category <span className="required-star">* </span></label>
@@ -58,7 +77,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
 
         {/* Dynamic Context-Aware Re-application Logic */}
         {formData.isFirstTimeApplication === 'No' && (
-          <div className="reapplication-logic animate-in" >
+          <div className="reapplication-logic animate-in">
             <div className="input-group full-width">
               <label>Reason for Re-application / Previous Status <span className="required-star">*</span></label>
               <textarea
@@ -74,13 +93,13 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
 
         {/* Dynamic Context-Aware Transfer Sub-Form Logic */}
         {formData.applicationType === 'Transfer' && (
-          <div className="transfer-logic animate-in" >
+          <div className="transfer-logic animate-in">
             <div className="input-row">
               <div className="input-group">
                 <label>Current Grade Status <span className="required-star">* </span></label>
                 <select 
                   name="currentGrade" 
-                  value={formData.currentGrade || 'Grade 9'} 
+                  value={formData.currentGrade || ''} 
                   onChange={handleInputChange} 
                   required
                 >
@@ -162,19 +181,17 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required
             >
               <option value="">Select Gender</option>
-              
               <option 
                 value="Male" 
-                disabled={formData.institutionType === 'SGC'}
+                disabled={formData.institutionType === 'sgc'}
               >
-                Male {formData.institutionType === 'SGC' ? '(Restricted to SBC)' : ''}
+                Male {formData.institutionType === 'sgc' ? '(Restricted to SBC)' : ''}
               </option>
-              
               <option 
                 value="Female" 
-                disabled={formData.institutionType === 'SBC'}
+                disabled={formData.institutionType === 'sbc'}
               >
-                Female {formData.institutionType === 'SBC' ? '(Restricted to SGC)' : ''}
+                Female {formData.institutionType === 'sbc' ? '(Restricted to SGC)' : ''}
               </option>
             </select>
           </div>
@@ -233,8 +250,8 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required 
             />
           </div>
-          </div>
-          <div className="input-row">
+        </div>
+        <div className="input-row">
           <div className="input-group">
             <label>Assessment Number <span className="required-star">* </span></label>
             <input 
@@ -246,7 +263,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required 
             />
           </div>
-            <div className="input-group">
+          <div className="input-group">
             <label>School KNEC Code <span className="required-star">* </span></label>
             <input 
               type="text" 
@@ -257,7 +274,6 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               required 
             />
           </div>
-          
         </div>
       </fieldset>
 
@@ -277,7 +293,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
             />
           </div>
           <div className="input-group">
-            <label> Sub-County  <span className="required-star">* </span></label>
+            <label>Sub-County <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="subCounty" 

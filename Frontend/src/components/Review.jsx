@@ -1,57 +1,86 @@
 import React, { useState } from 'react';
 
-function Review({ formData, selections, view, onSubmit, onBack }) {
+function Review({ formData, view, onSubmit, onBack }) {
   const [declarationChecked, setDeclarationChecked] = useState(false);
 
-  // Ready-to-go diagnostic validation metrics array
-  const anomalies = [];
-  if (!formData.firstName || !formData.lastName) anomalies.push("Missing foundational applicant tracking name fields.");
-  if (formData.applicationType === 'Transfer' && !formData.transferReason) anomalies.push("Application track set to 'Transfer' but no narrative reason was detailed.");
-  
-  const hasErrors = anomalies.length > 0;
+  // Safely extract names or fallback if missing
+  const applicantName = formData.personalInfo?.fullName || 'Not Provided';
+  const isSBC = view === 'sbc';
 
-  // 📍 CRITICAL FIX: Intercept the event cleanly right here locally
   const handleFinalSubmitClick = (e) => {
-    e.preventDefault(); // Stop page reload locally
-    
+    e.preventDefault();
     if (!declarationChecked) {
       alert("You must explicitly verify the accuracy confirmation declaration box before submission clearance.");
       return;
     }
-    
-    // 🚀 THE BREAKOUT FIX: Execute the parent function as a pure callback action, 
-    // instead of forcing it to fight with the local browser event state!
     onSubmit(); 
   };
 
   return (
     <form className="form-grid" onSubmit={handleFinalSubmitClick}>
       
-      {/* SECTION A: LIVE ANOMALY RADAR / ERROR CATCHER */}
-      <fieldset className="form-section diagnostic-audit-panel">
-        <legend>Section A: Pre-Flight Integrity Check</legend>
-        <div className={`status-banner ${hasErrors ? 'danger-alert' : 'success-alert'}`}>
-          <h4>{hasErrors ? "⚠️ System Anomalies Detected" : "✔ Document Structure Integrity Cleared"}</h4>
-          {hasErrors ? (
-            <ul className="anomaly-error-list">
-              {anomalies.map((err, idx) => <li key={idx}>{err}</li>)}
-            </ul>
-          ) : (
-            <p>All core state structures, identity variables, and track configurations are structurally aligned for database staging.Everything looks good</p>
-          )}
+      {/* SECTION 1: APPLICANT DOSSIER SUMMARY */}
+      <div className="summary-dossier-card">
+        <div className="dossier-header">
+          <h3>📋 Application Summary Review</h3>
+          <p>Please confirm all details match your official documents before final submission.</p>
         </div>
-      </fieldset>
 
-      {/* SECTION B: FINAL LEGAL INTEGRITY SIGN-OFF */}
-      <fieldset className="form-section summary-review-box">
-        <legend>Section B: Declaration & Sign-Off</legend>
-        <div className="placeholder-container verification-alert">
-          <h4>Review Application Status</h4>
-          <p>
-            You are processing an application to <strong>{view === 'sbc' ? "Starehe Boys' Centre" : "Starehe Girls' Centre"}</strong> as a <strong>{formData.applicationType || 'Standard'} Entry</strong> applicant.
-          </p>
+        <div className="dossier-grid">
+          {/* Target Institution */}
+          <div className="dossier-item wide">
+            <span className="dossier-label">Target Institution:</span>
+            <span className={`dossier-value institution-badge ${isSBC ? 'sbc-yellow' : 'sgc-blue'}`}>
+              {isSBC ? "Starehe Boys' Centre (Yellow Form Pipeline)" : "Starehe Girls' Centre (Blue Form Pipeline)"}
+            </span>
+          </div>
+
+          {/* Personal Information Group */}
+          <div className="dossier-section-title">Personal Information</div>
           
-          {/* Legal Acknowledgement Ticker System */}
+          <div className="dossier-item">
+            <span className="dossier-label">Full Legal Name:</span>
+            <span className="dossier-value">{applicantName}</span>
+          </div>
+          
+          <div className="dossier-item">
+            <span className="dossier-label">Gender:</span>
+            <span className="dossier-value">{formData.personalInfo?.gender || 'Not Provided'}</span>
+          </div>
+
+          <div className="dossier-item">
+            <span className="dossier-label">Birth Certificate No:</span>
+            <span className="dossier-value">{formData.personalInfo?.birthCertificateNumber || 'N/A'}</span>
+          </div>
+
+          <div className="dossier-item">
+            <span className="dossier-label">NEMIS UPI / Assessment No:</span>
+            <span className="dossier-value">{formData.personalInfo?.nemisUPI || 'N/A'}</span>
+          </div>
+
+          {/* Academic Background Group */}
+          <div className="dossier-section-title">Academic Background</div>
+          
+          <div className="dossier-item wide">
+            <span className="dossier-label">Junior School Attended:</span>
+            <span className="dossier-value">{formData.academicBackground?.juniorSchool || 'Not Provided'}</span>
+          </div>
+
+          {/* Pathway Track Options Group */}
+          <div className="dossier-section-title">Selected Pathway Preferences</div>
+          
+          <div className="dossier-item wide pathway-review-item">
+            <div className="pathway-row"><strong>1st Choice:</strong> {formData.pathwayChoices?.choice1?.pathwayName} — <span className="track-subtext">{formData.pathwayChoices?.choice1?.trackName}</span></div>
+            <div className="pathway-row"><strong>2nd Choice:</strong> {formData.pathwayChoices?.choice2?.pathwayName} — <span className="track-subtext">{formData.pathwayChoices?.choice2?.trackName}</span></div>
+            <div className="pathway-row"><strong>3rd Choice:</strong> {formData.pathwayChoices?.choice3?.pathwayName} — <span className="track-subtext">{formData.pathwayChoices?.choice3?.trackName}</span></div>
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION 2: FINAL LEGAL INTEGRITY SIGN-OFF */}
+      <fieldset className="form-section legal-signoff-box">
+        <legend>Official Declaration</legend>
+        <div className="verification-alert">
           <div className="legal-checkbox-wrapper">
             <input 
               type="checkbox" 
@@ -61,13 +90,13 @@ function Review({ formData, selections, view, onSubmit, onBack }) {
               required
             />
             <label htmlFor="integrity-declaration-checkbox" className="checkbox-label-text">
-              <strong>I hereby certify:</strong> The information provided across this multi-step registry matches my legal identity documents precisely. I explicitly acknowledge that providing false information, mismatched records, or fraudulent statements will result in the <strong>immediate rejection of this application and forfeiture of any admission offer</strong> to the institution, alongside potential legal prosecution.
+              <strong>I hereby certify:</strong> The information provided across this multi-step registry matches my legal identity documents precisely. I explicitly acknowledge that providing false information, mismatched records, or fraudulent statements will result in the <strong>immediate rejection of this application and forfeiture of any admission offer</strong> to the institution.
             </label>
           </div>
         </div>
       </fieldset>
 
-      {/* Clean Form Navigation Controls */}
+      {/* Form Navigation Controls */}
       <div className="form-actions-container split-buttons">
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back

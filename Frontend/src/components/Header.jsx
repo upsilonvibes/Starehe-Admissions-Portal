@@ -1,55 +1,87 @@
 import React from 'react';
 
-// Recibimos solo las variables necesarias para pintar la cabecera
-// (We receive only the variables needed to paint the banner)
-function Header({ view, serverStatus }) {
-  
-  // 1. IF WE ARE ON THE LANDING VIEW
-  if (view === 'landing') {
-    return (
-      <>
-        {/* Animated Institutional Logo Fan */}
-        <div className="logo-fan-container">
-          <img src="/images_starehe/sgc_logo.png" alt="SGC Logo" className="logo-card sgc-card" />
-          <img src="/images_starehe/sbc_logo.jfif" alt="SBC Logo" className="logo-card sbc-card" />
-        </div>
-        
-        {/* Portal Branding Top Header */}
-        <header className="portal-header">
-          <h1 className="portal-title">Starehe Admissions Portal</h1>
-          {serverStatus && <p className="status-text">{serverStatus}</p>}
-          <p className="portal-subtitle">Welcome to the Starehe Community</p>
-          <hr className="header-divider" />
-        </header>
-      </>
-    );
-  }
+function Header({ view }) {
+  // If we are on the landing view, the Landing page component handles its own layout banner
+  if (view === 'landing') return null;
 
-  // 2. IF WE ARE INSIDE AN ACTIVE APP PORTAL (SBC or SGC)
+  const currentYear = new Date().getFullYear();
+  const isSbc = view === 'sbc';
+
   return (
-    <div className={`portal-container ${view}`}>
-      <div className="portal-branding">
-        <img 
-          src={view === 'sbc' ? "/images_starehe/sbc_logo.jfif" : "/images_starehe/sgc_logo.png"} 
-          alt="Institutional Logo" 
-          className="portal-logo" 
-        />
-        <div className="portal-header-text">
-          <h2>{view === 'sbc' ? "SBC Application Portal" : "SGC Application Portal"}</h2>
-          <span className="motto-tag">
-            {view === 'sbc' ? "Natulenge Juu" : "Elimu Yetu, Nguvu Yetu"}
-          </span>
+    <header className={`internal-portal-banner ${view}-banner`}>
+      <div className="portal-letterhead">
+        
+        {/* Top Core Branding Row */}
+        <div className="portal-branding">
+          <img 
+            src={isSbc ? "/images_starehe/sbc_logo.jfif" : "/images_starehe/sgc_logo.png"} 
+            alt="Institutional Logo" 
+            className="portal-mini-logo" 
+          />
+          <div className="portal-header-text">
+            <h2>{isSbc ? "STAREHE BOYS' CENTRE AND SCHOOL" : "STAREHE GIRLS' CENTRE AND SCHOOL"}</h2>
+            <span className="motto-tag">
+              {isSbc ? "Natulenge Juu" : "Elimu Yetu, Nguvu Yetu"}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div className="mission-box">
-        <p className="mission-text">
-          <strong>Our Mission:</strong> {view === 'sbc' 
-            ? "To provide care and education for boys in need and inspire them to transform into productive and exemplary members of society." 
-            : "To provide care and education for girls in need and inspire them to transform into productive and exemplary members of society."}
-        </p>
+        {/* Institutional Contact Details Grid */}
+        <div className="institution-details-grid">
+          <div className="details-column">
+            <p className="address-text">
+              {isSbc ? (
+                <>
+                  P.O BOX 30178-00100 GPO<br />
+                  NAIROBI, KENYA
+                </>
+              ) : (
+                <>
+                  P.O BOX 6847-00200<br />
+                  NAIROBI, KENYA
+                </>
+              )}
+            </p>
+          </div>
+          <div className="details-column">
+            <p className="contact-text">
+              {isSbc ? (
+                <>
+                  <strong>Tel:</strong> +254 777 761 213 - 7 | <strong>Cell:</strong> +254 727 531 001<br />
+                  <strong>Email:</strong> info@stareheboyscentre.ac.ke | <strong>Website:</strong> www.stareheboyscentre.ac.ke
+                </>
+              ) : (
+                <>
+                  <strong>Tel:</strong> +254 707 900 852, +254 738 255 448 | <strong>Mobile:</strong> +254 110 087 733<br />
+                  <strong>Email:</strong> info@starehegirlscentre.co.ke | <strong>Website:</strong> www.starehegirlscentre.sc.ke
+                </>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Mission Statement Block */}
+        <div className="header-mission-statement">
+          <p>
+            <strong>Our Mission:</strong>{" "}
+            {isSbc 
+              ? "To provide care and education for boys in need and inspire them to transform into productive and exemplary members of society." 
+              : "To provide care and education for girls in need and inspire them to transform into productive and exemplary members of society."}
+          </p>
+        </div>
+
+        {/* Crucial Application Deadline Alert Badge */}
+        <div className="deadline-alert-badge">
+          <p>
+            <strong>Application Deadline:</strong>{" "}
+            <span className="deadline-date">
+              {isSbc ? `30th July ${currentYear}` : `30th September ${currentYear}`}
+            </span>
+          </p>
+        </div>
+
       </div>
-    </div>
+    </header>
   );
 }
 

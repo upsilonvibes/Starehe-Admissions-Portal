@@ -16,14 +16,15 @@ A modern, production-grade full-stack enrollment wizard designed to digitize and
 
 ## ✨ Core Features Implemented
 
-* **Dynamic Portal Selection**: Tailored UI and institutional theme engine supporting both SBC (Yellow) and SGC (Blue) entry pipelines.
+* **Dynamic Portal Selection & Micro-Interactions**: Tailored UI and institutional theme engine supporting both SBC (Yellow) and SGC (Blue) entry pipelines, including interactive animated logo arrays with reactive hover transitions.
 * **Streamlined Multi-Step Wizard**: Client-side forms cleanly isolated across components to optimize state propagation, transitioning directly from Pathway Priority into a final structural application preview.
+* **Context-Aware Admission Targets**: Embedded dynamic calculation engine processing application types on the fly. Automatically targets regular Grade 10 enrollment for upcoming calendar cycles or computes live mid-stream transfer targets for current scholastic years without hardcoded form parameters.
 * **3-Choice Priority Pathway System**: Interactive ranking module allowing applicants to choose and order their technical or academic tracks (STEM, Social Sciences, Arts) and sub-tracks.
 * **Multipart Binary Document Streaming**: Fully integrated `FormData` pipeline that leverages `multer` to securely ingest and store raw binary attachments (Passport Photos and Birth Certificates).
-* **Cross-Document Gender Validation**: Advanced asynchronous Mongoose schema hook utilizing root `this.ownerDocument()` resolution to prevent gender mismatches during the registration phase.
+* **Cross-Document Gender Validation**: Advanced asynchronous Mongoose schema hook utilizing root `this.ownerDocument()` resolution to prevent gender mismatches during the registration phase, fully aligned with native routing keys.
 * **Rapid Network Fail-safe Diagnostics**: Configured with a `serverSelectionTimeoutMS` threshold to prevent application stalling and immediately catch local router firewall lookups (`querySrv ECONNREFUSED`).
 * **Government & Exam Validation**: Strict validation schemas matching institutional data rules for Birth Certificate Numbers, NEMIS UPI, Assessment Numbers, and School KNEC Codes.
-* **Conditional Transfer Logic**: Interactive conditional workflows that toggle active states strictly for incoming transfer students.
+* **Conditional Transfer & Re-Application Workflows**: Interactive conditional fields that toggle active states and request specific text justifications strictly for incoming transfer students or historical re-applicants.
 * **Legal Integrity Ticker & Anti-Fraud Sign-off**: High-stakes database submission barrier requiring final legal certification, making explicit that data mismatches result in immediate application rejection.
 
 ## 📁 Optimized Monorepo Architecture
@@ -37,7 +38,7 @@ Starehe-Admissions-Portal/           <-- Main Repository Root
 │   ├── public/                      <-- Static Assets & Favicon
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Personal.jsx         # Identity & Government IDs (Step 1)
+│   │   │   ├── Personal.jsx         # Identity & Government IDs with Context Target Banner (Step 1)
 │   │   │   ├── Academics.jsx        # Historical Academic Background (Step 2)
 │   │   │   ├── Pathway.jsx          # Priority Track Ranking Engine (Step 3)
 │   │   │   └── Review.jsx           # Data Verification & Legal Sign-off (Step 4)

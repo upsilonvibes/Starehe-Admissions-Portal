@@ -8,7 +8,7 @@ function Footer() {
         {/* Institutional Warning Notice from physical forms */}
         <div className="legal-notice-card">
           <p className="legal-notice-title">
-            ⚠️ Legal Notice / Advertencia Legal
+            ⚠️ Legal Notice 
           </p>
           <p className="legal-notice-body">
             The making of a false statement on this digital application portal may lead to prosecution in a Court of Law. 
