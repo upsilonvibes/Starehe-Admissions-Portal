@@ -277,7 +277,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
             />
           </div>
           <div className="input-group">
-            <label>Home Sub-County  <span className="required-star">* </span></label>
+            <label> Sub-County  <span className="required-star">* </span></label>
             <input 
               type="text" 
               name="subCounty" 

@@ -394,15 +394,17 @@ img {
 .priority-btn:hover {
   background-color: #646cff;
 }
+
 /* Custom error alert state for invalid gender variations */
 .gender-mismatch-alert {
-    color: #ef4444;
-    font-weight: 700;
-    margin-top: 6px;
-    font-size: 12px;
-    line-height: 1.4;
-    text-align: left;
+  color: #ef4444;
+  font-weight: 700;
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
 }
+
 /* --- Passport & Birth Cert Upload Cards ---  */
 .upload-card-wrapper {
   background-color: #f0f7ff;
@@ -430,15 +432,18 @@ img {
   width: 100%;
   padding: 0.5rem 0;
   font-size: 0.85rem;
-  color: #334155; /* Color for the "No file chosen" / chosen filename text */
+  color: #334155;
+  /* Color for the "No file chosen" / chosen filename text */
   cursor: pointer;
-  
-  white-space: nowrap; /* Prevents any file names or system text from breaking into lines */
-  
+
+  white-space: nowrap;
+  /* Prevents any file names or system text from breaking into lines */
+
   overflow: hidden;
-  
-  display: block; /* Modern standard property to handle overflowing long filenames cleanly */
-  
+
+  display: block;
+  /* Modern standard property to handle overflowing long filenames cleanly */
+
 }
 
 
@@ -508,6 +513,7 @@ img {
   line-height: 1.4;
   text-align: left;
 }
+
 /* Removes the up/down arrows for Chrome, Safari, Edge, and Opera */
 .input-row .input-group input[name="yearCompleted"]::-webkit-outer-spin-button,
 .input-row .input-group input[name="yearCompleted"]::-webkit-inner-spin-button {
@@ -611,96 +617,110 @@ img {
    8. SHARED LAYOUT: GLOBAL FOOTER COMPONENT
    ========================================================================== */
 .portal-global-footer {
-  background-color: #2e2828;
-  color: #d1d5db;
-  margin-top: 4.5rem;
-  border-top: 4px solid rgb(151, 2, 2);
-  /* Crimson Top Border */
-  padding: 20px 40px;
-  border-radius: 30px;
+  background-color: #0f172a;
+  /* Deep, sleek slate blue-black */
+  color: #f1f5f9;
+  margin-top: 6rem;
+  border-top: 3px solid rgb(151, 2, 2);
+  /* Sleek accent strip */
+  padding: 0;
+  width: 100%;
 }
 
 .footer-content-wrapper {
-  max-width: 1150px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 40px 24px 32px 24px;
 }
 
-/* Legal Sponsorship Warning Banner */
+/* Elegant Legal Notice Card */
 .legal-notice-card {
-  background-color: rgba(151, 2, 2, 0.15);
-  /* Muted Dark Red Glow */
-  border: 1px solid rgb(151, 2, 2);
-  border-radius: 6px;
-  padding: 16px;
-  text-align: center;
-  margin-bottom: 24px;
+  background-color: rgba(151, 2, 2, 0.08);
+  /* Sophisticated, warm dark red tint */
+  border-left: 4px solid rgb(151, 2, 2);
+  /* Accent highlight instead of harsh boxes */
+  border-radius: 4px;
+  padding: 16px 20px;
+  text-align: left;
+  margin-bottom: 32px;
 }
 
 .legal-notice-title {
-  font-size: 12px;
+  font-size: 0.8rem;
   color: #f87171;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 4px;
+  letter-spacing: 0.075em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
 }
 
 .legal-notice-body {
-  font-size: 11px;
-  color: #9ca3af;
+  font-size: 0.775rem;
+  color: #94a3b8;
+  /* Soft slate gray for readability */
   line-height: 1.6;
-  max-width: 750px;
-  margin: 0 auto;
+}
+
+.highlight-free {
+  color: #ffffff;
+  font-weight: 700;
+  border-bottom: 1px dotted #f87171;
+  padding-bottom: 1px;
 }
 
 /* Structural Divider */
 .footer-divider-line {
-  border-top: 1px solid #1f2937;
-  margin: 16px 0;
+  border-top: 1px solid #1e293b;
+  margin: 24px 0;
 }
 
 /* Meta Placement flex grid */
 .footer-meta-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  /* Aligned horizontally on screens */
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .footer-brand-left {
-  text-align: center;
+  text-align: left;
 }
 
 .footer-institution-title {
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #ffffff;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .footer-institution-subtitle {
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 2px;
+  font-size: 0.775rem;
+  color: #64748b;
+  margin-top: 4px;
 }
 
 .footer-copyright-right {
-  text-align: center;
+  text-align: right;
 }
 
 .footer-copyright-text {
-  font-size: 12px;
-  color: #9ca3af;
+  font-size: 0.775rem;
+  color: #94a3b8;
 }
 
 .footer-motto-tag {
-  font-size: 11px;
-  color: #4b5563;
-  font-family: monospace;
-  margin-top: 2px;
+  font-size: 0.725rem;
+  color: #475569;
+  font-family: 'Courier New', Courier, monospace;
+  margin-top: 6px;
+  font-style: italic;
 }
+
 
 
 /* ==========================================================================
@@ -779,18 +799,25 @@ img {
 }
 
 /* Footer Tablet Reset Configurations */
-.footer-brand-left {
-  text-align: left;
+.portal-global-footer {
+  margin-top: 4rem;
+}
+
+.legal-notice-card {
+  text-align: center;
+  border-left: none;
+  border-top: 3px solid rgb(151, 2, 2);
 }
 
 .footer-meta-container {
-  flex-direction: row;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
 }
 
-
-
+.footer-brand-left,
 .footer-copyright-right {
-  text-align: right;
+  text-align: center;
 }
 
 

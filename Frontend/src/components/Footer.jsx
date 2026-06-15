@@ -12,7 +12,7 @@ function Footer() {
           </p>
           <p className="legal-notice-body">
             The making of a false statement on this digital application portal may lead to prosecution in a Court of Law. 
-            This application process is entirely <strong>FREE OF CHARGE</strong>. Any person attempting to demand money or 
+            This application process is entirely <span className="highlight-free">FREE OF CHARGE</span>. Any person attempting to demand money or 
             favors for admission should be reported immediately to the nearest Police Station or institutional registry.
           </p>
         </div>
@@ -27,20 +27,20 @@ function Footer() {
               STAREHE ADMISSIONS PORTAL 
             </h3>
             <p className="footer-institution-subtitle">
-              Official Unified Portal for Starehe Boys' Centre & Starehe Girls' Centre
+              Official Unified Enrollment Engine for Starehe Centres
             </p>
           </div>
           
           <div className="footer-copyright-right">
             <p className="footer-copyright-text">
-              © {new Date().getFullYear()} Starehe Centres Online. All Rights Reserved.
+              &copy; {new Date().getFullYear()} Starehe Centres Online. All Rights Reserved.
             </p>
             <p className="footer-motto-tag">
               Diseñado con cuidado • Paso a paso
             </p>
           </div>
         </div>
-  </div>
+      </div>
     </footer>
   ); 
 }
