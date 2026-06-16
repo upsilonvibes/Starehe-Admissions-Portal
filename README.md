@@ -17,15 +17,16 @@ A modern, production-grade full-stack enrollment wizard designed to digitize and
 ## ✨ Core Features Implemented
 
 * **Dynamic Portal Selection & Micro-Interactions**: Tailored UI and institutional theme engine supporting both SBC (Yellow) and SGC (Blue) entry pipelines, including interactive animated logo arrays with reactive hover transitions.
-* **Streamlined Multi-Step Wizard**: Client-side forms cleanly isolated across components to optimize state propagation, transitioning directly from Pathway Priority into a final structural application preview.
+* **6-Stage Unified Lifecycle Wizard**: Form workflow isolated cleanly across specialized modular sub-components to optimize React state propagation, transitioning smoothly from initial personal identity rules all the way to final declarations.
+* **Deterministic Synchronized Tracking Generator**: Embedded client-side lock engine that generates a strict 6-digit tracking digit string. It forces instant generation to trap matching reference IDs early, ensuring local state variables and asynchronous server payloads are fully synchronized even if print previews are bypassed.
 * **Context-Aware Admission Targets**: Embedded dynamic calculation engine processing application types on the fly. Automatically targets Grade 10 enrollment for upcoming calendar cycles or computes live mid-stream transfer targets for current scholastic years without hardcoded form parameters.
 * **3-Choice Priority Pathway System**: Interactive ranking module allowing applicants to choose and order their technical or academic tracks (STEM, Social Sciences, Arts) and sub-tracks.
 * **Adaptive Parent/Guardian Matrix Subsystem**: Intelligently toggles baseline validation parameters (National ID, employment metrics, income brackets) depending on parent status (Alive, Deceased, Unknown/Absent) to prevent browser-level validation crashes while accurately preserving structural profiling data.
-* **Dynamic Stream Justification Engine**: Context-driven narrative layouts that seamlessly adapt based on the application tier selected. Requires an exhaustive, multi-generational extended family financial review for sponsored candidates, while pivoting to institutional preference statements for fee-paying tracks.
-* **Decoupled API Routing & Multi-File Cloud Pipelines**: Completely isolated endpoint orchestration handling individual multi-file parent upload fields explicitly mapped from the frontend state (`Family.jsx`). Raw binary streams are processed seamlessly via `multer` and offloaded directly to Cloudinary safely without overriding overlapping data objects.
+* **Multi-Tier Endorsement & Recommendation Subsystem**: Integrates strict local authority tracking via `Recommendations.jsx` mapping specific sections for Local Chiefs, Religious Leaders, and Primary Headteachers. This tracks custom remarks, academic forecasts, disciplinary reviews, and financial certificates alongside distinct physical and telephonic contact records.
+* **Isolated Multi-File Cloud Pipelines**: Completely isolated endpoint orchestration handling individual multi-file uploads explicitly mapped from frontend form fields. Raw binary streams for parent metadata and official recommendations are processed seamlessly via `multer` and offloaded directly to Cloudinary without overriding overlapping data objects.
+* **Native Context Print Template Window Injection**: Independent template engine hook capable of converting local form states instantly into standardized physical paper templates, injecting a new printing window context directly through native browser operations.
 * **Calligraphic Electronic Signature Pad**: Client-side reactive script handwriting engine that auto-renders an official electronic signature preview directly from the signee's plaintext keystrokes, paired with a mandatory legal adoption certification checkout.
 * **Cross-Document Gender Validation**: Advanced asynchronous Mongoose schema hook utilizing root `this.ownerDocument()` resolution to prevent gender mismatches during the registration phase, fully aligned with native routing keys.
-* **Rapid Network Fail-safe Diagnostics**: Configured with a `serverSelectionTimeoutMS` threshold to prevent application stalling and immediately catch local router firewall lookups (`querySrv ECONNREFUSED`).
 * **Government & Exam Validation**: Strict validation schemas matching institutional data rules for Birth Certificate Numbers, NEMIS UPI, Assessment Numbers, and School KNEC Codes.
 
 ## 📁 Optimized Monorepo Architecture
@@ -43,14 +44,17 @@ Starehe-Admissions-Portal/           <-- Main Repository Root
 │   │   │   ├── Academics.jsx        # Historical Academic Background & Exam Track Records (Step 2)
 │   │   │   ├── Pathway.jsx          # Priority Track Ranking Engine (Step 3)
 │   │   │   ├── Family.jsx           # Distinct multi-file parent upload tracking & sibling matrices (Step 4)
-│   │   │   └── Review.jsx           # Dynamic Stream Narratives, Document Verification Previews, & Sig Pad (Step 5)
-│   │   ├── App.jsx                  # State Orchestration & Multipart FormData Payload Dispatcher
+│   │   │   ├── Recommendations.jsx  # Chief, Clergy, and Headteacher text blocks & file tracking matrices (Step 5)
+│   │   │   ├── Review.jsx           # Dynamic Stream Narratives, Document Verification Previews, & Sig Pad (Step 6)
+│   │   │   ├── PrintTemplate.jsx    # Standardized calligraphic physical paper HTML structural compiler
+│   │   │   └── PrintTemplate.css    # Strict print-media stylesheets (@media print) for exact form rendering
+│   │   ├── App.jsx                  # State Orchestration, Reference Tracking Synchronizer, & FormData Dispatcher
 │   │   └── App.css                  # Custom Structural Pure CSS3 Layout Engine
 │   └── package.json
 │
 └── Backend/                         <-- Express API Server Code (Render)
     ├── models/
-    │   └── Application.js           # Mongoose NoSQL Strict Data Schema & Cross-Document Gender Validation Hooks
+    │   └── Application.js           # Mongoose Strict Schema with Deep Nested Endorsement Validation Models
     ├── routes/
     │   └── applications.js          # Cloudinary Engine, Multer Field Matrix, and Submission Controller Route Logic
     ├── server.js                    # Lean Orchestrator and Global Middleware/Database Gateway Config Entry File

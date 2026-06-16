@@ -65,14 +65,15 @@ function Family({
       setSiblingsList(siblingsList.filter((_, i) => i !== index));
     }
   };
-
-  // Prevent generic form reload errors and guide step transitions safely
+// Prevent generic form reload errors and guide step transitions safely
   const handleFormSubmission = (e) => {
     e.preventDefault();
-    if (onSubmit) {
-      onSubmit(e);
-    } else if (onNext) {
+    
+    // Prioritize moving to the next step view over final master submission
+    if (onNext) {
       onNext();
+    } else if (onSubmit) {
+      onSubmit(e);
     }
   };
 

@@ -7,7 +7,7 @@ function Landing({ serverStatus, onSelectTrack }) {
       {/* Animated Institutional Logo Fan */}
       <div className="logo-fan-container">
         <img src="/images_starehe/sgc_logo.png" alt="SGC Logo" className="logo-card sgc-card" />
-        <img src="/images_starehe/sbc_logo.jfif" alt="SBC Logo" className="logo-card sbc-card" />
+        <img src="/images_starehe/sbc_logo.png" alt="SBC Logo" className="logo-card sbc-card" />
       </div>
       
       {/* Portal Branding Top Header */}

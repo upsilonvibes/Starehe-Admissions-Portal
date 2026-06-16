@@ -1296,8 +1296,143 @@ img {
 
 /* ==========================================================================
    10. STEP PAGE 5: RECOMMENDATIONS SECTION STYLES
-   ========================================================================== */
-/* Reserved for recommendations setup cards later */
+   ========================================================================= */
+
+.recommendations-layout {
+  animation: recStepFadeIn 0.35s ease-in-out;
+}
+
+.recommendations-layout .step-description {
+  font-size: 0.95rem;
+  color: #1d21f0;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.recommendations-layout .section-divider {
+  border: 0;
+  height: 1px;
+  background: #e2e8f0;
+  margin: 30px 0;
+}
+
+.recommendations-layout .section-block-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #FFD700;
+  margin-bottom: 15px;
+}
+
+.recommendations-layout .text-input-field,
+.recommendations-layout .textarea-input-field {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.input-group-wrapper{
+  flex:1;
+}
+.recommendations-layout .text-input-field:focus,
+.recommendations-layout .textarea-input-field:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+}
+
+.recommendations-layout .textarea-input-field {
+  resize: vertical;
+  font-family: inherit;
+}
+
+
+
+.uppercase-transform {
+  text-transform: uppercase;
+}
+
+/* --- Template Downloads Override Layout --- */
+.recommendations-layout .download-card-override {
+  background: #f0f4f8;
+  border: 1px solid #d3e1f1;
+  border-left: 4px solid #3182ce;
+  margin-bottom: 20px;
+}
+
+.recommendations-layout .download-card-override .upload-info label {
+  color: #2b6cb0;
+  font-weight: 600;
+}
+
+.recommendations-layout .download-btn-style {
+  background: #3182ce;
+  color: #ffffff;
+  border: none;
+  border-radius:5px;
+  height: 25px;
+}
+
+.recommendations-layout .download-btn-style:hover {
+  background: #2b6cb0;
+}
+
+/* --- Evaluation Radio Panel --- */
+.recommendations-layout .evaluation-radio-wrapper {
+  background: #e8f5fc;
+  border: 1px solid #fef3c7;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.evaluation-radio-wrapper .radio-section-main-label {
+  font-weight: 600;
+  color: #b45309;
+}
+
+.evaluation-radio-wrapper .radio-helper-text {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 4px 0 12px 0;
+}
+
+.evaluation-radio-wrapper .radio-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.evaluation-radio-wrapper .evaluation-radio-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.evaluation-radio-wrapper .evaluation-radio-dot {
+  margin-top: 4px;
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+.evaluation-radio-wrapper .radio-label-text {
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.4;
+}
+
+@keyframes recStepFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+
 
 
 /* ==========================================================================
@@ -1853,6 +1988,16 @@ img {
 
   .checkbox-label-text {
     font-size: 0.85rem;
+  }
+
+
+  .recommendations-layout .form-grid-2-col {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .recommendations-layout .full-width-span {
+    grid-column: span 1;
   }
 }
 

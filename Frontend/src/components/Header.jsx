@@ -14,7 +14,7 @@ function Header({ view }) {
         {/* Top Core Branding Row */}
         <div className="portal-branding">
           <img 
-            src={isSbc ? "/images_starehe/sbc_logo.jfif" : "/images_starehe/sgc_logo.png"} 
+            src={isSbc ? "/images_starehe/sbc_logo.png" : "/images_starehe/sgc_logo.png"} 
             alt="Institutional Logo" 
             className="portal-mini-logo" 
           />

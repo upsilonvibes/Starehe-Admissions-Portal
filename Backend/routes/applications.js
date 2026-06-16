@@ -1,9 +1,10 @@
+// routes/applications.js
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const Application = require('../models/Application'); // Points directly to clean uppercase singular model
+const Application = require('../models/Application');
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
@@ -33,9 +34,13 @@ const coreApplicationUploadFields = [
     { name: 'fatherDeathCertFile', maxCount: 1 },
     { name: 'motherDeathCertFile', maxCount: 1 },
     { name: 'guardianshipProofFile', maxCount: 1 },
-    // NEW ACADEMIC ENTRIES INTERCEPTED BY MULTER
     { name: 'kpseaResultSlipFile', maxCount: 1 },
-    { name: 'juniorSchoolTranscriptFile', maxCount: 1 }
+    { name: 'juniorSchoolTranscriptFile', maxCount: 1 },
+    
+    // ✅ FIXED: INTERCEPT THE THREE SUBMITTED SCANNED RECOMMENDATION IMAGES/PDFs
+    { name: 'chiefRecommendationFile', maxCount: 1 },
+    { name: 'religiousLeaderRecommendationFile', maxCount: 1 },
+    { name: 'headteacherRecommendationFile', maxCount: 1 }
 ];
 
 router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) => {
@@ -57,6 +62,7 @@ router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) =>
         const legal = parsePayloadBlock(body.legalDeclaration);
         const famBack = parsePayloadBlock(body.familyBackground);
         const justify = parsePayloadBlock(body.admissionJustification);
+        const recs = parsePayloadBlock(body.recommendations); // Fallback lookup parse
 
         let siblingArrayResolved = [];
         if (body['familyBackground[siblings]']) {
@@ -66,6 +72,9 @@ router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) =>
         }
 
         const reconstructedPayload = {
+            // ✅ CRITICAL SYNC: Bind your incoming frontend reference key straight down into schema targets!
+            customId: body.applicationId || '000000',
+
             institutionType: body.institutionType || 'SBC',
             
             personalInfo: {
@@ -147,6 +156,36 @@ router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) =>
                 siblingFeesPayer: famBack.siblingFeesPayer || body['familyBackground[siblingFeesPayer]'] || ''
             },
 
+            // ✅ FIXED: ASSIGN THE INBOUND TEXT EXTRACTIONS FROM FRONTEND STATE
+            recommendations: {
+    chief: {
+        name: body['recommendations[chief][name]'] || recs.chief?.name || '',
+        physicalAddress: body['recommendations[chief][physicalAddress]'] || recs.chief?.physicalAddress || '',
+        mobile: body['recommendations[chief][mobile]'] || recs.chief?.mobile || '',
+        officeTel: body['recommendations[chief][officeTel]'] || recs.chief?.officeTel || '',
+        dateSigned: body['recommendations[chief][dateSigned]'] || recs.chief?.dateSigned || '',
+        comments: body['recommendations[chief][comments]'] || recs.chief?.comments || ''
+    },
+    religiousLeader: {
+        name: body['recommendations[religiousLeader][name]'] || recs.religiousLeader?.name || '',
+        address: body['recommendations[religiousLeader][address]'] || recs.religiousLeader?.address || '',
+        mobile: body['recommendations[religiousLeader][mobile]'] || recs.religiousLeader?.mobile || '',
+        officeTel: body['recommendations[religiousLeader][officeTel]'] || recs.religiousLeader?.officeTel || '',
+        dateSigned: body['recommendations[religiousLeader][dateSigned]'] || recs.religiousLeader?.dateSigned || '',
+        comments: body['recommendations[religiousLeader][comments]'] || recs.religiousLeader?.comments || ''
+    },
+    headteacher: {
+        financialStatusCertification: body['recommendations[headteacher][financialStatusCertification]'] || recs.headteacher?.financialStatusCertification || '',
+        name: body['recommendations[headteacher][name]'] || recs.headteacher?.name || '',
+        mobile: body['recommendations[headteacher][mobile]'] || recs.headteacher?.mobile || '',
+        dateSigned: body['recommendations[headteacher][dateSigned]'] || recs.headteacher?.dateSigned || '',
+        academicRemarks: body['recommendations[headteacher][academicRemarks]'] || recs.headteacher?.academicRemarks || '',
+        coCurricularRemarks: body['recommendations[headteacher][coCurricularRemarks]'] || recs.headteacher?.coCurricularRemarks || '',
+        disciplineRemarks: body['recommendations[headteacher][disciplineRemarks]'] || recs.headteacher?.disciplineRemarks || '',
+        generalComments: body['recommendations[headteacher][generalComments]'] || recs.headteacher?.generalComments || ''
+    }
+},
+
             admissionJustification: {
                 applicationStream: justify.applicationStream || body['admissionJustification[applicationStream]'] || '',
                 explanationText: justify.explanationText || body['admissionJustification[explanationText]'] || undefined,
@@ -178,9 +217,13 @@ router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) =>
                 fatherDeathCertPath: req.files?.fatherDeathCertFile?.[0]?.path || '',
                 motherDeathCertPath: req.files?.motherDeathCertFile?.[0]?.path || '',
                 guardianshipProofPath: req.files?.guardianshipProofFile?.[0]?.path || '',
-                // PARSED PATH STRINGS RETRIEVED FROM CLOUDINARY
                 kpseaResultSlipPath: req.files?.kpseaResultSlipFile?.[0]?.path || '',
-                juniorSchoolTranscriptPath: req.files?.juniorSchoolTranscriptFile?.[0]?.path || ''
+                juniorSchoolTranscriptPath: req.files?.juniorSchoolTranscriptFile?.[0]?.path || '',
+                
+                // ✅ MAP DYNAMIC CLOUDINARY FILE URL RESPONSES RETURNED BY MULTER
+                chiefRecommendationPath: req.files?.chiefRecommendationFile?.[0]?.path || '',
+                religiousLeaderRecommendationPath: req.files?.religiousLeaderRecommendationFile?.[0]?.path || '',
+                headteacherRecommendationPath: req.files?.headteacherRecommendationFile?.[0]?.path || ''
             }
         };
 
@@ -210,7 +253,8 @@ router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) =>
         return res.status(201).json({
             success: true,
             message: 'Application recorded successfully to Starehe Servers! Welcome to the Starehe Community. 💾',
-            applicationId: savedApplication._id
+            // Return our frontend ID parameter out so the alert matches exactly!
+            applicationId: savedApplication.customId 
         });
 
     } catch (error) {

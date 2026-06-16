@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState, useEffect, createRef } from 'react';
 import './App.css';
 import Header from './components/Header';
@@ -7,21 +8,16 @@ import Personal from './components/Personal';
 import Academics from './components/Academics';
 import Pathway from './components/Pathway';
 import Family from './components/Family';
+import Recommendations from './components/Recommendations'; // ✅ Imported your real component
 import Review from './components/Review';
 
-// temporary baseline placeholder component for the recommendations layout
-const RecommendationsPlaceholder = ({ onNext, onBack }) => (
-  <div className="form-section placeholder-card">
-    <h3>Recommendations & References Section</h3>
-    <p style={{ margin: '15px 0', color: '#666' }}>
-      [This section will contain official structural validation input logs, Primary School Headteacher recommendations, and regional Chief/Ministerial certificates.]
-    </p>
-    <div className="form-actions-container split-buttons" style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
-      <button type="button" className="back-btn" onClick={onBack}>← Back</button>
-      <button type="button" className="next-btn" onClick={onNext}>Next: Final Declaration →</button>
-    </div>
-  </div>
-);
+// ==========================================
+// DETERMINISTIC UNIFIED TRACKING GENERATOR
+// ==========================================
+const generateCleanReferenceId = () => {
+  // Returns a strict 6-digit tracking digit string (e.g., "739201")
+  return String(Math.floor(100000 + Math.random() * 900000));
+};
 
 function App() {
   // === THE STATE ENGINE MANAGEMENT ===
@@ -54,6 +50,9 @@ function App() {
     passportPhotoFile: null,
     birthCertFile: null,
 
+    // ✅ FIXED CORE SYSTEM IDENTIFIER
+    id: '', 
+
     // Parent Structure Fields
     fatherName: '', fatherStatus: 'Alive', fatherMarital: '', fatherNationality: 'Kenyan', fatherIdNo: '', fatherEmployment: '', fatherBusiness: '', fatherLand: '', fatherOtherIncome: '', fatherMonthlyIncome: 0, fatherAddress: '', fatherHouse: '',
     motherName: '', motherStatus: 'Alive', motherMarital: '', motherNationality: 'Kenyan', motherIdNo: '', motherEmployment: '', motherBusiness: '', motherLand: '', motherOtherIncome: '', motherMonthlyIncome: 0, motherAddress: '', motherHouse: '',
@@ -62,7 +61,7 @@ function App() {
     siblingFeesPayer: '',
 
     // Narrative & Sign-off Block
-    applicationStream: '', // Safely added to catch stream types
+    applicationStream: '', 
     justificationText: '',
     familySigneeName: '',
     familySigneeOccupation: '',
@@ -70,7 +69,7 @@ function App() {
     familySigneeMobile: '',
     familySigneeEmail: '',
     familyRelationship: '',
-    hasAdoptedSignature: false, // Explicitly tracks signature checkbox binding
+    hasAdoptedSignature: false, 
 
     // Verification Asset File Objects
     fatherIdFile: null, 
@@ -83,11 +82,38 @@ function App() {
     motherTitleDeedFile: null, 
     fatherDeathCertFile: null, 
     motherDeathCertFile: null,
-    guardianshipProofFile: null, // FIXED: Added to fully catch field data from Section D layout
+    guardianshipProofFile: null, 
     
     // NEW ACADEMIC UPLOAD TARGETS
     kpseaResultSlipFile: null,
-    juniorSchoolTranscriptFile: null
+    juniorSchoolTranscriptFile: null,
+
+    // ✅ NEW RECOMMENDATIONS & REFERENCES STATE FIELDS
+    chiefName: '',
+    chiefPhysicalAddress: '',
+    chiefMobile: '',
+    chiefOfficeTel: '',
+    chiefDate: '',
+    chiefComments: '',
+    chiefRecommendationFile: null,
+
+    religiousLeaderName: '',
+    religiousLeaderAddress: '',
+    religiousLeaderMobile: '',
+    religiousLeaderOfficeTel: '',
+    religiousLeaderDate: '',
+    religiousLeaderComments: '',
+    religiousLeaderRecommendationFile: null,
+
+    headteacherFinancialRecommendation: '',
+    headteacherName: '',
+    headteacherMobile: '',
+    headteacherDate: '',
+    headteacherAcademicRemarks: '',
+    headteacherCoCurricularRemarks: '',
+    headteacherDisciplineRemarks: '',
+    headteacherGeneralComments: '',
+    headteacherRecommendationFile: null
   });
 
   // Structural References for Native Input Targeting
@@ -106,7 +132,12 @@ function App() {
     motherDeathCertFile: createRef(),
     guardianshipProofFile: createRef(),
     kpseaResultSlipFile: createRef(),
-    juniorSchoolTranscriptFile: createRef()
+    juniorSchoolTranscriptFile: createRef(),
+    
+    // ✅ NEW TRANSCRIPTION ATTACHMENT REFERENCES
+    chiefRecommendationFile: createRef(),
+    religiousLeaderRecommendationFile: createRef(),
+    headteacherRecommendationFile: createRef()
   };
 
   // Dynamic array table tracking hook for dynamic sibling entries
@@ -124,7 +155,9 @@ function App() {
     setFormData((prev) => ({
       ...prev,
       institutionType: systemCode,
-      gender: autoGender
+      gender: autoGender,
+      // Map view identifier back down cleanly into state targets
+      selectedSchool: systemCode 
     }));
   };
 
@@ -149,14 +182,13 @@ function App() {
     ]
   };
 
-  // TWEAK: Expanded to include a 6-step layout system seamlessly
   const FORM_STEPS = [
     { id: 'personal', title: 'Personal Identity', component: Personal },
     { id: 'academics', title: 'Academic Background', component: Academics },
     { id: 'pathway', title: 'Pathway Priorities', component: Pathway },
     { id: 'family', title: 'Family Information', component: Family },
-    { id: 'recommendations', title: 'Recommendations & References', component: RecommendationsPlaceholder }, // Step 5 of 6
-    { id: 'review', title: 'Final Declaration', component: Review } // Step 6 of 6
+    { id: 'recommendations', title: 'Recommendations & References', component: Recommendations }, 
+    { id: 'review', title: 'Final Declaration', component: Review } 
   ];
 
   useEffect(() => {
@@ -211,12 +243,51 @@ function App() {
     }
   };
 
+  // ==================================================
+  // ✅ STEP B: SYNCHRONIZED CENTRAL PRINT HANDLER HOOK
+  // ==================================================
+  const handlePrintFormWithLock = (templateGeneratorFunc) => {
+    let uniqueId = formData.id;
+
+    // Enforce instant generation to trap matching 6-digit keys early
+    if (!uniqueId) {
+      uniqueId = generateCleanReferenceId();
+      setFormData(prev => ({
+        ...prev,
+        id: uniqueId
+      }));
+    }
+
+    // Explicit payload override protects against state batching asynchronous delays
+    const targetedHtmlString = templateGeneratorFunc({ ...formData, id: uniqueId });
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.open();
+    printWindow.document.write(targetedHtmlString);
+    printWindow.document.close();
+
+    printWindow.onload = function() {
+      printWindow.print();
+    };
+  };
+
   const handleFormSubmit = async (e) => {
     if (e && typeof e.preventDefault === 'function') {
       e.preventDefault();
     }
 
+    // Ensure an application tracking reference ID is locked down even if they skipped printing
+    let uniqueId = formData.id;
+    if (!uniqueId) {
+      uniqueId = generateCleanReferenceId();
+      setFormData(prev => ({ ...prev, id: uniqueId }));
+    }
+
     const payload = new FormData();
+    
+    // ✅ SYNC CORE SECURITY FOOTPRINT DIRECTLY INTO API STREAM payload
+    payload.append('applicationId', uniqueId);
+    
     payload.append('institutionType', view === 'sbc' ? "SBC" : "SGC");
     payload.append('personalInfo[fullName]', `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim());
     payload.append('personalInfo[dateOfBirth]', formData.dob);
@@ -278,6 +349,30 @@ function App() {
     payload.append('familyBackground[siblings]', JSON.stringify(siblingsList));
     payload.append('familyBackground[siblingFeesPayer]', formData.siblingFeesPayer);
 
+    // RECOMMENDATIONS DATA EXTRUSION PACKETS
+    payload.append('recommendations[chief][name]', formData.chiefName);
+    payload.append('recommendations[chief][physicalAddress]', formData.chiefPhysicalAddress);
+    payload.append('recommendations[chief][mobile]', formData.chiefMobile);
+    payload.append('recommendations[chief][officeTel]', formData.chiefOfficeTel);
+    payload.append('recommendations[chief][dateSigned]', formData.chiefDate);
+    payload.append('recommendations[chief][comments]', formData.chiefComments);
+
+    payload.append('recommendations[religiousLeader][name]', formData.religiousLeaderName);
+    payload.append('recommendations[religiousLeader][address]', formData.religiousLeaderAddress);
+    payload.append('recommendations[religiousLeader][mobile]', formData.religiousLeaderMobile);
+    payload.append('recommendations[religiousLeader][officeTel]', formData.religiousLeaderOfficeTel);
+    payload.append('recommendations[religiousLeader][dateSigned]', formData.religiousLeaderDate);
+    payload.append('recommendations[religiousLeader][comments]', formData.religiousLeaderComments);
+
+    payload.append('recommendations[headteacher][financialStatusCertification]', formData.headteacherFinancialRecommendation);
+    payload.append('recommendations[headteacher][name]', formData.headteacherName);
+    payload.append('recommendations[headteacher][mobile]', formData.headteacherMobile);
+    payload.append('recommendations[headteacher][dateSigned]', formData.headteacherDate);
+    payload.append('recommendations[headteacher][academicRemarks]', formData.headteacherAcademicRemarks);
+    payload.append('recommendations[headteacher][coCurricularRemarks]', formData.headteacherCoCurricularRemarks);
+    payload.append('recommendations[headteacher][disciplineRemarks]', formData.headteacherDisciplineRemarks);
+    payload.append('recommendations[headteacher][generalComments]', formData.headteacherGeneralComments);
+
     // --- JUSTIFICATION BLOCK EXTRUSION ---
     payload.append('admissionJustification[applicationStream]', formData.applicationStream);
     payload.append('admissionJustification[explanationText]', formData.justificationText);
@@ -297,7 +392,7 @@ function App() {
     if (formData.passportPhotoFile) payload.append('passportPhotoFile', formData.passportPhotoFile);
     if (formData.birthCertFile) payload.append('birthCertFile', formData.birthCertFile);
 
-    // FIXED: Explicit distinctive field keys mapped to guarantee clean backend interception
+    // Explicit distinctive field keys mapped to guarantee clean backend interception
     if (formData.fatherIdFile) payload.append('fatherIdFile', formData.fatherIdFile);
     if (formData.motherIdFile) payload.append('motherIdFile', formData.motherIdFile);
     if (formData.fatherPayslipFile) payload.append('fatherPayslipFile', formData.fatherPayslipFile);
@@ -310,9 +405,12 @@ function App() {
     if (formData.motherDeathCertFile) payload.append('motherDeathCertFile', formData.motherDeathCertFile);
     if (formData.guardianshipProofFile) payload.append('guardianshipProofFile', formData.guardianshipProofFile);
     
-    // NEW ACADEMIC ASSET PARSING
     if (formData.kpseaResultSlipFile) payload.append('kpseaResultSlipFile', formData.kpseaResultSlipFile);
     if (formData.juniorSchoolTranscriptFile) payload.append('juniorSchoolTranscriptFile', formData.juniorSchoolTranscriptFile);
+
+    if (formData.chiefRecommendationFile) payload.append('chiefRecommendationFile', formData.chiefRecommendationFile);
+    if (formData.religiousLeaderRecommendationFile) payload.append('religiousLeaderRecommendationFile', formData.religiousLeaderRecommendationFile);
+    if (formData.headteacherRecommendationFile) payload.append('headteacherRecommendationFile', formData.headteacherRecommendationFile);
 
     try {
       const response = await fetch('http://localhost:5000/api/applications', {
@@ -323,9 +421,16 @@ function App() {
 
       if (response.ok) {
         const explicitTargetCentre = view === 'sbc' ? "Starehe Boys' Centre" : "Starehe Girls' Centre";
-        alert(`🎉 Success! Application Submitted Successfully!\n\nYour application has been received by ${explicitTargetCentre}.\nTracking Reference ID: ${result.applicationId || 'SUCCESS-NET'}`);
+        const targetYear = new Date().getFullYear();
+        const prefixCode = view === 'sbc' ? "SBC-ADM-" : "SGC-ADM-";
+        
+        // Show matching alert message matching paper layouts exactly
+        alert(`🎉 Success! Application Submitted Successfully!\n\nYour application packet has been logged on the network by ${explicitTargetCentre}.\n\nTracking Reference ID: ${prefixCode}${targetYear}-REF-${uniqueId}`);
+        
         setView('landing');
         setCurrentStep(0);
+        // Clear global reference id after execution concludes
+        setFormData(prev => ({ ...prev, id: '' }));
       } else {
         alert(`❌ Submission Rejected: ${result.message || 'Validation Failure'}`);
       }
@@ -348,7 +453,6 @@ function App() {
       ) : (
         <main id="center">
           <div className="progress-metadata-bar">
-            {/* AUTOMATICALLY DYNAMIC: Evaluates step length cleanly to show Step X of 6 */}
             <span className="step-badge">Step {currentStep + 1} of {FORM_STEPS.length}</span>
             <h2 className="step-main-title">{FORM_STEPS[currentStep].title}</h2>
           </div>
@@ -368,6 +472,13 @@ function App() {
             onNext={handleNext}
             onBack={handleBack}
             onSubmit={handleFormSubmit}
+            
+            // Map internal navigation naming hooks correctly for step 5 properties
+            prevStep={handleBack}
+            nextStep={handleNext}
+
+            // ✅ INTERCEPT COMPONENT CLICK EVENTS WITH CLEAN REFERENCE SYNCHRONIZER
+            handleDownload={handlePrintFormWithLock}
           />
         </main>
       )}

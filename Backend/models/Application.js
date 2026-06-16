@@ -1,6 +1,15 @@
+// models/Application.js
 const mongoose = require('mongoose');
 
 const ApplicationSchema = new mongoose.Schema({
+    // ✅ NEW UNIQUE CUSTOM ID FIELD INTEGRATED
+    customId: { 
+        type: String, 
+        required: true, 
+        unique: true, 
+        trim: true 
+    },
+
     institutionType: {
         type: String,
         required: true,
@@ -104,6 +113,36 @@ const ApplicationSchema = new mongoose.Schema({
         siblingFeesPayer: { type: String, default: '', trim: true }
     },
 
+    // ✅ NEW TRANSCRIBED VALUES STRUCTURED INTERNALLY INTO SCHEMA DATA LAYOUTS
+    recommendations: {
+        chief: {
+            name: { type: String, default: '', trim: true },
+            physicalAddress: { type: String, default: '', trim: true },
+            mobile: { type: String, default: '', trim: true },
+            officeTel: { type: String, default: '', trim: true },
+            dateSigned: { type: String, default: '' },
+            comments: { type: String, default: '', trim: true }
+        },
+        religiousLeader: {
+            name: { type: String, default: '', trim: true },
+            address: { type: String, default: '', trim: true },
+            mobile: { type: String, default: '', trim: true },
+            officeTel: { type: String, default: '', trim: true },
+            dateSigned: { type: String, default: '' },
+            comments: { type: String, default: '', trim: true }
+        },
+        headteacher: {
+            financialStatusCertification: { type: String, default: '' },
+            name: { type: String, default: '', trim: true },
+            mobile: { type: String, default: '', trim: true },
+            dateSigned: { type: String, default: '' },
+            academicRemarks: { type: String, default: '', trim: true },
+            coCurricularRemarks: { type: String, default: '', trim: true },
+            disciplineRemarks: { type: String, default: '', trim: true },
+            generalComments: { type: String, default: '', trim: true }
+        }
+    },
+
     admissionJustification: {
         applicationStream: { type: String, default: '', trim: true },
         explanationText: { type: String, required: true, trim: true },
@@ -135,9 +174,13 @@ const ApplicationSchema = new mongoose.Schema({
         fatherDeathCertPath: { type: String, default: '' },
         motherDeathCertPath: { type: String, default: '' },
         guardianshipProofPath: { type: String, default: '' },
-        // NEW ACADEMIC ATTRIBUTES REGISTERED FOR COLLECTION MONGOOSE SCHEMA
         kpseaResultSlipPath: { type: String, default: '' },
-        juniorSchoolTranscriptPath: { type: String, default: '' }
+        juniorSchoolTranscriptPath: { type: String, default: '' },
+        
+        // ✅ ATTACHED DISK FILE ROUTES FOR DYNAMIC SCANNED DATA
+        chiefRecommendationPath: { type: String, default: '' },
+        religiousLeaderRecommendationPath: { type: String, default: '' },
+        headteacherRecommendationPath: { type: String, default: '' }
     }
 }, {
     timestamps: true 
