@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -83,8 +83,31 @@ function App() {
     motherTitleDeedFile: null, 
     fatherDeathCertFile: null, 
     motherDeathCertFile: null,
-    guardianshipProofFile: null // FIXED: Added to fully catch field data from Section D layout
+    guardianshipProofFile: null, // FIXED: Added to fully catch field data from Section D layout
+    
+    // NEW ACADEMIC UPLOAD TARGETS
+    kpseaResultSlipFile: null,
+    juniorSchoolTranscriptFile: null
   });
+
+  // Structural References for Native Input Targeting
+  const fileInputRefs = {
+    passportPhotoFile: createRef(),
+    birthCertFile: createRef(),
+    fatherIdFile: createRef(),
+    motherIdFile: createRef(),
+    fatherPayslipFile: createRef(),
+    motherPayslipFile: createRef(),
+    fatherBusinessFile: createRef(),
+    motherBusinessFile: createRef(),
+    fatherTitleDeedFile: createRef(),
+    motherTitleDeedFile: createRef(),
+    fatherDeathCertFile: createRef(),
+    motherDeathCertFile: createRef(),
+    guardianshipProofFile: createRef(),
+    kpseaResultSlipFile: createRef(),
+    juniorSchoolTranscriptFile: createRef()
+  };
 
   // Dynamic array table tracking hook for dynamic sibling entries
   const [siblingsList, setSiblingsList] = useState([
@@ -150,6 +173,19 @@ function App() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    if (files && files[0]) {
+      setFormData(prev => ({ ...prev, [name]: files[0] }));
+    }
+  };
+
+  const triggerFileSelect = (inputName) => {
+    if (fileInputRefs[inputName] && fileInputRefs[inputName].current) {
+      fileInputRefs[inputName].current.click();
+    }
   };
 
   const handleSelectChange = (index, field, value) => {
@@ -273,6 +309,10 @@ function App() {
     if (formData.fatherDeathCertFile) payload.append('fatherDeathCertFile', formData.fatherDeathCertFile);
     if (formData.motherDeathCertFile) payload.append('motherDeathCertFile', formData.motherDeathCertFile);
     if (formData.guardianshipProofFile) payload.append('guardianshipProofFile', formData.guardianshipProofFile);
+    
+    // NEW ACADEMIC ASSET PARSING
+    if (formData.kpseaResultSlipFile) payload.append('kpseaResultSlipFile', formData.kpseaResultSlipFile);
+    if (formData.juniorSchoolTranscriptFile) payload.append('juniorSchoolTranscriptFile', formData.juniorSchoolTranscriptFile);
 
     try {
       const response = await fetch('http://localhost:5000/api/applications', {
@@ -316,6 +356,9 @@ function App() {
           <ActiveStepComponent
             formData={formData}
             handleInputChange={handleInputChange}
+            handleFileChange={handleFileChange}
+            fileInputRefs={fileInputRefs}
+            triggerFileSelect={triggerFileSelect}
             selections={selections}
             tracks={tracks}
             handleSelectChange={handleSelectChange}

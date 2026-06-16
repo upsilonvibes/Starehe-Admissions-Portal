@@ -105,7 +105,7 @@ const ApplicationSchema = new mongoose.Schema({
     },
 
     admissionJustification: {
-        applicationStream: { type: String, default: '', trim: true }, // Added field
+        applicationStream: { type: String, default: '', trim: true },
         explanationText: { type: String, required: true, trim: true },
         signeeName: { type: String, required: true, trim: true },
         signeeOccupation: { type: String, default: '', trim: true },
@@ -121,7 +121,6 @@ const ApplicationSchema = new mongoose.Schema({
         signedAt: { type: Date, default: Date.now }
     },
     
-    // UPDATED: Destructured explicitly to match distinctive frontend file payloads cleanly
     documentAttachments: {
         passportPhotoPath: { type: String, default: '' }, 
         birthCertPath: { type: String, default: '' },     
@@ -135,7 +134,10 @@ const ApplicationSchema = new mongoose.Schema({
         motherTitleDeedPath: { type: String, default: '' },
         fatherDeathCertPath: { type: String, default: '' },
         motherDeathCertPath: { type: String, default: '' },
-        guardianshipProofPath: { type: String, default: '' }
+        guardianshipProofPath: { type: String, default: '' },
+        // NEW ACADEMIC ATTRIBUTES REGISTERED FOR COLLECTION MONGOOSE SCHEMA
+        kpseaResultSlipPath: { type: String, default: '' },
+        juniorSchoolTranscriptPath: { type: String, default: '' }
     }
 }, {
     timestamps: true 

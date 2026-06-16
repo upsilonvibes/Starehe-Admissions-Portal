@@ -32,7 +32,10 @@ const coreApplicationUploadFields = [
     { name: 'motherTitleDeedFile', maxCount: 1 },
     { name: 'fatherDeathCertFile', maxCount: 1 },
     { name: 'motherDeathCertFile', maxCount: 1 },
-    { name: 'guardianshipProofFile', maxCount: 1 }
+    { name: 'guardianshipProofFile', maxCount: 1 },
+    // NEW ACADEMIC ENTRIES INTERCEPTED BY MULTER
+    { name: 'kpseaResultSlipFile', maxCount: 1 },
+    { name: 'juniorSchoolTranscriptFile', maxCount: 1 }
 ];
 
 router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) => {
@@ -174,7 +177,10 @@ router.post('/', upload.fields(coreApplicationUploadFields), async (req, res) =>
                 motherTitleDeedPath: req.files?.motherTitleDeedFile?.[0]?.path || '',
                 fatherDeathCertPath: req.files?.fatherDeathCertFile?.[0]?.path || '',
                 motherDeathCertPath: req.files?.motherDeathCertFile?.[0]?.path || '',
-                guardianshipProofPath: req.files?.guardianshipProofFile?.[0]?.path || ''
+                guardianshipProofPath: req.files?.guardianshipProofFile?.[0]?.path || '',
+                // PARSED PATH STRINGS RETRIEVED FROM CLOUDINARY
+                kpseaResultSlipPath: req.files?.kpseaResultSlipFile?.[0]?.path || '',
+                juniorSchoolTranscriptPath: req.files?.juniorSchoolTranscriptFile?.[0]?.path || ''
             }
         };
 
