@@ -2,17 +2,31 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Landing from './components/Landing'; // Import our new modular page
+import Landing from './components/Landing'; 
 import Personal from './components/Personal';
 import Academics from './components/Academics';
 import Pathway from './components/Pathway';
 import Family from './components/Family';
 import Review from './components/Review';
 
+// temporary baseline placeholder component for the recommendations layout
+const RecommendationsPlaceholder = ({ onNext, onBack }) => (
+  <div className="form-section placeholder-card">
+    <h3>Recommendations & References Section</h3>
+    <p style={{ margin: '15px 0', color: '#666' }}>
+      [This section will contain official structural validation input logs, Primary School Headteacher recommendations, and regional Chief/Ministerial certificates.]
+    </p>
+    <div className="form-actions-container split-buttons" style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
+      <button type="button" className="back-btn" onClick={onBack}>← Back</button>
+      <button type="button" className="next-btn" onClick={onNext}>Next: Final Declaration →</button>
+    </div>
+  </div>
+);
+
 function App() {
   // === THE STATE ENGINE MANAGEMENT ===
-  const [view, setView] = useState('landing'); 
-  const [currentStep, setCurrentStep] = useState(0);        
+  const [view, setView] = useState('landing');
+  const [currentStep, setCurrentStep] = useState(0);
   const [serverStatus, setServerStatus] = useState("Connecting to Brain...");
 
   // Form identity state initialization
@@ -27,31 +41,67 @@ function App() {
     schoolKnecCode: '',
     juniorSchool: '',
     subCounty: '',
-    schoolCounty:'',
-    schoolSubCounty:'',
+    schoolCounty: '',
+    schoolSubCounty: '',
     county: '',
     religion: '',
     nationality: '',
     applicationType: 'Standard',
     transferReason: '',
     currentGrade: 'Grade 9',
-    isFirstTimeApplication: 'Yes', 
-    reapplicationReason: '',       
-    passportPhotoFile: null,       
-    birthCertFile: null
+    isFirstTimeApplication: 'Yes',
+    reapplicationReason: '',
+    passportPhotoFile: null,
+    birthCertFile: null,
+
+    // Parent Structure Fields
+    fatherName: '', fatherStatus: 'Alive', fatherMarital: '', fatherNationality: 'Kenyan', fatherIdNo: '', fatherEmployment: '', fatherBusiness: '', fatherLand: '', fatherOtherIncome: '', fatherMonthlyIncome: 0, fatherAddress: '', fatherHouse: '',
+    motherName: '', motherStatus: 'Alive', motherMarital: '', motherNationality: 'Kenyan', motherIdNo: '', motherEmployment: '', motherBusiness: '', motherLand: '', motherOtherIncome: '', motherMonthlyIncome: 0, motherAddress: '', motherHouse: '',
+
+    // Sibling Metadata Arrays
+    siblingFeesPayer: '',
+
+    // Narrative & Sign-off Block
+    applicationStream: '', // Safely added to catch stream types
+    justificationText: '',
+    familySigneeName: '',
+    familySigneeOccupation: '',
+    familySigneeAddress: '',
+    familySigneeMobile: '',
+    familySigneeEmail: '',
+    familyRelationship: '',
+    hasAdoptedSignature: false, // Explicitly tracks signature checkbox binding
+
+    // Verification Asset File Objects
+    fatherIdFile: null, 
+    motherIdFile: null, 
+    fatherPayslipFile: null, 
+    motherPayslipFile: null, 
+    fatherBusinessFile: null, 
+    motherBusinessFile: null, 
+    fatherTitleDeedFile: null, 
+    motherTitleDeedFile: null, 
+    fatherDeathCertFile: null, 
+    motherDeathCertFile: null,
+    guardianshipProofFile: null // FIXED: Added to fully catch field data from Section D layout
   });
 
+  // Dynamic array table tracking hook for dynamic sibling entries
+  const [siblingsList, setSiblingsList] = useState([
+    { name: '', gender: '', age: '', schoolOrOccupation: '', incomeOrFeesPaid: '' }
+  ]);
+
   const handleSelectSchoolTrack = (trackCode) => {
-    const systemCode = trackCode.toUpperCase(); 
+    const systemCode = trackCode.toUpperCase();
     const autoGender = systemCode === 'SGC' ? 'Female' : 'Male';
 
-    setView(trackCode);     
-    setCurrentStep(0);      
+    setView(trackCode);
+    setCurrentStep(0);
 
     setFormData((prev) => ({
       ...prev,
-      institutionType: systemCode, 
-      gender: autoGender           
+      institutionType: systemCode,
+      gender: autoGender
     }));
   };
 
@@ -76,12 +126,14 @@ function App() {
     ]
   };
 
+  // TWEAK: Expanded to include a 6-step layout system seamlessly
   const FORM_STEPS = [
     { id: 'personal', title: 'Personal Identity', component: Personal },
     { id: 'academics', title: 'Academic Background', component: Academics },
     { id: 'pathway', title: 'Pathway Priorities', component: Pathway },
     { id: 'family', title: 'Family Information', component: Family },
-    { id: 'review', title: 'Final Declaration', component: Review }
+    { id: 'recommendations', title: 'Recommendations & References', component: RecommendationsPlaceholder }, // Step 5 of 6
+    { id: 'review', title: 'Final Declaration', component: Review } // Step 6 of 6
   ];
 
   useEffect(() => {
@@ -104,7 +156,7 @@ function App() {
     setSelections(prev => {
       const updated = [...prev];
       updated[index][field] = value;
-      if (field === 'pathway') updated[index].track = ''; 
+      if (field === 'pathway') updated[index].track = '';
       return updated;
     });
   };
@@ -119,7 +171,7 @@ function App() {
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
     } else {
-      setView('landing'); 
+      setView('landing');
     }
   };
 
@@ -127,7 +179,7 @@ function App() {
     if (e && typeof e.preventDefault === 'function') {
       e.preventDefault();
     }
-    
+
     const payload = new FormData();
     payload.append('institutionType', view === 'sbc' ? "SBC" : "SGC");
     payload.append('personalInfo[fullName]', `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim());
@@ -160,12 +212,67 @@ function App() {
     payload.append('pathwayChoices[choice3][pathwayName]', selections[2]?.pathway || "");
     payload.append('pathwayChoices[choice3][trackName]', selections[2]?.track || "");
 
-    payload.append('legalDeclaration[hasCertifiedTrueData]', true);
-    payload.append('legalDeclaration[signatureName]', `${formData.firstName} ${formData.lastName}`.trim());
+    // --- FAMILY BACKGROUND FORM DATA EXTRUSION ---
+    payload.append('familyBackground[father][fullName]', formData.fatherName);
+    payload.append('familyBackground[father][status]', formData.fatherStatus);
+    payload.append('familyBackground[father][maritalStatus]', formData.fatherMarital);
+    payload.append('familyBackground[father][nationality]', formData.fatherNationality);
+    payload.append('familyBackground[father][nationalIdNo]', formData.fatherIdNo);
+    payload.append('familyBackground[father][employmentDetails]', formData.fatherEmployment);
+    payload.append('familyBackground[father][businessDetails]', formData.fatherBusiness);
+    payload.append('familyBackground[father][landAssets]', formData.fatherLand);
+    payload.append('familyBackground[father][otherIncomeSource]', formData.fatherOtherIncome);
+    payload.append('familyBackground[father][averageMonthlyIncome]', formData.fatherMonthlyIncome);
+    payload.append('familyBackground[father][physicalAddress]', formData.fatherAddress);
+    payload.append('familyBackground[father][houseOwnership]', formData.fatherHouse);
+
+    payload.append('familyBackground[mother][fullName]', formData.motherName);
+    payload.append('familyBackground[mother][status]', formData.motherStatus);
+    payload.append('familyBackground[mother][maritalStatus]', formData.motherMarital);
+    payload.append('familyBackground[mother][nationality]', formData.motherNationality);
+    payload.append('familyBackground[mother][nationalIdNo]', formData.motherIdNo);
+    payload.append('familyBackground[mother][employmentDetails]', formData.motherEmployment);
+    payload.append('familyBackground[mother][businessDetails]', formData.motherBusiness);
+    payload.append('familyBackground[mother][landAssets]', formData.motherLand);
+    payload.append('familyBackground[mother][otherIncomeSource]', formData.motherOtherIncome);
+    payload.append('familyBackground[mother][averageMonthlyIncome]', formData.motherMonthlyIncome);
+    payload.append('familyBackground[mother][physicalAddress]', formData.motherAddress);
+    payload.append('familyBackground[mother][houseOwnership]', formData.motherHouse);
+
+    payload.append('familyBackground[siblings]', JSON.stringify(siblingsList));
+    payload.append('familyBackground[siblingFeesPayer]', formData.siblingFeesPayer);
+
+    // --- JUSTIFICATION BLOCK EXTRUSION ---
+    payload.append('admissionJustification[applicationStream]', formData.applicationStream);
+    payload.append('admissionJustification[explanationText]', formData.justificationText);
+    payload.append('admissionJustification[signeeName]', formData.familySigneeName);
+    payload.append('admissionJustification[signeeOccupation]', formData.familySigneeOccupation);
+    payload.append('admissionJustification[signeeAddress]', formData.familySigneeAddress);
+    payload.append('admissionJustification[signeeMobile]', formData.familySigneeMobile);
+    payload.append('admissionJustification[signeeEmail]', formData.familySigneeEmail);
+    payload.append('admissionJustification[relationshipToApplicant]', formData.familyRelationship);
+
+    // --- LEGAL SIGN-OFF SUBMISSION BARRIER ---
+    payload.append('legalDeclaration[hasCertifiedTrueData]', formData.hasAdoptedSignature);
+    payload.append('legalDeclaration[signatureName]', formData.familySigneeName || "");
     payload.append('legalDeclaration[verifiedAt]', new Date().toISOString());
 
+    // Main structural identification assets 
     if (formData.passportPhotoFile) payload.append('passportPhotoFile', formData.passportPhotoFile);
     if (formData.birthCertFile) payload.append('birthCertFile', formData.birthCertFile);
+
+    // FIXED: Explicit distinctive field keys mapped to guarantee clean backend interception
+    if (formData.fatherIdFile) payload.append('fatherIdFile', formData.fatherIdFile);
+    if (formData.motherIdFile) payload.append('motherIdFile', formData.motherIdFile);
+    if (formData.fatherPayslipFile) payload.append('fatherPayslipFile', formData.fatherPayslipFile);
+    if (formData.motherPayslipFile) payload.append('motherPayslipFile', formData.motherPayslipFile);
+    if (formData.fatherBusinessFile) payload.append('fatherBusinessFile', formData.fatherBusinessFile);
+    if (formData.motherBusinessFile) payload.append('motherBusinessFile', formData.motherBusinessFile);
+    if (formData.fatherTitleDeedFile) payload.append('fatherTitleDeedFile', formData.fatherTitleDeedFile);
+    if (formData.motherTitleDeedFile) payload.append('motherTitleDeedFile', formData.motherTitleDeedFile);
+    if (formData.fatherDeathCertFile) payload.append('fatherDeathCertFile', formData.fatherDeathCertFile);
+    if (formData.motherDeathCertFile) payload.append('motherDeathCertFile', formData.motherDeathCertFile);
+    if (formData.guardianshipProofFile) payload.append('guardianshipProofFile', formData.guardianshipProofFile);
 
     try {
       const response = await fetch('http://localhost:5000/api/applications', {
@@ -176,7 +283,7 @@ function App() {
 
       if (response.ok) {
         const explicitTargetCentre = view === 'sbc' ? "Starehe Boys' Centre" : "Starehe Girls' Centre";
-        alert(`🎉 ¡Éxito! Application Submitted Successfully!\n\nYour application has been received by ${explicitTargetCentre}.\nTracking Reference ID: ${result.applicationId || 'SUCCESS-NET'}`);
+        alert(`🎉 Success! Application Submitted Successfully!\n\nYour application has been received by ${explicitTargetCentre}.\nTracking Reference ID: ${result.applicationId || 'SUCCESS-NET'}`);
         setView('landing');
         setCurrentStep(0);
       } else {
@@ -191,17 +298,17 @@ function App() {
 
   return (
     <div className="app-layout">
-      {/* Renders institutional details only when inside a pathway step */}
       <Header view={view} />
 
       {view === 'landing' ? (
-        <Landing 
-          serverStatus={serverStatus} 
-          onSelectTrack={handleSelectSchoolTrack} 
+        <Landing
+          serverStatus={serverStatus}
+          onSelectTrack={handleSelectSchoolTrack}
         />
       ) : (
         <main id="center">
           <div className="progress-metadata-bar">
+            {/* AUTOMATICALLY DYNAMIC: Evaluates step length cleanly to show Step X of 6 */}
             <span className="step-badge">Step {currentStep + 1} of {FORM_STEPS.length}</span>
             <h2 className="step-main-title">{FORM_STEPS[currentStep].title}</h2>
           </div>
@@ -213,6 +320,8 @@ function App() {
             tracks={tracks}
             handleSelectChange={handleSelectChange}
             view={view}
+            siblingsList={siblingsList}
+            setSiblingsList={setSiblingsList}
             onNext={handleNext}
             onBack={handleBack}
             onSubmit={handleFormSubmit}

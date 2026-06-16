@@ -502,9 +502,9 @@ img {
 .form-dropdown {
   padding: 16px;
   border-radius: 8px;
-  border: 1px solid #444;
-  background-color: #242424;
-  color: white;
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #475569;
   font-size: 1rem;
   width: 200px;
 }
@@ -584,7 +584,7 @@ img {
   text-align: left;
 }
 
-/* --- Passport & Birth Cert Upload Cards ---  */
+/* === DOCUMENT UPLOADING SECTION ===  */
 .upload-card-wrapper {
   background-color: #f0f7ff;
   border: 2px dashed #417cb8;
@@ -592,6 +592,7 @@ img {
   padding: 1.25rem;
   margin-top: 0.5rem;
   transition: background-color 0.2s ease;
+  flex: 1;
 }
 
 .upload-card-wrapper label {
@@ -663,6 +664,16 @@ img {
   border: 1px solid #bbf7d0;
 }
 
+.upload-group-title-banner {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #475569;
+  background-color: #f8fafc;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
 /* --- Dynamic Admission Context Banner --- */
 .admission-context-banner {
   background-color: #f8fafc;
@@ -697,6 +708,7 @@ img {
     opacity: 0;
     transform: translateY(-8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -709,13 +721,16 @@ img {
     background-color: #1e293b;
     border-left-color: #60a5fa;
   }
+
   .admission-context-text {
     color: #cbd5e1;
   }
+
   .admission-context-text .highlight-text {
     color: #60a5fa;
   }
 }
+
 /* ==========================================================================
    7. STEP PAGE 2: ACADEMIC BACKGROUND STYLES
    ========================================================================== */
@@ -809,13 +824,484 @@ img {
 
 
 /* ==========================================================================
-   9. STEP PAGE 4: FAMILY INFORMATION STYLES
+   9. STEP PAGE 4: FAMILY INFORMATION STYLES 
    ========================================================================== */
-/* Reserved for family setup cards later */
+
+/* Main form Layout Wrapper */
+.family-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Sub-profile Containers */
+.parent-sub-profile {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.sub-profile-title {
+  font-size: 1.15rem;
+  color: #ffe600;
+  border-left: 4px solid #3b82f6;
+  padding-left: 0.75rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+/* CRITICAL: Scoped to protect global flexbox settings elsewhere */
+.family-form-container .input-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.family-form-container .input-row .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Scoped input control reset fields */
+.family-form-container .input-group input[type="text"],
+.family-form-container .input-group input[type="number"],
+.family-form-container .input-group input[type="tel"],
+.family-form-container .input-group input[type="email"],
+.family-form-container .input-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.family-form-container .input-group input:focus,
+.family-form-container .input-group select:focus,
+.family-form-container .input-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.family-form-container .input-row.triple-row {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* --- FORM NOTICE / DISCLAIMER BOX --- */
+
+.form-notice-box {
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  margin-bottom: 1.75rem;
+  font-size: 0.925rem;
+  line-height: 1.5;
+  border-left: 5px solid #cccccc;
+  background-color: #f8f9fa;
+  color: #333333;
+}
+
+/* Urgent Variant (Crimson/Burgundy for critical application disclaimers) */
+.form-notice-box.urgent {
+  background-color: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-left: 5px solid #e53e3e;
+  /* Clear crimson accent border */
+  color: #9b2c2c;
+}
+
+.form-notice-box.urgent strong {
+  color: #c53030;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 0.25rem;
+}
+
+.form-notice-box p {
+  margin: 0;
+}
+
+
+/* --- NARRATIVE SUBSYSTEM STYLES --- */
+
+/* Label overrides for complex, long instructional labels */
+.text-area-group label {
+  display: block;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #0e68bb;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+/* Styled text area for deep narrative inputs */
+.text-area-group textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #2d3748;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.text-area-group textarea:focus {
+  outline: none;
+  border-color: #4a5568;
+  box-shadow: 0 0 0 3px rgba(74, 85, 104, 0.1);
+}
+
+.text-area-group textarea::placeholder {
+  color: #a0aec0;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Subtle CSS animation helper when switching streams */
+.stream-fade-in {
+  animation: narrativeFadeIn 0.35s ease-out forwards;
+  margin-top: 1.25rem;
+}
+
+@keyframes narrativeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- SIGNATURE PAD SUBSYSTEM ---   */
+
+
+.signature-generation-zone {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+}
+
+.signature-preview-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+
+.sig-meta-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+/* Script display mimics traditional handwriting style */
+.signature-script-display {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1.5rem;
+  font-family: 'Georgia', 'Caveat', 'Great Vibes', cursive, serif;
+  font-style: italic;
+  font-size: 1.75rem;
+  color: #1e3a8a;
+  /* Deep signature blue tint */
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.05);
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  border-left: 4px solid #3b82f6;
+}
+
+/* Checkbox structural grid alignment */
+.signature-attestation-checkbox {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 0.75rem;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  gap: 0.75rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: #1e3a8a;
+}
+
+.checkbox-label-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+
+/*--- PERMANENT VERTICAL SIBLING CARD MATRIX --- */
+
+.table-responsive-wrapper {
+  width: 100%;
+  margin-bottom: 1.25rem;
+  background-color: transparent;
+  border: none;
+}
+
+.siblings-data-table {
+  display: block;
+  width: 100%;
+}
+
+.siblings-data-table thead {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+.siblings-data-table tbody {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.siblings-data-table tr {
+  display: flex;
+  flex-direction: column;
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.25rem;
+  gap: 0.85rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.siblings-data-table tr:hover {
+  border-color: #475569;
+}
+
+.siblings-data-table td {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0.85rem 0 !important;
+  border-bottom: 1px dashed #334155;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.siblings-data-table td:last-child {
+  border-bottom: none;
+  padding-bottom: 0 !important;
+  margin-top: 0.25rem;
+  justify-content: center;
+}
+
+.siblings-data-table td::before {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  text-align: left;
+  white-space: nowrap;
+  padding-right: 1rem;
+}
+
+.siblings-data-table td:nth-of-type(1)::before {
+  content: "Full Name:";
+}
+
+.siblings-data-table td:nth-of-type(2)::before {
+  content: "Gender:";
+}
+
+.siblings-data-table td:nth-of-type(3)::before {
+  content: "Age:";
+}
+
+.siblings-data-table td:nth-of-type(4)::before {
+  content: "School/Occupation:";
+}
+
+.siblings-data-table td:nth-of-type(5)::before {
+  content: "Fees/Income (Annual):";
+}
+
+.siblings-data-table td:nth-of-type(6)::before {
+  content: "Action:";
+}
+
+.siblings-data-table td input,
+.siblings-data-table td select {
+  width: 55% !important;
+  max-width: 220px;
+  padding: 0.5rem 0.75rem;
+  background-color: #0f172a;
+  border: 1px solid #475569;
+  color: #ffffff;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+}
+
+.siblings-data-table td:nth-child(3) input {
+  max-width: 80px;
+}
+
+/* Remove default spinner arrows from Age number inputs */
+.siblings-data-table input[type="number"]::-webkit-outer-spin-button,
+.siblings-data-table input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.siblings-data-table input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.btn-table-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-table-remove:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.btn-table-remove::after {
+  content: " Remove Sibling Entry";
+}
+
+.btn-secondary-add-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #1e293b;
+  color: #3b82f6;
+  border: 1px dashed #3b82f6;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: auto;
+}
+
+.btn-secondary-add-row:hover {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.separate-top-padding {
+  margin-top: 1.5rem;
+}
+
+/* Force specific liability matrix layouts to span across 100% full screen width */
+.family-form-container .input-row.full-width-row {
+  grid-template-columns: 1fr !important;
+  width: 100%;
+}
+
+
+/* --- Section C: Special Textarea Configurations --- */
+.text-area-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.family-form-container .form-section:has(.text-area-group) .input-row {
+  grid-template-columns: 1fr;
+}
+
+.text-area-group textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  background-color: #1e293b;
+  color: #ffffff;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  resize: vertical;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+/* --- Section Breakpoints & Global Utilities --- */
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: #334155;
+  margin: 2rem 0;
+}
+
+.section-instructions-bar {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 1.25rem;
+  line-height: 1.4;
+}
+
+/* Remove default spinner arrows from Average Monthly Income number inputs */
+.family-form-container input[type="number"]::-webkit-outer-spin-button,
+.family-form-container input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.family-form-container input[type="number"] {
+  -moz-appearance: textfield;
+  /* Firefox support */
+}
+
+/* ==========================================================================
+   10. STEP PAGE 5: RECOMMENDATIONS SECTION STYLES
+   ========================================================================== */
+/* Reserved for recommendations setup cards later */
 
 
 /* ==========================================================================
-   10. STEP PAGE 5: REVIEW & FINAL DECLARATION STYLES
+   11. STEP PAGE 5: REVIEW & FINAL DECLARATION STYLES
    ========================================================================== */
 /* --- Summary Dossier Card Styling --- */
 .summary-dossier-card {
@@ -952,7 +1438,7 @@ img {
 
 
 /* ==========================================================================
-   11. NAVIGATION CONTROLS (Action Buttons & Bars)
+   12. NAVIGATION CONTROLS (Action Buttons & Bars)
    ========================================================================== */
 .back-btn {
   background: transparent;
@@ -1037,7 +1523,7 @@ img {
 
 
 /* ==========================================================================
-   12. CORE SYSTEM ANIMATIONS
+   13. CORE SYSTEM ANIMATIONS
    ========================================================================== */
 /* Smooth entry animation */
 .animate-in {
@@ -1049,6 +1535,7 @@ img {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1057,7 +1544,7 @@ img {
 
 
 /* ==========================================================================
-   13. RESPONSIVE UTILITIES (Media Queries Hierarchy)
+   14. RESPONSIVE UTILITIES (Media Queries Hierarchy)
    ========================================================================== */
 /* === TABLET & SMALL LAPTOPS (under 1024px) === */
 @media (max-width: 1024px) {
@@ -1070,8 +1557,23 @@ img {
   }
 }
 
+@media screen and (max-width: 968px) {
+  .family-form-container .form-section {
+    padding: 1.5rem;
+  }
+
+  .family-form-container .upload-grid-row {
+    grid-template-columns: 1fr;
+  }
+
+  .family-form-container .input-row {
+    gap: 1rem;
+  }
+}
+
 /* === MOBILE DEVICES (under 768px) === */
 @media (max-width: 768px) {
+
   /* Stack the logo cards vertically or shrink them */
   .logo-fan-container {
     transform: scale(0.8);
@@ -1166,7 +1668,196 @@ img {
     align-self: stretch;
     text-align: center;
   }
+
+
+  /* --- Family Structural Grid Compression Layouts --- */
+  .family-form-container {
+    gap: 1.25rem;
+  }
+
+  .family-form-container .input-row,
+  .family-form-container .input-row.triple-row {
+    grid-template-columns: 1fr !important;
+    margin-bottom: 0.75rem;
+  }
+
+  .family-form-container .form-section legend {
+    font-size: 1.1rem;
+  }
+
+  .sub-profile-title {
+    font-size: 1rem;
+  }
+
+  .family-form-container .input-group {
+    min-width: 100%;
+  }
+
+  /* --- Sibling Mobile Card Structural System --- */
+  .siblings-data-table,
+  .siblings-data-table thead,
+  .siblings-data-table tbody,
+  .siblings-data-table th,
+  .siblings-data-table td,
+  .siblings-data-table tr {
+    display: block;
+  }
+
+  /* Hide header systems offscreen */
+  .siblings-data-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  /* Fixed light color conflict bug: Switched fields from crisp white card profiles to dark ecosystem themes */
+  .siblings-data-table tr {
+    border: 1px solid #334155;
+    border-radius: 6px;
+    margin-bottom: 1.25rem;
+    padding: 0.75rem;
+    background-color: #1e293b;
+    position: relative;
+  }
+
+  .siblings-data-table td {
+    border: none;
+    border-bottom: 1px dashed #334155;
+    position: relative;
+    padding-left: 45%;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    text-align: right;
+  }
+
+  .siblings-data-table td:last-child {
+    border-bottom: none;
+    text-align: center;
+    padding-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  /* Table Mobile Floating Pseudolabels */
+  .siblings-data-table td::before {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    width: 40%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    /* Replaced high contrast text color bug for balanced visibility */
+  }
+
+  .siblings-data-table td:nth-of-type(1)::before {
+    content: "Full Name:";
+  }
+
+  .siblings-data-table td:nth-of-type(2)::before {
+    content: "Gender:";
+  }
+
+  .siblings-data-table td:nth-of-type(3)::before {
+    content: "Age:";
+  }
+
+  .siblings-data-table td:nth-of-type(4)::before {
+    content: "Institution:";
+  }
+
+  .siblings-data-table td:nth-of-type(5)::before {
+    content: "Fees/Income:";
+  }
+
+  .siblings-data-table td:nth-of-type(6)::before {
+    content: "Control Action:";
+  }
+
+  .siblings-data-table input,
+  .siblings-data-table select {
+    width: 100%;
+    max-width: 200px;
+    display: inline-block;
+    background-color: #0f172a;
+    /* Maintain uniform nesting visibility matrix */
+  }
+
+  .btn-table-remove,
+  .btn-secondary-add-row,
+  .family-form-container .btn-nav-backward,
+  .family-form-container .btn-nav-forward {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem;
+  }
+
+  .family-form-container .form-navigation-buttons-row {
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+
+  .siblings-data-table td {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.4rem !important;
+    text-align: left !important;
+    padding-left: 0 !important;
+    border-bottom: 1px solid #334155;
+  }
+
+  .siblings-data-table td::before {
+    position: static !important;
+    transform: none !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 0.2rem;
+    font-size: 0.85rem;
+  }
+
+  .siblings-data-table td input,
+  .siblings-data-table td select {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    display: block !important;
+  }
+
+  .btn-secondary-add-row {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .family-form-container .form-navigation-buttons-row {
+    flex-direction: column-reverse;
+    gap: 1rem;
+  }
+
+  .text-area-group label {
+    font-size: 0.9rem;
+  }
+
+  .text-area-group textarea {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  .signature-script-display {
+    font-size: 1.4rem;
+    padding: 1rem;
+  }
+
+  .checkbox-label-text {
+    font-size: 0.85rem;
+  }
 }
+
+
+
 
 /* Mobile Compatibility */
 @media (max-width: 640px) {
@@ -1192,5 +1883,30 @@ img {
 
   .mission-text {
     font-size: 0.85rem;
+  }
+
+  /* --- Family Section Small Phone Overrides --- */
+  .family-form-container .form-section {
+    padding: 1rem 0.75rem;
+  }
+
+  .family-form-container .upload-card-wrapper {
+    padding: 0.85rem;
+  }
+
+  .siblings-data-table td {
+    padding-left: 35%;
+  }
+
+  .siblings-data-table input,
+  .siblings-data-table select {
+    max-width: 160px;
+    font-size: 0.9rem;
+  }
+
+  .form-notice-box {
+    padding: 0.85rem 1rem;
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
   }
 }

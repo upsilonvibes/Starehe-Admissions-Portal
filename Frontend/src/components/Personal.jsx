@@ -309,13 +309,18 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
       {/* SECTION E: MANDATORY INITIAL ATTACHMENTS */}
       <fieldset className="form-section">
         <legend>Section E: Primary Document Uploads</legend>
-        <div className="input-row">
+        <p className="section-instructions-bar alert-bar">
+          ⚠️ <strong>File Standards Policy:</strong> All uploaded items must be clear photographic images  or consolidated PDF sheets up to 5MB are accepted for validation tracking.
+        </p>
+        <div className="input-row ">
           
           <div className="input-group upload-card-wrapper">
+            <div className="upload-info">
             <label htmlFor="passportPhotoFile">
               1. Passport Size Photograph <span className="required-star">* </span>
               <span className="sub-helper-label">Taken within the last 2 months against a plain background.</span>
             </label>
+            </div>
             <input 
               type="file" 
               id="passportPhotoFile" 
@@ -324,16 +329,19 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               onChange={handleFileChange} 
               required={!formData.passportPhotoFile}
             />
-            {formData.passportPhotoFile && (
-              <span className="file-indicator-success">✔ Photo Staged ({formData.passportPhotoFile.name})</span>
-            )}
+            <button type="button" className="upload-btn" onClick={() => triggerFileSelect('passportPhotoFile')}>
+                {formData.passportPhotoFile ? "🔄 Change File" : "📁 Choose File"}
+              </button>
+              {formData.passportPhotoFile && <span className="file-indicator-success">✔ Staged ({formData.passportPhotoFile.name})</span>}
           </div>
 
-          <div className="input-group upload-card-wrapper">
+          <div className=" upload-card-wrapper">
+             <div className="upload-info">
             <label htmlFor="birthCertFile">
               2. Birth Certificate Copy <span className="required-star">* </span>
               <span className="sub-helper-label">Clear scanned image or PDF copy of the full document.</span>
             </label>
+            </div>
             <input 
               type="file" 
               id="birthCertFile" 
@@ -342,10 +350,12 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
               onChange={handleFileChange} 
               required={!formData.birthCertFile}
             />
-            {formData.birthCertFile && (
-              <span className="file-indicator-success">✔ Document Staged ({formData.birthCertFile.name})</span>
-            )}
+            <button type="button" className="upload-btn" onClick={() => triggerFileSelect('birthCertFile')}>
+                {formData.birthCertFile ? "🔄 Change File" : "📁 Choose File"}
+              </button>
+              {formData.birthCertFile && <span className="file-indicator-success">✔ Staged ({formData.birthCertFile.name})</span>}
           </div>
+
 
         </div>
       </fieldset>

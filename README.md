@@ -18,14 +18,15 @@ A modern, production-grade full-stack enrollment wizard designed to digitize and
 
 * **Dynamic Portal Selection & Micro-Interactions**: Tailored UI and institutional theme engine supporting both SBC (Yellow) and SGC (Blue) entry pipelines, including interactive animated logo arrays with reactive hover transitions.
 * **Streamlined Multi-Step Wizard**: Client-side forms cleanly isolated across components to optimize state propagation, transitioning directly from Pathway Priority into a final structural application preview.
-* **Context-Aware Admission Targets**: Embedded dynamic calculation engine processing application types on the fly. Automatically targets regular Grade 10 enrollment for upcoming calendar cycles or computes live mid-stream transfer targets for current scholastic years without hardcoded form parameters.
+* **Context-Aware Admission Targets**: Embedded dynamic calculation engine processing application types on the fly. Automatically targets Grade 10 enrollment for upcoming calendar cycles or computes live mid-stream transfer targets for current scholastic years without hardcoded form parameters.
 * **3-Choice Priority Pathway System**: Interactive ranking module allowing applicants to choose and order their technical or academic tracks (STEM, Social Sciences, Arts) and sub-tracks.
-* **Multipart Binary Document Streaming**: Fully integrated `FormData` pipeline that leverages `multer` to securely ingest and store raw binary attachments (Passport Photos and Birth Certificates).
+* **Adaptive Parent/Guardian Matrix Subsystem**: Intelligently toggles baseline validation parameters (National ID, employment metrics, income brackets) depending on parent status (Alive, Deceased, Unknown/Absent) to prevent browser-level validation crashes while accurately preserving structural profiling data.
+* **Dynamic Stream Justification Engine**: Context-driven narrative layouts that seamlessly adapt based on the application tier selected. Requires an exhaustive, multi-generational extended family financial review for sponsored candidates, while pivoting to institutional preference statements for fee-paying tracks.
+* **Multipart Binary Document Streaming & Standards Safeguard**: Fully integrated `FormData` pipeline that leverages `multer` to securely ingest and store raw binary attachments (Passport Photos, Birth Certificates, and Legal Guardianship verification items) backed by a global client-side file size and validation guard.
+* **Calligraphic Electronic Signature Pad**: Client-side reactive script handwriting engine that auto-renders an official electronic signature preview directly from the signee's plaintext keystrokes, paired with a mandatory legal adoption certification checkout.
 * **Cross-Document Gender Validation**: Advanced asynchronous Mongoose schema hook utilizing root `this.ownerDocument()` resolution to prevent gender mismatches during the registration phase, fully aligned with native routing keys.
 * **Rapid Network Fail-safe Diagnostics**: Configured with a `serverSelectionTimeoutMS` threshold to prevent application stalling and immediately catch local router firewall lookups (`querySrv ECONNREFUSED`).
 * **Government & Exam Validation**: Strict validation schemas matching institutional data rules for Birth Certificate Numbers, NEMIS UPI, Assessment Numbers, and School KNEC Codes.
-* **Conditional Transfer & Re-Application Workflows**: Interactive conditional fields that toggle active states and request specific text justifications strictly for incoming transfer students or historical re-applicants.
-* **Legal Integrity Ticker & Anti-Fraud Sign-off**: High-stakes database submission barrier requiring final legal certification, making explicit that data mismatches result in immediate application rejection.
 
 ## 📁 Optimized Monorepo Architecture
 
@@ -38,10 +39,10 @@ Starehe-Admissions-Portal/           <-- Main Repository Root
 │   ├── public/                      <-- Static Assets & Favicon
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Personal.jsx         # Identity & Government IDs with Context Target Banner (Step 1)
-│   │   │   ├── Academics.jsx        # Historical Academic Background (Step 2)
+│   │   │   ├── Personal.jsx         # Identity, Personal Certifications, & Global File Restrictions Guard
+│   │   │   ├── Academics.jsx        # Historical Academic Background & Exam Track Records
 │   │   │   ├── Pathway.jsx          # Priority Track Ranking Engine (Step 3)
-│   │   │   └── Review.jsx           # Data Verification & Legal Sign-off (Step 4)
+│   │   │   └── Review.jsx           # Adaptive Family Subsystem, Dynamic Stream Narratives, & Sig Pad (Step 4)
 │   │   ├── App.jsx                  # State Orchestration & Multipart FormData Payload Dispatcher
 │   │   └── App.css                  # Custom Structural Pure CSS3 Layout Engine
 │   └── package.json
@@ -52,7 +53,7 @@ Starehe-Admissions-Portal/           <-- Main Repository Root
     ├── uploads/                     # Temporary Local Storage Buffer for Inbound Specimen Images
     ├── server.js                    # Unified Server Entry Point, Multer Middleware, & Aligned Form Routing
     ├── .env                         # Hidden Cloud Database Password String & Port Configs
-    └── package.json
+    ├── package.json
 ```
 
 ## 🏁 Getting Started
