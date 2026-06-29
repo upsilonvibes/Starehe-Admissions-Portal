@@ -361,7 +361,7 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
       </fieldset>
 
       {/* FORM NAVIGATION CONTROLLERS */}
-      <div className="form-actions-container split-buttons">
+      <div className="split-buttons form-actions-container ">
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back to Selection
         </button>

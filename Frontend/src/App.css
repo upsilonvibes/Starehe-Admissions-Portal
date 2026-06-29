@@ -3,11 +3,66 @@
    ========================================================================== */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* Base global variables—these govern the canvas, Landing, Header, and Footer */
+:root {
+  --portal-bg: #1e293b;            /* Sleek default dark layout bg */
+  --portal-accent: #475569;        /* Default fallback border/accent */
+  --notice-bg-color: #334155;      /* Info panel background */
+  --legend-bg: #1e293b;            /* Form section subtitle backing */
+  --text-dark-override: #ffffff;   /* Standard default readable text color */
+}
+
+/* Set the universal base body color layer */
+body {
+  background-color: var(--portal-bg);
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;}
+
+main#center {
+  border-radius: 16px; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); /* Adds a subtle drop shadow to make the portal pop */
+  }
+
+
+
+/* Starehe Boys' Centre Theme Override Matrix - Only targets the active main container */
+main#center[data-theme="sbc"] {
+  --portal-bg:rgb(145, 130, 1);            /* School Amber Yellow background */
+  --portal-accent: #002060;       /* School Navy Blue accents & details */
+  --notice-bg-color: #fffde6;      /* High contrast light-cream alert zone */
+  --legend-bg: #002060;            /* Locks form title backings to Navy */
+  --text-dark-override: #1a202c;   /* Switches alert text to deep dark for readability */
+  
+  background-color: var(--portal-bg);
+  transition: background-color 0.35s ease;
+}
+
+/* Starehe Girls' Centre Theme Override Matrix - Only targets the active main container */
+main#center[data-theme="sgc"] {
+  --portal-bg:#034ebe;           /* SGC Vibrant Royal Blue background */
+  --portal-accent: #ffcc00;        /* SGC Gold/Yellow accents & details */
+  --notice-bg-color: #fffde6;      /* High contrast light-cream alert zone */
+  --legend-bg: #003399;            /* Locks form title backings to Royal Blue */
+  --text-dark-override: #1a202c;   /* Switches alert text to deep dark for readability */
+  
+  background-color: var(--portal-bg);
+  transition: background-color 0.35s ease;
 }
 
 /* Content Centering Core Rules */
@@ -37,7 +92,6 @@ img {
   margin-left: 0.15rem;
 }
 
-
 /* ==========================================================================
    2. SHARED LAYOUT: HEADER & FOOTER STYLES
    ========================================================================== */
@@ -47,17 +101,18 @@ img {
   margin-bottom: 40px;
   animation: fadeIn 0.8s ease-in;
   padding: 20px 40px;
+  background-color: #1d242b !important; /* Forces header to stay beautiful dark slate/black */
+  color: #ffffff;
+  width: 100%;
 }
-
+ 
 .portal-title {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 8px;
-  background: linear-gradient(90deg, #FFD700, #fff, #0047AB);
-  /* --- The Webkit versions for Chrome/Safari/Edge --- */
+  background: linear-gradient(90deg, #FFD700, #fff, #0047AB);/* --- The Webkit versions for Chrome/Safari/Edge --- */
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  /* --- The Standard versions for future-proofing --- */
+  -webkit-text-fill-color: transparent;/* --- The Standard versions for future-proofing --- */
   background-clip: text;
   color: transparent;
   letter-spacing: -1px;
@@ -67,7 +122,6 @@ img {
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.85rem;
   color: #4ade80;
-  /* A clean "terminal green" for status */
   margin-bottom: 15px;
   opacity: 0.8;
 }
@@ -110,7 +164,7 @@ img {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(39, 30, 30, 0.384);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 12px;
@@ -301,9 +355,11 @@ img {
    ========================================================================== */
 #center {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
+  padding:2rem;
+  margin-top:8px;
   text-align: center;
+  background-color: #05050536;
+  
 }
 
 /* Standalone Dedicated Landing Card Wrapper */
@@ -312,13 +368,20 @@ img {
   max-width: 800px;
   margin: 40px auto;
   padding: 40px 20px;
-  background-color: rgba(255, 255, 255, 0.01);
+  background-color: rgba(248, 247, 247, 0);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
 }
 
 .selection-prompt-box {
   margin-top: 30px;
+}
+
+.selection-prompt-box h2 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-weight: 700;
 }
 
 .selection-prompt-box p {
@@ -523,7 +586,7 @@ img {
   border-radius: 12px;
   padding: 25px;
   margin-bottom: 30px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 254, 254, 0);
 }
 
 .form-section legend {
@@ -1576,37 +1639,58 @@ img {
    12. NAVIGATION CONTROLS (Action Buttons & Bars)
    ========================================================================== */
 .back-btn {
-  background: transparent;
-  border: 1px solid #646cff;
-  color: #646cff;
+  background: rgba(15, 23, 42, 0.08); /* Subtle dark tint that adopts the parent bg shade */
+  border: 1.5px solid currentColor;    /* Inherits whatever high-contrast text color the theme uses */
+  color: inherit;                      /* Dynamically shifts to Navy on SBC yellow, and White on SGC blue */
   font-size: 0.9rem;
   padding: 10px 20px;
-  font-weight: 500;
+  font-weight: 600;                    /* Bump up font weight slightly for readability */
   margin-bottom: 20px;
   cursor: pointer;
   border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;                            /* Perfect for adding a left arrow icon later if you want */
   transition: all 0.2s ease;
 }
 
+/* Crisp hover state */
 .back-btn:hover {
-  background: rgba(100, 108, 255, 0.1);
+  background: rgba(15, 23, 42, 0.18);
+  transform: translateX(-3px);         /* Micro-interaction nudging leftwards */
 }
 
 .next-btn {
-  background: rgb(142, 199, 191);
-  border: 1px solid rgb(112, 169, 161);
-  color: #1e293b;
-  padding: 10px 20px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
+  padding: 10px 20px;
   margin-bottom: 20px;
   cursor: pointer;
   border-radius: 7px;
-  transition: all 0.2s ease;
+  border: none;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
+.next-btn:active,
 .next-btn:hover {
-  background: rgb(122, 179, 171);
+  filter: brightness(0.9);      /* Subtle color shift that safely works on touch or click */
+  transform: translateX(3px);   /* Nudges slightly right */
+}
+
+/* ==========================================================================
+   THEME MATRICES - Explicit, Hardcoded Text/BG Matches
+   ========================================================================== */
+
+/* SBC (Boys Track): Dark Navy Text sitting on top of bright Amber Yellow */
+main#center[data-theme="sbc"] .next-btn {
+  background-color: #0066ff;
+  color: #002060;
+}
+
+/* SGC (Girls Track): Crisp White Text sitting on top of intense Gold/Yellow */
+main#center[data-theme="sgc"] .next-btn {
+  background-color: #ffcc00;
+  color: #003399;
 }
 
 .split-buttons {
@@ -1998,6 +2082,11 @@ img {
   
   .recommendations-layout .full-width-span {
     grid-column: span 1;
+  }
+   main#center {
+    margin: 0;
+    border-radius: 0; /* Snaps flush to the phone edges cleanly */
+    padding: 15px;
   }
 }
 

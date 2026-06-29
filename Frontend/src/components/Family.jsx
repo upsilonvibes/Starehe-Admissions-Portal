@@ -814,7 +814,7 @@ function Family({
         </div>
         <div className="input-row">
           {/* Mother Death Certificate Upload Card */}
-          <div className="upload-card-wrapper full-row-span">
+          <div className="upload-card-wrapper ">
             <div className="upload-info">
               <label>
                 5. Official Death Certificate
@@ -967,14 +967,15 @@ function Family({
         </div>
       </fieldset>
       {/* --- WORKFLOW FOOTER NAVIGATION PANEL --- */}
-      <div className="form-actions-container split-buttons">
+      <div className="split-buttons form-navigation-buttons-row">
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back
         </button>
         <button type="submit" className="next-btn">
-          Next: Recommendations Section →
+          Next: Recommendations Area →
         </button>
       </div>
+
 
     </form>
   );

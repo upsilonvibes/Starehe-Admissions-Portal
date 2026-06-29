@@ -16,7 +16,7 @@ function Academics({ formData, handleInputChange, handleFileChange, fileInputRef
         
         {/* ROW 1: Main Institution Details */}
         <div className="input-row">
-          <div className="input-group full-width">
+          <div className="input-group ">
             <label>Junior School <span className="required-star">* </span></label>
             <input 
               type="text" 
@@ -142,7 +142,7 @@ function Academics({ formData, handleInputChange, handleFileChange, fileInputRef
       </fieldset>
 
       {/* Button container with dual controls */}
-      <div className="form-actions-container split-buttons">
+      <div className="split-buttons form-navigation-buttons-row">
         <button type="button" className="back-btn" onClick={onBack}>
           ← Back
         </button>

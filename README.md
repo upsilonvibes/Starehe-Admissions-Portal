@@ -74,6 +74,7 @@ Starehe-Admissions-Portal/           <-- Main Repository Root
     Create a .env file inside the Backend/ directory:
     ```Plaintext
     PORT=5000
+    ```
 # For local offline sandbox development:
    MONGODB_URI=mongodb://127.0.0.1:27017/starehe_admissions_portal
 # For cloud cluster production environments:
@@ -94,4 +95,4 @@ Open a separate terminal window:
    npm run dev
    ```
     
-Developed with 💙 by **Percy Njuguna** [@upsilonvibes](https://github.com/upsilonvibes)- Upcoming Full-Stack Web Developer. Paso a paso, se llega lejos.    
+Developed with 💙 by [Percy Njuguna](https://github.com/upsilonvibes)- Upcoming Full-Stack Web Developer. Paso a paso, se llega lejos.    

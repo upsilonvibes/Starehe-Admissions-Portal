@@ -486,7 +486,7 @@ const Recommendations = ({
       </div>
 
       {/* --- STEP NAVIGATION CONTROLS --- */}
-      <div className="form-actions-container split-buttons">
+      <div className="split-buttons form-actions-container ">
         <button type="button" className="back-btn" onClick={prevStep}>
           ← Back
         </button>

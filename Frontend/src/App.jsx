@@ -62,7 +62,7 @@ function App() {
 
     // Narrative & Sign-off Block
     applicationStream: '', 
-    justificationText: '',
+    justifycationText: '',
     familySigneeName: '',
     familySigneeOccupation: '',
     familySigneeAddress: '',
@@ -173,11 +173,11 @@ function App() {
       { id: 'applied', name: 'Applied Sciences (Agriculture, Home Science, Computer Science)' }
     ],
     'Social Sciences': [
-      { id: 'lang', name: 'Languages (Literature in English, Fasihi, French, German)' },
+      { id: 'lang', name: 'Languages (Literature in English, Kiswahili/Fasihi, French, German)' },
       { id: 'biz', name: 'Humanities & Business Studies (History, Geography, CRE/IRE, Business)' }
     ],
     'Arts & Sports Science': [
-      { id: 'arts', name: 'Arts (Music & Dance, Fine Art, Theatre & Film)' },
+      { id: 'arts', name: 'Performing Arts (Music & Dance, Fine Art, Theatre & Film)' },
       { id: 'sports', name: 'Sports Science (Physical Education, Sports & Recreation)' }
     ]
   };
@@ -191,10 +191,12 @@ function App() {
     { id: 'review', title: 'Final Declaration', component: Review } 
   ];
 
+  // Global window tracking hook
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [currentStep, view]);
 
+  // Backend sync engine connectivity hook
   useEffect(() => {
     fetch('http://localhost:5000/api/status')
       .then(res => res.json())
@@ -244,7 +246,7 @@ function App() {
   };
 
   // ==================================================
-  // ✅ STEP B: SYNCHRONIZED CENTRAL PRINT HANDLER HOOK
+  // ✅ SYNCHRONIZED CENTRAL PRINT HANDLER HOOK
   // ==================================================
   const handlePrintFormWithLock = (templateGeneratorFunc) => {
     let uniqueId = formData.id;
@@ -276,7 +278,6 @@ function App() {
       e.preventDefault();
     }
 
-    // Ensure an application tracking reference ID is locked down even if they skipped printing
     let uniqueId = formData.id;
     if (!uniqueId) {
       uniqueId = generateCleanReferenceId();
@@ -285,9 +286,7 @@ function App() {
 
     const payload = new FormData();
     
-    // ✅ SYNC CORE SECURITY FOOTPRINT DIRECTLY INTO API STREAM payload
     payload.append('applicationId', uniqueId);
-    
     payload.append('institutionType', view === 'sbc' ? "SBC" : "SGC");
     payload.append('personalInfo[fullName]', `${formData.firstName} ${formData.middleName || ''} ${formData.lastName}`.trim());
     payload.append('personalInfo[dateOfBirth]', formData.dob);
@@ -319,7 +318,6 @@ function App() {
     payload.append('pathwayChoices[choice3][pathwayName]', selections[2]?.pathway || "");
     payload.append('pathwayChoices[choice3][trackName]', selections[2]?.track || "");
 
-    // --- FAMILY BACKGROUND FORM DATA EXTRUSION ---
     payload.append('familyBackground[father][fullName]', formData.fatherName);
     payload.append('familyBackground[father][status]', formData.fatherStatus);
     payload.append('familyBackground[father][maritalStatus]', formData.fatherMarital);
@@ -349,7 +347,6 @@ function App() {
     payload.append('familyBackground[siblings]', JSON.stringify(siblingsList));
     payload.append('familyBackground[siblingFeesPayer]', formData.siblingFeesPayer);
 
-    // RECOMMENDATIONS DATA EXTRUSION PACKETS
     payload.append('recommendations[chief][name]', formData.chiefName);
     payload.append('recommendations[chief][physicalAddress]', formData.chiefPhysicalAddress);
     payload.append('recommendations[chief][mobile]', formData.chiefMobile);
@@ -373,7 +370,6 @@ function App() {
     payload.append('recommendations[headteacher][disciplineRemarks]', formData.headteacherDisciplineRemarks);
     payload.append('recommendations[headteacher][generalComments]', formData.headteacherGeneralComments);
 
-    // --- JUSTIFICATION BLOCK EXTRUSION ---
     payload.append('admissionJustification[applicationStream]', formData.applicationStream);
     payload.append('admissionJustification[explanationText]', formData.justificationText);
     payload.append('admissionJustification[signeeName]', formData.familySigneeName);
@@ -383,16 +379,12 @@ function App() {
     payload.append('admissionJustification[signeeEmail]', formData.familySigneeEmail);
     payload.append('admissionJustification[relationshipToApplicant]', formData.familyRelationship);
 
-    // --- LEGAL SIGN-OFF SUBMISSION BARRIER ---
     payload.append('legalDeclaration[hasCertifiedTrueData]', formData.hasAdoptedSignature);
     payload.append('legalDeclaration[signatureName]', formData.familySigneeName || "");
     payload.append('legalDeclaration[verifiedAt]', new Date().toISOString());
 
-    // Main structural identification assets 
     if (formData.passportPhotoFile) payload.append('passportPhotoFile', formData.passportPhotoFile);
     if (formData.birthCertFile) payload.append('birthCertFile', formData.birthCertFile);
-
-    // Explicit distinctive field keys mapped to guarantee clean backend interception
     if (formData.fatherIdFile) payload.append('fatherIdFile', formData.fatherIdFile);
     if (formData.motherIdFile) payload.append('motherIdFile', formData.motherIdFile);
     if (formData.fatherPayslipFile) payload.append('fatherPayslipFile', formData.fatherPayslipFile);
@@ -404,7 +396,6 @@ function App() {
     if (formData.fatherDeathCertFile) payload.append('fatherDeathCertFile', formData.fatherDeathCertFile);
     if (formData.motherDeathCertFile) payload.append('motherDeathCertFile', formData.motherDeathCertFile);
     if (formData.guardianshipProofFile) payload.append('guardianshipProofFile', formData.guardianshipProofFile);
-    
     if (formData.kpseaResultSlipFile) payload.append('kpseaResultSlipFile', formData.kpseaResultSlipFile);
     if (formData.juniorSchoolTranscriptFile) payload.append('juniorSchoolTranscriptFile', formData.juniorSchoolTranscriptFile);
 
@@ -424,12 +415,10 @@ function App() {
         const targetYear = new Date().getFullYear();
         const prefixCode = view === 'sbc' ? "SBC-ADM-" : "SGC-ADM-";
         
-        // Show matching alert message matching paper layouts exactly
         alert(`🎉 Success! Application Submitted Successfully!\n\nYour application packet has been logged on the network by ${explicitTargetCentre}.\n\nTracking Reference ID: ${prefixCode}${targetYear}-REF-${uniqueId}`);
         
         setView('landing');
         setCurrentStep(0);
-        // Clear global reference id after execution concludes
         setFormData(prev => ({ ...prev, id: '' }));
       } else {
         alert(`❌ Submission Rejected: ${result.message || 'Validation Failure'}`);
@@ -451,7 +440,8 @@ function App() {
           onSelectTrack={handleSelectSchoolTrack}
         />
       ) : (
-        <main id="center">
+        /* ✅ Data theme binds cleanly right here, isolating color variables strictly to the active forms */
+        <main id="center" data-theme={view}>
           <div className="progress-metadata-bar">
             <span className="step-badge">Step {currentStep + 1} of {FORM_STEPS.length}</span>
             <h2 className="step-main-title">{FORM_STEPS[currentStep].title}</h2>
@@ -472,12 +462,8 @@ function App() {
             onNext={handleNext}
             onBack={handleBack}
             onSubmit={handleFormSubmit}
-            
-            // Map internal navigation naming hooks correctly for step 5 properties
             prevStep={handleBack}
             nextStep={handleNext}
-
-            // ✅ INTERCEPT COMPONENT CLICK EVENTS WITH CLEAN REFERENCE SYNCHRONIZER
             handleDownload={handlePrintFormWithLock}
           />
         </main>

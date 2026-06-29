@@ -75,7 +75,7 @@ function Header({ view }) {
           <p>
             <strong>Application Deadline:</strong>{" "}
             <span className="deadline-date">
-              {isSbc ? `30th July ${currentYear}` : `30th September ${currentYear}`}
+              {isSbc ? `30th July ${currentYear}` : `31st July ${currentYear}`}
             </span>
           </p>
         </div>
