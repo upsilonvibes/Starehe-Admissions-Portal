@@ -232,9 +232,16 @@ function App() {
   };
 
   const handleNext = () => {
+    setFormData(prev => ({
+      ...prev,
+      selections: selections,
+      siblings: siblingsList
+    }));
+    
     if (currentStep < FORM_STEPS.length - 1) {
       setCurrentStep(prev => prev + 1);
     }
+    
   };
 
   const handleBack = () => {

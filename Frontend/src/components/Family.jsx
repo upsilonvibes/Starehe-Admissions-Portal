@@ -456,23 +456,43 @@ function Family({
                       required
                     />
                   </td>
-                  <td>
-                    {/* Shortened placeholder to prevent text content container breakage */}
-                    <input
-                      type="text"
-                      value={sibling.schoolOrOccupation || ''}
-                      onChange={(e) => handleSiblingChange(idx, 'schoolOrOccupation', e.target.value)}
-                      placeholder="Institution/Activity"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      value={sibling.incomeOrFeesPaid || ''}
-                      onChange={(e) => handleSiblingChange(idx, 'incomeOrFeesPaid', e.target.value)}
-                      placeholder="KES Amount"
-                    />
-                  </td>
+                  {/* 1. SIBLING ACTIVITY TYPE DROPDOWN */}
+<td>
+  <select
+    className="sibling-status-select"
+    value={sibling.activityType || ''}
+    onChange={(e) => handleSiblingChange(idx, 'activityType', e.target.value)}
+  >
+    <option value="">-- Select Status --</option>
+    <option value="schooling">In School / College</option>
+    <option value="employed">Employed / Working</option>
+    <option value="dependent">Unemployed Dependent</option>
+  </select>
+</td>
+
+{/* 2. SPECIFIC DETAIL TEXT FIELD */}
+<td>
+  <input
+    type="text"
+    className="sibling-text-input"
+    value={sibling.institutionOrEmployer || ''}
+    onChange={(e) => handleSiblingChange(idx, 'institutionOrEmployer', e.target.value)}
+    placeholder={sibling.activityType === 'employed' ? "Company / Workplace" : "School / Institution Name"}
+    disabled={!sibling.activityType}
+  />
+</td>
+
+{/* 3. FINANCIAL IMPACT FIELD */}
+<td>
+  <input
+    type="number"
+    className="sibling-amount-input"
+    value={sibling.financialAmount || ''}
+    onChange={(e) => handleSiblingChange(idx, 'financialAmount', e.target.value)}
+    placeholder={sibling.activityType === 'employed' ? "Monthly Income" : "Annual Fees Paid"}
+    disabled={sibling.activityType === 'dependent'}
+  />
+</td>
                   <td>
                     <button type="button" className="btn-table-remove" onClick={() => removeSiblingRow(idx)}>
                       ✕
@@ -969,10 +989,10 @@ function Family({
       {/* --- WORKFLOW FOOTER NAVIGATION PANEL --- */}
       <div className="split-buttons form-navigation-buttons-row">
         <button type="button" className="back-btn" onClick={onBack}>
-          ← Back
+          &larr; Back
         </button>
         <button type="submit" className="next-btn">
-          Next: Recommendations Area →
+          Next: Recommendations Area &rarr;
         </button>
       </div>
 

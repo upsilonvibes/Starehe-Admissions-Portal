@@ -33,6 +33,17 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
   // Standard entry is for next calendar year; transfers are typically for the current academic stream
   const targetYear = isTransfer ? currentYear : currentYear + 1;
 
+const handleSchoolChange = (e) => {
+  const selectedSchool = e.target.value; // 'sbc' or 'sgc'
+  
+  setFormData(prev => ({
+    ...prev,
+    institutionType: selectedSchool,
+    // Automatically inject the correct gender string based on choice
+    gender: selectedSchool === 'sbc' ? 'Male' : selectedSchool === 'sgc' ? 'Female' : ''
+  }));
+};
+
   return (
     <form className="form-grid" onSubmit={handleSubmit}>
       
@@ -173,28 +184,17 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
             />
           </div>
           <div className="input-group">
-            <label>Gender <span className="required-star">* </span></label>
-            <select 
-              name="gender" 
-              value={formData.gender || ''} 
-              onChange={handleInputChange} 
-              required
-            >
-              <option value="">Select Gender</option>
-              <option 
-                value="Male" 
-                disabled={formData.institutionType === 'sgc'}
-              >
-                Male {formData.institutionType === 'sgc' ? '(Restricted to SBC)' : ''}
-              </option>
-              <option 
-                value="Female" 
-                disabled={formData.institutionType === 'sbc'}
-              >
-                Female {formData.institutionType === 'sbc' ? '(Restricted to SGC)' : ''}
-              </option>
-            </select>
-          </div>
+  <label>Gender <span className="required-star">* </span></label>
+  <input 
+    type="text" 
+    name="gender" 
+    value={formData.gender || ''} 
+    className="form-input read-only-lock"
+    placeholder="Select target school first..."
+    readOnly
+    required
+  />
+</div>
           <div className="input-group">
             <label>Religion <span className="required-star">* </span></label>
             <select 
@@ -363,10 +363,10 @@ function Personal({ formData, handleInputChange, onNext, onBack }) {
       {/* FORM NAVIGATION CONTROLLERS */}
       <div className="split-buttons form-actions-container ">
         <button type="button" className="back-btn" onClick={onBack}>
-          ← Back to Selection
+          &larr; Back to Selection
         </button>
         <button type="submit" className="next-btn">
-          Next: Academic Background →
+          Next: Academic Background &rarr;
         </button>
       </div>
 

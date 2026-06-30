@@ -144,10 +144,10 @@ function Academics({ formData, handleInputChange, handleFileChange, fileInputRef
       {/* Button container with dual controls */}
       <div className="split-buttons form-navigation-buttons-row">
         <button type="button" className="back-btn" onClick={onBack}>
-          ← Back
+          &larr; Back
         </button>
         <button type="submit" className="next-btn">
-          Next: Pathway Priorities →
+          Next: Pathway Priorities &rarr;
         </button>
       </div>
 

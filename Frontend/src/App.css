@@ -43,7 +43,7 @@ main#center {
 
 /* Starehe Boys' Centre Theme Override Matrix - Only targets the active main container */
 main#center[data-theme="sbc"] {
-  --portal-bg:rgb(145, 130, 1);            /* School Amber Yellow background */
+  --portal-bg: rgb(1, 48, 1);            /* School Amber Yellow background */
   --portal-accent: #002060;       /* School Navy Blue accents & details */
   --notice-bg-color: #fffde6;      /* High contrast light-cream alert zone */
   --legend-bg: #002060;            /* Locks form title backings to Navy */
@@ -1501,7 +1501,35 @@ main#center[data-theme="sgc"] {
 /* ==========================================================================
    11. STEP PAGE 5: REVIEW & FINAL DECLARATION STYLES
    ========================================================================== */
+
 /* --- Summary Dossier Card Styling --- */
+.review-step-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.review-notice-banner {
+  background: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 24px;
+}
+
+.review-notice-banner h3 {
+  margin: 0 0 6px 0;
+  color: #14532d;
+  font-size: 1.15rem;
+}
+
+.review-notice-banner p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #166534;
+  line-height: 1.5;
+}
+
 .summary-dossier-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -1509,6 +1537,7 @@ main#center[data-theme="sgc"] {
   padding: 24px;
   margin-bottom: 24px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  text-align: left;
 }
 
 .dossier-header {
@@ -1521,18 +1550,19 @@ main#center[data-theme="sgc"] {
   font-size: 1.25rem;
   color: #1e293b;
   font-weight: 700;
+  margin: 0;
 }
 
 .dossier-header p {
   font-size: 0.85rem;
   color: #64748b;
-  margin-top: 4px;
+  margin: 4px 0 0 0;
 }
 
 .dossier-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 16px 24px;
 }
 
 .dossier-section-title {
@@ -1543,9 +1573,9 @@ main#center[data-theme="sgc"] {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   background: #f8fafc;
-  padding: 6px 12px;
+  padding: 8px 12px;
   border-radius: 6px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .dossier-item {
@@ -1562,6 +1592,8 @@ main#center[data-theme="sgc"] {
   font-size: 0.8rem;
   font-weight: 600;
   color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .dossier-value {
@@ -1594,15 +1626,15 @@ main#center[data-theme="sgc"] {
 
 /* Pathway Rows */
 .pathway-review-item {
-  background: #fafafa;
-  padding: 12px;
+  background: #f8fafc;
+  padding: 16px;
   border-radius: 8px;
   border: 1px dashed #cbd5e1;
 }
 
 .pathway-row {
-  font-size: 0.9rem;
-  margin-bottom: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
   color: #334155;
 }
 
@@ -1613,10 +1645,146 @@ main#center[data-theme="sgc"] {
 .track-subtext {
   color: #64748b;
   font-style: italic;
+  font-size: 0.9rem;
+  margin-left: 4px;
 }
 
+/* Static Review Table for Siblings */
+.static-review-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.static-review-table th {
+  background: #f1f5f9;
+  color: #475569;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.static-review-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.static-review-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Live Document Verification Checklist */
+.verify-container-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.verification-row-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.verification-row-badge.valid {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.verification-row-badge.invalid {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.doc-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-icon {
+  font-size: 1.1rem;
+}
+
+.doc-item-label {
+  font-weight: 600;
+}
+
+.doc-item-status {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Narrative Personal Statement Block */
+.static-narrative-quote {
+  margin: 8px 0 0 0;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border-left: 4px solid #94a3b8;
+  color: #334155;
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Status Badges (Alternative Display helper) */
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.status-badge.missing {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+.status-badge.attached {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* --- Electronic Cursive Signature Styles --- */
+.signature-pad-container {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.signature-preview-window {
+  margin-top: 8px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  padding: 24px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.cursive-signature-output {
+  font-family: 'Brush Script MT', 'Comic Sans MS', cursive;
+  font-size: 2.2rem;
+  color: #0f172a;
+  letter-spacing: 0.03em;
+  display: inline-block;
+}
+
+/* Legal Signoff Block */
 .legal-signoff-box {
-  border: 1px solid #cbd5e1;
+  border: 1px solid #fca5a5;
   border-radius: 8px;
   padding: 16px;
   background: #fff5f5;
@@ -1628,12 +1796,93 @@ main#center[data-theme="sgc"] {
   align-items: flex-start;
 }
 
+.legal-checkbox-wrapper input[type="checkbox"] {
+  margin-top: 4px;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
 .checkbox-label-text {
   font-size: 0.9rem;
   line-height: 1.5;
+  color: #475569;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Helper rules for status badges */
+.status-badge-exempt {
+  background-color: #e2e8f0;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.status-badge-missing {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.status-badge-attached {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* Typography Layout Rules */
+.stream-highlight-text {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.block-label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.document-checklist-grid {
+  margin-bottom: 20px;
+}
+
+/* Action view custom spacing adjustments */
+.download-btn-style {
+  margin: 0 10px;
+  height: 100%;
+}
+
+.empty-array-text {
+  padding: 10px 0;
+  color: #64748b;
+  font-style: italic;
+}
+
+.gross-income-callout {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1.1rem;
+  background-color: #f8fafc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.read-only-lock {
+  background-color: #f1f5f9;
+  color: #64748b;
+  cursor: not-allowed;
+  border: 1px solid #cbd5e1;
+}
+
+.locked-badge {
+  font-weight: 500;
   color: #334155;
 }
 
+.text-capitalize {
+  text-transform: capitalize;
+}
 
 /* ==========================================================================
    12. NAVIGATION CONTROLS (Action Buttons & Bars)

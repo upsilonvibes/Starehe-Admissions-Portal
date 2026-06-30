@@ -18,9 +18,10 @@ A modern, production-grade full-stack enrollment wizard designed to digitize and
 
 * **Dynamic Portal Selection & Micro-Interactions**: Tailored UI and institutional theme engine supporting both SBC (Yellow) and SGC (Blue) entry pipelines, including interactive animated logo arrays with reactive hover transitions.
 * **6-Stage Unified Lifecycle Wizard**: Form workflow isolated cleanly across specialized modular sub-components to optimize React state propagation, transitioning smoothly from initial personal identity rules all the way to final declarations.
-* **Deterministic Synchronized Tracking Generator**: Embedded client-side lock engine that generates a strict 6-digit tracking digit string. It forces instant generation to trap matching reference IDs early, ensuring local state variables and asynchronous server payloads are fully synchronized even if print previews are bypassed.
+* **Synchronized State & Progress Engine**: Features a central step-advance interceptor in `App.jsx` that automatically flushes and flattens independent component state hooks (`selections` and `siblingsList`) down into the global `formData` payload upon moving forward, preventing array state fragmentation.
+* **Deterministic Tracking Generator**: Embedded client-side lock engine that generates a strict 6-digit tracking string (`String(Math.floor(100000 + Math.random() * 900000))`). It forces instant generation to trap matching reference IDs early, ensuring local state variables and asynchronous server payloads are fully synchronized even if print previews are bypassed.
 * **Context-Aware Admission Targets**: Embedded dynamic calculation engine processing application types on the fly. Automatically targets Grade 10 enrollment for upcoming calendar cycles or computes live mid-stream transfer targets for current scholastic years without hardcoded form parameters.
-* **3-Choice Priority Pathway System**: Interactive ranking module allowing applicants to choose and order their technical or academic tracks (STEM, Social Sciences, Arts) and sub-tracks.
+* **3-Choice Priority Pathway System**: Interactive ranking module allowing applicants to choose and order their academic tracks (STEM, Social Sciences, Arts & Sports Science) and sub-tracks, backed by unique selection validation.
 * **Adaptive Parent/Guardian Matrix Subsystem**: Intelligently toggles baseline validation parameters (National ID, employment metrics, income brackets) depending on parent status (Alive, Deceased, Unknown/Absent) to prevent browser-level validation crashes while accurately preserving structural profiling data.
 * **Multi-Tier Endorsement & Recommendation Subsystem**: Integrates strict local authority tracking via `Recommendations.jsx` mapping specific sections for Local Chiefs, Religious Leaders, and Primary Headteachers. This tracks custom remarks, academic forecasts, disciplinary reviews, and financial certificates alongside distinct physical and telephonic contact records.
 * **Isolated Multi-File Cloud Pipelines**: Completely isolated endpoint orchestration handling individual multi-file uploads explicitly mapped from frontend form fields. Raw binary streams for parent metadata and official recommendations are processed seamlessly via `multer` and offloaded directly to Cloudinary without overriding overlapping data objects.
@@ -42,7 +43,7 @@ Starehe-Admissions-Portal/           <-- Main Repository Root
 │   │   ├── components/
 │   │   │   ├── Personal.jsx         # Identity, Personal Certifications, & Global Restrictions Guard (Step 1)
 │   │   │   ├── Academics.jsx        # Historical Academic Background & Exam Track Records (Step 2)
-│   │   │   ├── Pathway.jsx          # Priority Track Ranking Engine (Step 3)
+│   │   │   ├── Pathway.jsx          # Priority Track Ranking Engine with local duplicates block (Step 3)
 │   │   │   ├── Family.jsx           # Distinct multi-file parent upload tracking & sibling matrices (Step 4)
 │   │   │   ├── Recommendations.jsx  # Chief, Clergy, and Headteacher text blocks & file tracking matrices (Step 5)
 │   │   │   ├── Review.jsx           # Dynamic Stream Narratives, Document Verification Previews, & Sig Pad (Step 6)

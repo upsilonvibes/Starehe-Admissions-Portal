@@ -16,10 +16,12 @@ const Recommendations = ({
   nextStep 
 }) => {
 
+  // Detect the application stream category selected in Step C
+  const isFeePaying = formData.applicationStream === 'feePaying';
+
   const handleDownload = (formType) => {
     let compiledHtmlString = '';
 
-    // Route calculation payload matches user choice directly
     switch (formType) {
       case 'chief':
         compiledHtmlString = generateChiefTemplate(formData);
@@ -35,14 +37,11 @@ const Recommendations = ({
         return;
     }
 
-    // Isolate rendering context to ensure completely separate printing streams
     const printWindow = window.open('', '_blank');
-    
     printWindow.document.open();
     printWindow.document.write(compiledHtmlString);
     printWindow.document.close();
 
-    // Catch rendering engine hook to fire native print configurations layout
     printWindow.onload = function() {
       printWindow.print();
     };
@@ -58,259 +57,279 @@ const Recommendations = ({
 
       <hr className="section-divider" />
 
-      {/* --- SECTION 1: LOCAL CHIEF RECOMMENDATION --- */}
-      <div className="form-section-block">
-        <h3 className="section-block-title">1. Recommendation by Local Chief</h3>
-
-        {/* Download Template Card */}
-        <div className="upload-card-wrapper download-card-override">
-          <div className="upload-info">
-            <label>
-              Download Local Chief Form Template
-              <span className="sub-helper-label">Print this template for your local administrator's reference.</span>
-            </label>
-          </div>
-          <button type="button" className="upload-btn download-btn-style" onClick={() => handleDownload('chief')}>
-            📥 Print Chief Form
-          </button>
+      {/* ==========================================================================
+         🔒 FEE CATEGORY BYPASS GATE FOR SECTIONS 1 & 2
+         ========================================================================== */}
+      {isFeePaying ? (
+        <div className="form-notice-box simulated-disabled-banner">
+          <h4>🔒 Sections 1 & 2 Omitted (Fee-Paying Stream)</h4>
+          <p>
+            Per Starehe structural admission guidelines, applicants under the <strong>Fee-Paying Place</strong> stream are exempted from local administrative vetting. The Local Chief and Clergy Recommendation sections are automatically locked out and not required for submission. Please proceed directly to the Headteacher Assessment below.
+          </p>
         </div>
+      ) : (
+        /* ACTIVE NEEDY/SPONSORED RECOMMENDATION LAYOUT BLOCK */
+        <div className="sponsored-recommendations-sub-block">
+          
+          {/* --- SECTION 1: LOCAL CHIEF RECOMMENDATION --- */}
+          <div className="form-section-block">
+            <h3 className="section-block-title">1. Recommendation by Local Chief</h3>
 
-        <div className="form-grid-2-col">
-          <div className="input-row">
-            <div className="input-group-wrapper">
-              <label>Full Name and Title <span className="required-star">*</span></label>
-              <input 
-                type="text" 
-                name="chiefName" 
-                value={formData.chiefName || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. CHIEF JOHN OMONDI, MASENO LOCATION"
-                className="text-input-field uppercase-transform"
-                required 
-              />
+            {/* Download Template Card */}
+            <div className="upload-card-wrapper download-card-override">
+              <div className="upload-info">
+                <label>
+                  Download Local Chief Form Template
+                  <span className="sub-helper-label">Print this template for your local administrator's reference.</span>
+                </label>
+              </div>
+              <button type="button" className="upload-btn download-btn-style" onClick={() => handleDownload('chief')}>
+                📥 Print Chief Form
+              </button>
             </div>
 
-            <div className="input-group-wrapper">
-              <label>Office Physical Address <span className="required-star">*</span></label>
-              <input 
-                type="text" 
-                name="chiefPhysicalAddress" 
-                value={formData.chiefPhysicalAddress || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. Maseno Location Chief's Office, Kisumu West"
-                className="text-input-field"
-                required 
+            <div className="form-grid-2-col">
+              <div className="input-row">
+                <div className="input-group-wrapper">
+                  <label>Full Name and Title <span className="required-star">*</span></label>
+                  <input 
+                    type="text" 
+                    name="chiefName" 
+                    value={formData.chiefName || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. CHIEF JOHN OMONDI, MASENO LOCATION"
+                    className="text-input-field uppercase-transform"
+                    required={!isFeePaying} 
+                  />
+                </div>
+
+                <div className="input-group-wrapper">
+                  <label>Office Physical Address <span className="required-star">*</span></label>
+                  <input 
+                    type="text" 
+                    name="chiefPhysicalAddress" 
+                    value={formData.chiefPhysicalAddress || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. Maseno Location Chief's Office, Kisumu West"
+                    className="text-input-field"
+                    required={!isFeePaying} 
+                  />
+                </div>
+              </div>
+              
+              <div className="input-row">
+                <div className="input-group-wrapper">
+                  <label>Mobile Number <span className="required-star">*</span></label>
+                  <input 
+                    type="tel" 
+                    name="chiefMobile" 
+                    value={formData.chiefMobile || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. +254 123 456 789"
+                    className="text-input-field"
+                    required={!isFeePaying} 
+                  />
+                </div>
+
+                <div className="input-group-wrapper">
+                  <label>Office Telephone (If any)</label>
+                  <input 
+                    type="tel" 
+                    name="chiefOfficeTel" 
+                    value={formData.chiefOfficeTel || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. +254 20 XXX XXX"
+                    className="text-input-field"
+                  />
+                </div>
+              </div>
+              
+              <div className="input-row">
+                <div className="input-group-wrapper full-width-span">
+                  <label>Date Signed <span className="required-star">*</span></label>
+                  <input 
+                    type="date" 
+                    name="chiefDate" 
+                    value={formData.chiefDate || ''} 
+                    onChange={handleInputChange} 
+                    className="text-input-field"
+                    required={!isFeePaying} 
+                  />
+                </div>
+              </div>
+              
+              <div className="input-group-wrapper full-width-span">
+                <label>Chief's Verbatim Comments / Recommendations <span className="required-star">*</span></label>
+                <textarea 
+                  name="chiefComments" 
+                  value={formData.chiefComments || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Type out exactly what the Chief wrote regarding your needy circumstance..."
+                  className="textarea-input-field"
+                  rows="4"
+                  required={!isFeePaying} 
+                />
+              </div>
+            </div>
+
+            {/* Chief Scanned Page Upload Card */}
+            <div className="upload-card-wrapper">
+              <div className="upload-info">
+                <label>
+                  Upload Scanned Chief Recommendation Page <span className="required-star">* </span>
+                  <span className="sub-helper-label">Must clearly display the official rubber stamp, signature, and date.</span>
+                </label>
+              </div>
+              <input
+                type="file"
+                name="chiefRecommendationFile"
+                ref={fileInputRefs.chiefRecommendationFile}
+                accept=".pdf,.jpg,.jpeg,.png"
+                onChange={handleFileChange}
+                className="hidden-file-input"
+                required={!isFeePaying && !formData.chiefRecommendationFile}
               />
+              <button type="button" className="upload-btn" onClick={() => triggerFileSelect('chiefRecommendationFile')}>
+                {formData.chiefRecommendationFile ? "🔄 Change File" : "📁 Choose File"}
+              </button>
+              {formData.chiefRecommendationFile && <span className="file-indicator-success">✔ Staged ({formData.chiefRecommendationFile.name})</span>}
+            </div>
+          </div>
+
+          <hr className="section-divider" />
+
+          {/* --- SECTION 2: RELIGIOUS LEADER RECOMMENDATION --- */}
+          <div className="form-section-block">
+            <h3 className="section-block-title">2. Recommendation by Priest / Pastor / Imam</h3>
+
+            {/* Download Template Card */}
+            <div className="upload-card-wrapper download-card-override">
+              <div className="upload-info">
+                <label>
+                  Download Religious Leader Form Template
+                  <span className="sub-helper-label">Print this template for your religious leader or clergy reference.</span>
+                </label>
+              </div>
+              <button type="button" className="upload-btn download-btn-style" onClick={() => handleDownload('clergy')}>
+                📥 Print Clergy Form
+              </button>
+            </div>
+
+            <div className="form-grid-2-col">
+              <div className="input-row">
+                <div className="input-group-wrapper">
+                  <label>Full Name and Title <span className="required-star">*</span></label>
+                  <input 
+                    type="text" 
+                    name="religiousLeaderName" 
+                    value={formData.religiousLeaderName || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. REV. FR. JOSEPH MAINA"
+                    className="text-input-field uppercase-transform"
+                    required={!isFeePaying} 
+                  />
+                </div>
+
+                <div className="input-group-wrapper">
+                  <label>Place of Worship Physical Address <span className="required-star">*</span></label>
+                  <input 
+                    type="text" 
+                    name="religiousLeaderAddress" 
+                    value={formData.religiousLeaderAddress || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. St. Austin's Catholic Church, Nairobi"
+                    className="text-input-field"
+                    required={!isFeePaying} 
+                  />
+                </div>
+              </div>
+              
+              <div className="input-row">
+                <div className="input-group-wrapper">
+                  <label>Mobile Number <span className="required-star">*</span></label>
+                  <input 
+                    type="tel" 
+                    name="religiousLeaderMobile" 
+                    value={formData.religiousLeaderMobile || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. +254 123 456 789"
+                    className="text-input-field"
+                    required={!isFeePaying} 
+                  />
+                </div>
+
+                <div className="input-group-wrapper">
+                  <label>Office/Church Tel No</label>
+                  <input 
+                    type="tel" 
+                    name="religiousLeaderOfficeTel" 
+                    value={formData.religiousLeaderOfficeTel || ''} 
+                    onChange={handleInputChange} 
+                    placeholder="e.g. +254 20 XXX XXX"
+                    className="text-input-field"
+                  />
+                </div>
+              </div>
+              
+              <div className="input-row">
+                <div className="input-group-wrapper full-width-span">
+                  <label>Date Signed <span className="required-star">*</span></label>
+                  <input 
+                    type="date" 
+                    name="religiousLeaderDate" 
+                    value={formData.religiousLeaderDate || ''} 
+                    onChange={handleInputChange} 
+                    className="text-input-field"
+                    required={!isFeePaying} 
+                  />
+                </div>
+              </div>
+
+              <div className="input-group-wrapper full-width-span">
+                <label>Religious Leader's Verbatim Comments <span className="required-star">*</span></label>
+                <textarea 
+                  name="religiousLeaderComments" 
+                  value={formData.religiousLeaderComments || ''} 
+                  onChange={handleInputChange} 
+                  placeholder="Type out exactly what the religious leader wrote regarding your character and family circumstances..."
+                  className="textarea-input-field"
+                  rows="4"
+                  required={!isFeePaying} 
+                />
+              </div>
+            </div>
+
+            {/* Clergy Scanned Page Upload Card */}
+            <div className="upload-card-wrapper">
+              <div className="upload-info">
+                <label>
+                  Upload Scanned Clergy Recommendation Page <span className="required-star">* </span>
+                  <span className="sub-helper-label">Must show the official church or mosque ink stamp alongside the signature.</span>
+                </label>
+              </div>
+              <input
+                type="file"
+                name="religiousLeaderRecommendationFile"
+                ref={fileInputRefs.religiousLeaderRecommendationFile}
+                accept=".pdf,.jpg,.jpeg,.png"
+                onChange={handleFileChange}
+                className="hidden-file-input"
+                required={!isFeePaying && !formData.religiousLeaderRecommendationFile}
+              />
+              <button type="button" className="upload-btn" onClick={() => triggerFileSelect('religiousLeaderRecommendationFile')}>
+                {formData.religiousLeaderRecommendationFile ? "🔄 Change File" : "📁 Choose File"}
+              </button>
+              {formData.religiousLeaderRecommendationFile && <span className="file-indicator-success">✔ Staged ({formData.religiousLeaderRecommendationFile.name})</span>}
             </div>
           </div>
           
-          <div className="input-row">
-            <div className="input-group-wrapper">
-              <label>Mobile Number <span className="required-star">*</span></label>
-              <input 
-                type="tel" 
-                name="chiefMobile" 
-                value={formData.chiefMobile || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. +245 123 456 789"
-                className="text-input-field"
-                required 
-              />
-            </div>
-
-            <div className="input-group-wrapper">
-              <label>Office Telephone (If any)</label>
-              <input 
-                type="tel" 
-                name="chiefOfficeTel" 
-                value={formData.chiefOfficeTel || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. +254 20 XXX XXX"
-                className="text-input-field"
-              />
-            </div>
-          </div>
-          
-          <div className="input-row">
-            <div className="input-group-wrapper full-width-span">
-              <label>Date Signed <span className="required-star">*</span></label>
-              <input 
-                type="date" 
-                name="chiefDate" 
-                value={formData.chiefDate || ''} 
-                onChange={handleInputChange} 
-                className="text-input-field"
-                required 
-              />
-            </div>
-          </div>
-          
-          <div className="input-group-wrapper full-width-span">
-            <label>Chief's Verbatim Comments / Recommendations <span className="required-star">*</span></label>
-            <textarea 
-              name="chiefComments" 
-              value={formData.chiefComments || ''} 
-              onChange={handleInputChange} 
-              placeholder="Type out exactly what the Chief wrote regarding your needy circumstance..."
-              className="textarea-input-field"
-              rows="4"
-              required 
-            />
-          </div>
+          <hr className="section-divider" />
         </div>
+      )}
 
-        {/* Chief Scanned Page Upload Card */}
-        <div className="upload-card-wrapper">
-          <div className="upload-info">
-            <label>
-              Upload Scanned Chief Recommendation Page <span className="required-star">* </span>
-              <span className="sub-helper-label">Must clearly display the official rubber stamp, signature, and date.</span>
-            </label>
-          </div>
-          <input
-            type="file"
-            name="chiefRecommendationFile"
-            ref={fileInputRefs.chiefRecommendationFile}
-            accept=".pdf,.jpg,.jpeg,.png"
-            onChange={handleFileChange}
-            className="hidden-file-input"
-            required={!formData.chiefRecommendationFile}
-          />
-          <button type="button" className="upload-btn" onClick={() => triggerFileSelect('chiefRecommendationFile')}>
-            {formData.chiefRecommendationFile ? "🔄 Change File" : "📁 Choose File"}
-          </button>
-          {formData.chiefRecommendationFile && <span className="file-indicator-success">✔ Staged ({formData.chiefRecommendationFile.name})</span>}
-        </div>
-      </div>
-
-      <hr className="section-divider" />
-
-      {/* --- SECTION 2: RELIGIOUS LEADER RECOMMENDATION --- */}
-      <div className="form-section-block">
-        <h3 className="section-block-title">2. Recommendation by Priest / Pastor / Imam</h3>
-
-        {/* Download Template Card */}
-        <div className="upload-card-wrapper download-card-override">
-          <div className="upload-info">
-            <label>
-              Download Religious Leader Form Template
-              <span className="sub-helper-label">Print this template for your religious leader or clergy reference.</span>
-            </label>
-          </div>
-          <button type="button" className="upload-btn download-btn-style" onClick={() => handleDownload('clergy')}>
-            📥 Print Clergy Form
-          </button>
-        </div>
-
-        <div className="form-grid-2-col">
-          <div className="input-row">
-            <div className="input-group-wrapper">
-              <label>Full Name and Title <span className="required-star">*</span></label>
-              <input 
-                type="text" 
-                name="religiousLeaderName" 
-                value={formData.religiousLeaderName || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. REV. FR. JOSEPH MAINA"
-                className="text-input-field uppercase-transform"
-                required 
-              />
-            </div>
-
-            <div className="input-group-wrapper">
-              <label>Place of Worship Physical Address <span className="required-star">*</span></label>
-              <input 
-                type="text" 
-                name="religiousLeaderAddress" 
-                value={formData.religiousLeaderAddress || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. St. Austin's Catholic Church, Nairobi"
-                className="text-input-field"
-                required 
-              />
-            </div>
-          </div>
-          
-          <div className="input-row">
-            <div className="input-group-wrapper">
-              <label>Mobile Number <span className="required-star">*</span></label>
-              <input 
-                type="tel" 
-                name="religiousLeaderMobile" 
-                value={formData.religiousLeaderMobile || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. +254 123 456 789"
-                className="text-input-field"
-                required 
-              />
-            </div>
-
-            <div className="input-group-wrapper">
-              <label>Office/Church Tel No</label>
-              <input 
-                type="tel" 
-                name="religiousLeaderOfficeTel" 
-                value={formData.religiousLeaderOfficeTel || ''} 
-                onChange={handleInputChange} 
-                placeholder="e.g. +254 20 XXX XXX"
-                className="text-input-field"
-              />
-            </div>
-          </div>
-          
-          <div className="input-group-wrapper full-width-span">
-            <label>Date Signed <span className="required-star">*</span></label>
-            <input 
-              type="date" 
-              name="religiousLeaderDate" 
-              value={formData.religiousLeaderDate || ''} 
-              onChange={handleInputChange} 
-              className="text-input-field"
-              required 
-            />
-          </div>
-
-          <div className="input-group-wrapper full-width-span">
-            <label>Religious Leader's Verbatim Comments <span className="required-star">*</span></label>
-            <textarea 
-              name="religiousLeaderComments" 
-              value={formData.religiousLeaderComments || ''} 
-              onChange={handleInputChange} 
-              placeholder="Type out exactly what the religious leader wrote regarding your character and family circumstances..."
-              className="textarea-input-field"
-              rows="4"
-              required 
-            />
-          </div>
-        </div>
-
-        {/* Clergy Scanned Page Upload Card */}
-        <div className="upload-card-wrapper">
-          <div className="upload-info">
-            <label>
-              Upload Scanned Clergy Recommendation Page <span className="required-star">* </span>
-              <span className="sub-helper-label">Must show the official church or mosque ink stamp alongside the signature.</span>
-            </label>
-          </div>
-          <input
-            type="file"
-            name="religiousLeaderRecommendationFile"
-            ref={fileInputRefs.religiousLeaderRecommendationFile}
-            accept=".pdf,.jpg,.jpeg,.png"
-            onChange={handleFileChange}
-            className="hidden-file-input"
-            required={!formData.religiousLeaderRecommendationFile}
-          />
-          <button type="button" className="upload-btn" onClick={() => triggerFileSelect('religiousLeaderRecommendationFile')}>
-            {formData.religiousLeaderRecommendationFile ? "🔄 Change File" : "📁 Choose File"}
-          </button>
-          {formData.religiousLeaderRecommendationFile && <span className="file-indicator-success">✔ Staged ({formData.religiousLeaderRecommendationFile.name})</span>}
-        </div>
-      </div>
-
-      <hr className="section-divider" />
-
-      {/* --- SECTION 3: UNIFIED HEADTEACHER RECOMMENDATION --- */}
+      {/* ==========================================================================
+         🤝 UNIFIED SECTION 3: HEADTEACHER RECOMMENDATION (MANDATORY FOR ALL CATEGORIES)
+         ========================================================================== */}
       <div className="form-section-block">
         <h3 className="section-block-title">3. Headteacher's Recommendation & Evaluation</h3>
 
@@ -395,16 +414,18 @@ const Recommendations = ({
             </div>
           </div>
           
-          <div className="input-group-wrapper full-width-span">
-            <label>Date Signed <span className="required-star">*</span></label>
-            <input 
-              type="date" 
-              name="headteacherDate" 
-              value={formData.headteacherDate || ''} 
-              onChange={handleInputChange} 
-              className="text-input-field"
-              required 
-            />
+          <div className="input-row">
+            <div className="input-group-wrapper full-width-span">
+              <label>Date Signed <span className="required-star">*</span></label>
+              <input 
+                type="date" 
+                name="headteacherDate" 
+                value={formData.headteacherDate || ''} 
+                onChange={handleInputChange} 
+                className="text-input-field"
+                required 
+              />
+            </div>
           </div>
 
           {/* Unified Evaluative Grid Entries */}
@@ -415,7 +436,7 @@ const Recommendations = ({
               value={formData.headteacherAcademicRemarks || ''} 
               onChange={handleInputChange} 
               placeholder="Transcribe the remarks entered in the academic space..."
-              className="textarea-input-field "
+              className="textarea-input-field"
               rows="3"
               required 
             />
@@ -428,7 +449,7 @@ const Recommendations = ({
               value={formData.headteacherCoCurricularRemarks || ''} 
               onChange={handleInputChange} 
               placeholder="Transcribe the remarks entered in the co-curricular space..."
-              className="textarea-input-field "
+              className="textarea-input-field"
               rows="3"
               required 
             />
@@ -441,7 +462,7 @@ const Recommendations = ({
               value={formData.headteacherDisciplineRemarks || ''} 
               onChange={handleInputChange} 
               placeholder="Transcribe the remarks entered in the conduct/discipline space..."
-              className="textarea-input-field "
+              className="textarea-input-field"
               rows="3"
               required 
             />
@@ -486,12 +507,12 @@ const Recommendations = ({
       </div>
 
       {/* --- STEP NAVIGATION CONTROLS --- */}
-      <div className="split-buttons form-actions-container ">
+      <div className="split-buttons form-actions-container">
         <button type="button" className="back-btn" onClick={prevStep}>
-          ← Back
+          &larr; Back
         </button>
         <button type="button" className="next-btn" onClick={nextStep}>
-          Next: Final Review →
+          Next: Final Review &rarr;
         </button>
       </div>
     </div>
